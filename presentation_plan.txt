@@ -1,0 +1,36 @@
+Presentation (from markscheme)
+	introduction of application
+		what it does
+		why its important
+	main content
+		how it will be built
+		how it may look
+		how you organise yourself (display gannt chart)
+		tools you plan to use
+		ethical or professional considerations
+	closing
+		thanks for listening
+		questions
+	requirements
+		engaging 
+		visual aids
+		explain technical aspects in detail
+		explain non technical aspects in detail
+		realistic plan for organisation
+
+Gannt chart
+	tasks
+		list of tasks to complete project
+		organized into a gannt chart
+	milestones
+		list of features and facilities
+		by order of importance
+		when will we have a minimal working site
+ 	splitting work
+		relevant skills and personalities
+		how we make use of them
+		
+	
+	
+
+
