@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>monops</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket;
+        $(document).ready(function(){
+            socket = io.connect('http://' + document.domain + ':' + location.port + '/gameroom');
+            socket.on('connect', function() {
+                socket.emit('join', {});
+            });
+            socket.on('status', function(data) {
+                $('#messages').val($('#messages').val() + data.msg + '\n');
+                $('#messages').scrollTop($('#messages')[0].scrollHeight);
+            });
+            socket.on('message', function(data) {
+                $('#messages').val($('#messages').val() + data.msg + '\n');
+                $('#messages').scrollTop($('#messages')[0].scrollHeight);
+            });
+            $('#send').click(function(e) {
+                    text = $('#text').val();
+                    $('#text').val('');
+                    socket.emit('text', {msg: text});
+            });
+        });
+        function leave_room() {
+            socket.emit('left', {}, function() {
+                socket.disconnect();
+                window.location.href = "{{ url_for('index') }}";
+            });
+        }
+    </script>
+  </head>
+
+  <body class="text-center">
+    <h2 >welcome to der game</h2>
+    <h2>Room : {{session['room']}}</h2><br>
+    <textarea id="messages" cols="70" rows="10" placeholder="No messages yet. Start one..."></textarea><br/><br/>
+    <input type="text" id="text" size="60" placeholder="Enter your message here" />
+    <button type="button" id="send" class="btn btn-success">SEND</button><br/><br/>
+    <button type="button" onclick=leave_room()>leave der game</button>
+  </body>
+</html>
