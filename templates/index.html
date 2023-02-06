@@ -6,11 +6,29 @@
 </head>
 
 <body class="text-center">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+    $("#choice").change(function(){
+    if($(this).val() == 'make'){
+      $('#game-list').show();
+    } else {
+      $('#game-list').hide();
+    }});});
+  </script>
   <form action="{{url_for('game_room')}}" method="POST">
-    <h1>JoiN GamE</h1><br><br>
+    <h1>JoiN GamE orrrrrrr amke game</h1><br><br>
     <input type="text" id="username" name="username" placeholder="Username" required autofocus><br>
-    <input type="text" id="room" name="room" placeholder="Room" required><br>
-    <button value="submit">JoiN GamE</button>
+    <select id="choice" name="choice" required>
+      <option value="make">make game</option>
+      {% for game in games %}
+        <option value={{game}}>join: {{game}}</option>
+      {% endfor %}
+    </select><br>
+    <div name='game-list' id='game-list'>
+      <input type="text" id="game_name" name="game_name" placeholder="game name"><br>
+    </div>
+    <button value="submit">submit</button>
   </form>
 </body>
 
