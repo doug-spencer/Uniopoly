@@ -1,5 +1,5 @@
 Replaced the Monopoly chance cards with Manchester Uni themed quotes. Feel free to change and improve them.
-What do you guys think about changing money -> credits, houses -> modules and hotels -> semesters to make it more personalised?
+What do you guys think about changing money -> credits, houses -> modules, and hotels -> semesters to make it more personalised?
 
 
 
@@ -7,8 +7,8 @@ Advance to Go Collect your cost of living payment
 Advance to [trafalgar equivalent]. If you pass Go, collect your cost of living payment
 Advance to [Mayfair equivalent]
 Advance to [Pall Mall equivalent]. If you pass Go, collect your cost of living payment
-Advance to the nearest bus stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the fare
-Advance to the nearest bus stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the fare
+Advance to the nearest bus stop. If unowned, you may buy it from the Bank. If owned, pay owner twice the fare
+Advance to the nearest bus stop. If unowned, you may buy it from the Bank. If owned, pay owner twice the fare
 Advance token to nearest [Utility equivalent]. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown.
 you get a first on an exam collect £50
 Move out of Oak House
