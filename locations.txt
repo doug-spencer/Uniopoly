@@ -1,0 +1,34 @@
+browns	
+	kilburn
+	Unsworth
+lbs
+	stopford
+	New Zealand Wines
+	Ashburn Hall
+pinks
+	chemistry building
+	Alans chicken shop
+	Simon
+oranges
+	turing
+	uni place
+	Manchester Academy
+reds
+	Roscoe
+	IT building
+	James Chadwick
+yellows
+	Oddfellows Hall
+	Whitworth
+	Samuel Alexander
+greens
+	unsworth
+	uttley house
+	Sugden
+dbs
+	engineering
+	SU
+
+utilities
+	ali g
+	Main Library

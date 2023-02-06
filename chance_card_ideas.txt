@@ -1,7 +1,7 @@
-start a new semester Collect 200 credits.
-Advance to [trafalgar equivalent]. If you start a new semester receive 200 credits.
-Advance to [Mayfair equivalent].
-Advance to [Pall Mall equivalent]. If you pass Go, collect your cost of living payment.
+Start a new semester Collect 200 credits.
+Advance to Uni Place. If you start a new semester receive 200 credits.
+Advance to Engineering.
+Advance to Stopford. If you pass Go, collect your cost of living payment.
 Advance to the nearest bus stop. If unowned, you may buy it from the Bank. If owned, give twice the credits.
 Advance to the nearest bus stop. If unowned, you may buy it from the Bank. If owned, give twice the credits.
 Advance token to nearest Study area. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a give ten times amount thrown.
@@ -25,7 +25,7 @@ You find a free study room in engineering. Receive 100 credits.
 You actually remember to check into a lecture. Receive 20 credits.
 Everone owes you a drink. Collect £10 from every player.
 Your lecturer doesn't just read the notes. Receive 100 credits.
-You bought too many freshers wrist bands lose 100 credits.
+You get lost inside of Kilburn lose 100 credits.
 You didnt tag your git lab submission correctly lose 50 credits.
 Your timetable has no 9ams collect 25 credits.
 You fail first year and have to repeat next year. Lose 30 credits per module.
