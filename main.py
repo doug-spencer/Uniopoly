@@ -20,6 +20,8 @@ class Game(db.Model):
     game_name = db.Column(db.String(100), primary_key=True)
     host_username = db.Column(db.String(100))
     players_connected = db.relationship('Player', backref='game', lazy='select')
+    #index of turn
+    #action for specific index
 
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,7 +29,7 @@ class Player(db.Model):
     symbol = db.Column(db.Integer)
     money = db.Column(db.Integer)
     game_id = db.Column(db.Integer, db.ForeignKey('game.game_name'))
-    account_id = db.Column(db.Integer, db.ForeignKey('account.username'))
+    username = db.Column(db.Integer, db.ForeignKey('account.username'))
 
 class Account(db.Model):
     username = db.Column(db.String(100), primary_key=True)
@@ -41,6 +43,21 @@ class Account(db.Model):
 #db.session.add(Game(game_name='wooga'))
 db.create_all()
 db.session.commit()
+
+def check_in_game(game_name, username):
+    game = Game.query.filter_by(game_name = game_name).first()
+    if not game:
+        return False, False
+    account = Account.query.filter_by(username=username).first()
+    if not account:
+        return False, False
+    player = False
+    for i in game.players_connected:
+        if i.username == username:
+            player = i
+    if not player:
+        return False, False
+    return game, player
 
 @app.route('/')
 def index():
@@ -113,6 +130,22 @@ def join(message):
     game_name = session.get('game_name')
     join_room(game_name)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_name)
+
+@socketio.on('roll dice', namespace='/gameroom')
+def roll_dice():
+    game_name = session.get('game_name')
+    username = session.get('username')
+    game, player = check_in_game(game_name, username)
+    if not game and not player:
+        return False
+    roll_value = random.randint(1,6)
+    current_value = player.position
+    new_value = roll_value + current_value
+    if new_value > 39:
+        new_value -= 40
+    player.position = new_value
+    db.session.commit()
+    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, room=game_name)
 
 @socketio.on('text', namespace='/gameroom')
 def text(message):
