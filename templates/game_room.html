@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>monops</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
+    <script src="/static/js/script.js"></script>
+  </head>
+
+  <body class="text-center">
+    <h2 >welcome to der game</h2>
+    <h2>Game name : {{session['game_name']}}</h2><br>
+    <p id="dice">nobody has rolled the dice yet</p>
+    <div name="dice-button" id="dice-button">
+      <button type="button" id="roll-dice">roll dice</button><br>
+    </div>
+    <textarea id="messages" cols="70" rows="10" placeholder="No messages yet. Start one..."></textarea><br/><br/>
+    <input type="text" id="text" size="60" placeholder="Enter your message here" />
+    <button type="button" id="send">SEND</button><br/><br/>
+    <button type="button" onclick=leave_room()>leave der game</button>
+  </body>
+</html>
