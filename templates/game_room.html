@@ -11,7 +11,9 @@
     <h2 >welcome to der game</h2>
     <h2>Game name : {{session['game_name']}}</h2><br>
     <p id="dice">nobody has rolled the dice yet</p>
-    <button type="button" id="roll-dice">roll dice</button><br>
+    <div name="dice-button" id="dice-button">
+      <button type="button" id="roll-dice">roll dice</button><br>
+    </div>
     <textarea id="messages" cols="70" rows="10" placeholder="No messages yet. Start one..."></textarea><br/><br/>
     <input type="text" id="text" size="60" placeholder="Enter your message here" />
     <button type="button" id="send">SEND</button><br/><br/>

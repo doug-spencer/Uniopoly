@@ -12,9 +12,15 @@ $(document).ready(function(){
         $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
+    socket.on('roll dice button change', function(data) {
+        if(data.operation == 'show'){
+            $('#dice-button').show();
+        } else {
+            $('#dice-button').hide();
+        };
+    });
     socket.on('dice_roll', function(data) {
         document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
-        //$('dice').val('d');
         //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
     });
     $('#send').click(function(e) {
@@ -32,3 +38,6 @@ function leave_room() {
         window.location.href = "{{ url_for('index') }}";
     });
 }
+setInterval(function() {
+    socket.emit('update turn');
+}, 2500); //calls function every 2.5seconds

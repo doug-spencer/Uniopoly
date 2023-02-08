@@ -13,19 +13,24 @@ app.config['SECRET_KEY'] = 'secret'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.app_context().push()
 socketio = SocketIO(app)
+#socketio = SocketIO(app, logger=True, engineio_logger=True)
 db = SQLAlchemy(app)
 engine = create_engine('sqlite:///database.db', echo=False)
 
+global session_id
+session_id = {}
+
 class Game(db.Model):
     game_name = db.Column(db.String(100), primary_key=True)
-    host_username = db.Column(db.String(100))
+    index_of_turn = db.Column(db.Integer)
+    #host_id = db.relationship('Player', lazy='select', uselist=False)#use=Flase for one to one 
     players_connected = db.relationship('Player', backref='game', lazy='select')
-    #index of turn
     #action for specific index
 
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     position = db.Column(db.Integer)
+    index_in_game = db.Column(db.Integer) #order of players
     symbol = db.Column(db.Integer)
     money = db.Column(db.Integer)
     game_id = db.Column(db.Integer, db.ForeignKey('game.game_name'))
@@ -104,16 +109,18 @@ def game_room():
         account.game_instances.append(player) #links account with the player in the new game
         if choice == 'make': #imaking a game
             game_name = request.form['game_name']
-            game = Game(game_name=game_name)
+            game = Game(game_name=game_name, index_of_turn=0)
             db.session.add(game)
         else: #joining game
             game_name = choice
             game=Game.query.filter_by(game_name=choice).first()
         game.players_connected.append(player)#adds player to game    
+        player.index_in_game = len(game.players_connected) - 1
         db.session.commit()
         #Store the data in session
         session['username'] = username
         session['game_name'] = game_name
+        session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
     else:
         if(session.get('username') is not None):
@@ -144,8 +151,41 @@ def roll_dice():
     if new_value > 39:
         new_value -= 40
     player.position = new_value
+    turn = game.index_of_turn
+    if turn == len(game.players_connected) - 1:
+        game.index_of_turn = 0
+    else:
+        game.index_of_turn = game.index_of_turn + 1
     db.session.commit()
-    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, room=game_name)
+    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_name)
+    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
+
+@socketio.on('update turn', namespace='/gameroom')
+def update_turn():
+    game_name = session.get('game_name')
+    username = session.get('username')
+    game, player = check_in_game(game_name, username)
+    if not game and not player:
+        return False
+    if game.index_of_turn == player.index_in_game:
+        emit('roll dice button change', {'operation': 'show'}, session=session_id[player.id])
+        emit('message', {'msg': 'It is ' + player.username + ' turn to roll the dice'}, room=game.game_name)
+    else:
+        emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
+
+'''
+def players_turn_to_roll(game_name):
+    game = Game.query.filter_by(game_name=game_name).first()
+    if not game:
+        return False
+    index = game.index_of_turn
+    for i in game.players_connected:
+        if i.index_in_game == index:
+            emit('roll dice button change', {'operation': 'show'}, session=session_id[i.id])
+            emit('message', {'msg': 'It is ' + i.username + ' turn to roll the dice'}, room=game.game_name)
+        else:
+            emit('roll dice button change', {'operation': 'hide'}, session=session_id[i.id])
+'''
 
 @socketio.on('text', namespace='/gameroom')
 def text(message):
