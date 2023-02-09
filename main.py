@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 import random
 from datetime import timedelta
+from re import search
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -21,7 +22,7 @@ engine = create_engine('sqlite:///database.db', echo=False)
 #session_id = {}
 
 class Game(db.Model):
-    game_name = db.Column(db.String(100), primary_key=True)
+    game_code = db.Column(db.Integer, primary_key=True)
     index_of_turn = db.Column(db.Integer)
     #host_id = db.relationship('Player', lazy='select', uselist=False)#use=Flase for one to one 
     players_connected = db.relationship('Player', backref='game', lazy='select')
@@ -33,7 +34,7 @@ class Player(db.Model):
     index_in_game = db.Column(db.Integer) #order of players
     symbol = db.Column(db.Integer)
     money = db.Column(db.Integer)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.game_name'))
+    game_id = db.Column(db.Integer, db.ForeignKey('game.game_code'))
     username = db.Column(db.Integer, db.ForeignKey('account.username'))
 
 class Account(db.Model):
@@ -73,6 +74,41 @@ def index():
         game_names.append(i.game_name)
     return render_template('index.html', games = game_names)
 
+@app.route('/menu', methods=['GET', 'POST'])
+def menu():
+    if request.method == 'GET':
+        return render_template('menu.html')
+    else:
+        formType = request.form.get('button')
+        games = Game.query.all()
+        if formType == "Join":
+            code = request.form.get('code')
+            if search("^\d{6}$", code):
+                for game in games:
+                    if game.game_code == int(code):
+                        return render_template('lobby.html')
+                return render_template('menu.html')
+            else:
+                print("Wrong")
+                return render_template('menu.html')
+        elif formType == "Create Game":
+            new_id = ""
+            unique = False
+            while not unique:
+                unique = True
+                new_id = ""
+                for i in range(6):
+                    new_id += str(random.randint(0, 9))
+                for game in games:
+                    if game.game_code == int(new_id):
+                        unique = False
+            print("new id created:", new_id)
+            game = Game(game_code=int(new_id), index_of_turn=0)
+            db.session.add(game)
+            db.session.commit()
+            return render_template('lobby.html')
+                
+    
 '''
 @socketio.on('my event')
 def test_message(message):
