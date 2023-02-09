@@ -10,10 +10,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret'
+app.config['SECRET'] = 'secret'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.app_context().push()
-socketio = SocketIO(app)
-#socketio = SocketIO(app, logger=True, engineio_logger=True)
+socketio = SocketIO(app, cors_allowed_origins='*')
+#socketio = SocketIO(app, logger=True, engineio_logger=True, cors_allowed_origins='*')
 db = SQLAlchemy(app)
 engine = create_engine('sqlite:///database.db', echo=False)
 
@@ -109,6 +110,7 @@ def game_room():
         account.game_instances.append(player) #links account with the player in the new game
         if choice == 'make': #imaking a game
             game_name = request.form['game_name']
+
             game = Game(game_name=game_name, index_of_turn=0)
             db.session.add(game)
         else: #joining game
@@ -204,4 +206,4 @@ def left(message):
     emit('status', {'msg': username + ' has left the room.'}, room=game_name)
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0')
