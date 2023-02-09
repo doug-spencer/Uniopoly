@@ -35,6 +35,7 @@ $(document).ready(function(){
     });
     //when the roll dice box is pressed
     $('#roll-dice').click(function(e) {
+        $('#dice-button').hide();
         socket.emit('roll dice');
     });
 });
