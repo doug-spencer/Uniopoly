@@ -110,6 +110,7 @@ def game_room():
         account.game_instances.append(player) #links account with the player in the new game
         if choice == 'make': #imaking a game
             game_name = request.form['game_name']
+
             game = Game(game_name=game_name, index_of_turn=0)
             db.session.add(game)
         else: #joining game
