@@ -17,8 +17,8 @@ socketio = SocketIO(app)
 db = SQLAlchemy(app)
 engine = create_engine('sqlite:///database.db', echo=False)
 
-global session_id
-session_id = {}
+#global session_id
+#session_id = {}
 
 class Game(db.Model):
     game_name = db.Column(db.String(100), primary_key=True)
@@ -49,7 +49,7 @@ class Account(db.Model):
 db.create_all()
 db.session.commit()
 
-def check_in_game(game_name, username):
+def check_in_game(game_name, username): #verification fucntion
     game = Game.query.filter_by(game_name = game_name).first()
     if not game:
         return False, False
@@ -97,7 +97,7 @@ def test_disconnect():
 
 @app.route('/gameroom', methods=['GET', 'POST'])
 def game_room():
-    if(request.method=='POST'):
+    if(request.method=='POST'): #player has made a game or is joining one
         username = request.form['username']
         choice = request.form['choice'] #if the made a game or the name of the game they joined
         account = Account.query.filter_by(username=username).first()
@@ -120,10 +120,10 @@ def game_room():
         #Store the data in session
         session['username'] = username
         session['game_name'] = game_name
-        session_id[player.id] = session.get('session_id') 
+        #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
-    else:
-        if(session.get('username') is not None):
+    else: 
+        if(session.get('username') is not None): #player is already in a session
             return render_template('game_room.html', session = session)
         else: #if not logged in
             games = Game.query.all()
@@ -132,13 +132,13 @@ def game_room():
                 game_names.append(i.game_name)
             return redirect(url_for('index'), games = game_names)
 
-@socketio.on('join', namespace='/gameroom')
+@socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
     game_name = session.get('game_name')
     join_room(game_name)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_name)
 
-@socketio.on('roll dice', namespace='/gameroom')
+@socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
 def roll_dice():
     game_name = session.get('game_name')
     username = session.get('username')
@@ -158,9 +158,10 @@ def roll_dice():
         game.index_of_turn = game.index_of_turn + 1
     db.session.commit()
     emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_name)
-    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
+    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
+    #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
-@socketio.on('update turn', namespace='/gameroom')
+@socketio.on('update turn', namespace='/gameroom') #check if its players turn yet (if roll dice button should be shown)
 def update_turn():
     game_name = session.get('game_name')
     username = session.get('username')
@@ -168,10 +169,12 @@ def update_turn():
     if not game and not player:
         return False
     if game.index_of_turn == player.index_in_game:
-        emit('roll dice button change', {'operation': 'show'}, session=session_id[player.id])
+        #emit('roll dice button change', {'operation': 'show'}, session=session_id[player.id])
+        emit('roll dice button change', {'operation': 'show'}, session=session)
         emit('message', {'msg': 'It is ' + player.username + ' turn to roll the dice'}, room=game.game_name)
     else:
-        emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
+        #emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
+        emit('roll dice button change', {'operation': 'hide'}, session=session)
 
 '''
 def players_turn_to_roll(game_name):
@@ -187,12 +190,12 @@ def players_turn_to_roll(game_name):
             emit('roll dice button change', {'operation': 'hide'}, session=session_id[i.id])
 '''
 
-@socketio.on('text', namespace='/gameroom')
+@socketio.on('text', namespace='/gameroom') #sending text
 def text(message):
     game_name = session.get('game_name')
     emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=game_name)
 
-@socketio.on('left', namespace='/gameroom')
+@socketio.on('left', namespace='/gameroom') #leaving room
 def left(message):
     game_name = session.get('game_name')
     username = session.get('username')
