@@ -64,14 +64,33 @@ def check_in_game(game_name, username): #verification fucntion
         return False, False
     return game, player
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    games = Game.query.all()
-    game_names = []
-    for i in games:
-        print(i.game_name)
-        game_names.append(i.game_name)
-    return render_template('index.html', games = game_names)
+
+    if(request.method=='GET'):
+        return render_template('login.html')
+        
+    elif(request.method=='POST'):
+        formSubmitted = request.form.get("button")
+
+        if formSubmitted == "signup":
+            ##check the name is not in the account table already
+            ##render menu once it has been made
+            username = request.form.get("signupname")
+            
+            new_player = Account(username=username)
+            db.session.add(new_player)
+            db.create_all()
+            db.session.commit()
+
+            return render_template('login.html')
+
+        elif formSubmitted == "login":
+            ##add in validation that the username is contained in the account table
+            ##render menu once it has been made
+            username = request.form.get("loginname")
+            return render_template('login.html')
+    
 
 '''
 @socketio.on('my event')
