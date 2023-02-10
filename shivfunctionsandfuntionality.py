@@ -154,4 +154,5 @@ if __name__ == "__main__":
 
                 
     
-'''Probably quite a few mistakes in here, was just brainstorming. Add anything or change if you see mistakes'''
+'''Probably quite a few mistakes in here, was just brainstorming. Add anything or change if you see mistakes
+Also I couldnt think of 40 properties for macnhester so just used the monopoly board.'''
