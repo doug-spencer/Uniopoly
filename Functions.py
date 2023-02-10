@@ -95,5 +95,18 @@ def go_back_spaces(current_position, spaces_to_move_back):
         updated_position = 0
     return updated_position
 
+def pause_page():
+    print("The game is paused.")
+    while True:
+        choice = input("Do you want to resume or quit the game? (r/q)").lower()
+        if choice == "r":
+            break
+        elif choice == "q":
+            quit()
+        else:
+            print("Invalid choice. Please enter 'r' to resume or 'q' to quit.")
+
+
+
 
 '''Just a list of functions that could be used.'''
