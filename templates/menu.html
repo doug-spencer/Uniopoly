@@ -9,7 +9,14 @@
     </script>
 </head>
 <body>
-    <!-- has options to create game or input join code -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <form method="POST">
         Code : <input name="code" type="text" placeholder="Enter Code">
         <input type="submit" name="button" value="Join"><br>

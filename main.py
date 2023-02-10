@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret'
 app.config['SESSION_TYPE'] = 'filesystem'
 app.app_context().push()
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 #socketio = SocketIO(app, logger=True, engineio_logger=True)
 db = SQLAlchemy(app)
 engine = create_engine('sqlite:///database.db', echo=False)
@@ -77,36 +77,39 @@ def index():
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
     if request.method == 'GET':
+        # temp code
+        flash("current game codes:")
+        for game in Game.query.all():
+            flash(game.game_code)
+        #
+        return render_template('menu.html')
+    formType = request.form.get('button')
+    games = Game.query.all()
+    if formType == "Join":
+        code = request.form.get('code')
+        if search("^\d{6}$", code):
+            for game in games:
+                if game.game_code == int(code):
+                    flash("Game joined!")
+                    return render_template('lobby.html')
+        flash("Code was not valid")
         return render_template('menu.html')
     else:
-        formType = request.form.get('button')
-        games = Game.query.all()
-        if formType == "Join":
-            code = request.form.get('code')
-            if search("^\d{6}$", code):
-                for game in games:
-                    if game.game_code == int(code):
-                        return render_template('lobby.html')
-                return render_template('menu.html')
-            else:
-                print("Wrong")
-                return render_template('menu.html')
-        elif formType == "Create Game":
+        new_id = ""
+        unique = False
+        while not unique:
+            unique = True
             new_id = ""
-            unique = False
-            while not unique:
-                unique = True
-                new_id = ""
-                for i in range(6):
-                    new_id += str(random.randint(0, 9))
-                for game in games:
-                    if game.game_code == int(new_id):
-                        unique = False
-            print("new id created:", new_id)
-            game = Game(game_code=int(new_id), index_of_turn=0)
-            db.session.add(game)
-            db.session.commit()
-            return render_template('lobby.html')
+            for i in range(6):
+                new_id += str(random.randint(0, 9))
+            for game in games:
+                if game.game_code == int(new_id):
+                    unique = False
+        game = Game(game_code=int(new_id), index_of_turn=0)
+        db.session.add(game)
+        db.session.commit()
+        flash("Game created with code " + new_id)
+        return render_template('lobby.html')
                 
     
 '''
@@ -240,4 +243,4 @@ def left(message):
     emit('status', {'msg': username + ' has left the room.'}, room=game_name)
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0')
