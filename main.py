@@ -135,9 +135,9 @@ def menu():
                     account.game_instances.append(player)
                     game.players_connected.append(player)
                     db.session.add(player)
-                    db.session.commit()                    
+                    db.session.commit()
                     flash("Game joined!")
-                    return render_template('lobby.html')
+                    return redirect(url_for('lobby'))
         flash("Code was not valid")
         return render_template('menu.html')
     else:
@@ -160,7 +160,7 @@ def menu():
         db.session.add(game)
         db.session.commit()
         flash("Game created with code " + new_id)
-        return render_template('lobby.html')
+        return redirect(url_for('lobby'))
 
 
 '''
@@ -190,17 +190,28 @@ def lobby():
         username = session['username']
     except:
         return False
-    return render_template('lobby.html', session=session)    
+    #get room code
+    return render_template('lobby.html',room_code='i will get that later' , session=session)    
 
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
 def check_pregame_status():
     try:
         username = session['username']
     except:
+        print('INTRUDER')
         return False
-    player = Player.query(username=username).first()
-    print(player.game_code.index_of_turn)
-    emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_name)
+    player = Player.query.filter_by(username=username).first()
+    game = Game.query.filter_by(game_code=player.game_code).first()
+    if game.game_started:
+        emit('game started', session=session)
+    else: #updates list of players in game so far
+        usernames = ''
+        for i in game.players_connected:
+            usernames += str(i.username) + ', '
+        if usernames == '':
+            usernames = 'None'
+        print('usrs: ', usernames)
+        emit('player list', {'players': usernames}, session=session)
 
 @socketio.on('leave lobby', namespace='/lobby') #player leaving lobby
 def leave_lobby():
@@ -208,7 +219,7 @@ def leave_lobby():
         session['username']
     except:
         return False
-    emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_name)
+    #emit('status', {'msg':  session.get('username') + ' has entered the room.'}, session=session)
 
 @app.route('/gameroom', methods=['GET', 'POST'])
 def game_room():

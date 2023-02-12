@@ -6,47 +6,47 @@
 </head>
 
 <body class="text-center">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script>
     var socket;
       $(document).ready(function(){
           socket = io.connect('http://' + document.domain + ':' + location.port + '/lobby');
-          socket.on('connect', function() {
-              socket.emit('join', {});
-          });
-          //redirect if game starts
           socket.on('game started', function(data) {
               window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"
           });
           //update to players
           socket.on('player list', function(data) {
-              $('#players').val('')
-              //loop thro and add
+            document.getElementById("players").innerHTML = data.players;
           });
           //when the send message box is pressed
           $('#leave game').click(function(e) {
               socket.emit('leave lobby');
           });
+          socket.emit('check pregame status');
       });
       //if a player leaves the room (WIP)
       function leave_room() {
-          socket.emit('left', {}, function() {
-              socket.disconnect();
-              window.location.href = "{{ url_for('index') }}";
-          });
-      }
+          socket.emit('left', {})
+          socket.disconnect();
+          window.location.href = "{{ url_for('index') }}";
+          };
+      function test() {
+        $('#players').val('wertyuiofghj');
+      };
       //calls function every 2.5seconds
       setInterval(function() {
           socket.emit('check pregame status');
       }, 2500); 
-  </script>
+    </script>
 
-  <p>waiting room</p>
-  <p>code:</p>
-  <p>{{room_code}}</p>
-  <p>players currently in game:</p>
-  <p id="players">Loading...</p>
-  <button id="leave room">Leave room</button>
+    <p>waiting room</p>
+    <p>code:</p>
+    <p>{{room_code}}</p>
+    <p>players currently in game:</p>
+    <p name="players" id="players">Loading...</p>
+    <button type='button' id="leave room" onclick=test()>Leave room</button>
 
 </body>
 
