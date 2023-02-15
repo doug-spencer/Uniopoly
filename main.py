@@ -137,6 +137,7 @@ def menu():
                     db.session.add(player)
                     db.session.commit()
                     flash("Game joined!")
+                    session['room_code'] = code #########
                     return redirect(url_for('lobby'))
         flash("Code was not valid")
         return render_template('menu.html')
@@ -159,6 +160,7 @@ def menu():
         db.session.add(player)
         db.session.add(game)
         db.session.commit()
+        session['room_code'] = new_id  ########
         flash("Game created with code " + new_id)
         return redirect(url_for('lobby'))
 
@@ -190,8 +192,8 @@ def lobby():
         username = session['username']
     except:
         return False
-    #get room code
-    return render_template('lobby.html',room_code='i will get that later' , session=session)    
+    room_code = session['room_code']
+    return render_template('lobby.html',room_code=room_code, session=session)    
 
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
 def check_pregame_status():
