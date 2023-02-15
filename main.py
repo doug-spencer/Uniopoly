@@ -207,11 +207,10 @@ def check_pregame_status():
     if game.game_started:
         emit('game started', session=session)
     else: #updates list of players in game so far
-        usernames = ''
+        usernames = []
         for i in game.players_connected:
-            usernames += str(i.username) + ', '
-        if usernames == '':
-            usernames = 'None'
+            usernames.append(str(i.username))
+        
         print('usrs: ', usernames)
         emit('player list', {'players': usernames}, session=session)
 
