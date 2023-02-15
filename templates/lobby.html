@@ -11,21 +11,25 @@
     <script src="/static/js/script.js"></script>
     <script>
     var socket;
+      //runs on refresh or load of lobby
       $(document).ready(function(){
           socket = io.connect('http://' + document.domain + ':' + location.port + '/lobby');
           socket.on('game started', function(data) {
               window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"
           });
 
-          //update to players
+
+          //gathers the player list
+          //adds the players to a table with a remove button 
           socket.on('player list', function(data) {
-            table = document.getElementById("playersTable");
+          table = document.getElementById("playersTable");
 
             table.innerHTML = "";
             for(var i=0; i<data.players.length; i++){
               var row =  `<tr>
+                            <td>player ${i+1}</td>
                             <td>${data.players[i]}</td>
-                            <td><button type="button">remove</button></td>
+                            <td><button type="button" onclick="remove_player('${data.players[i]}')">remove</button></td>
                           </tr>`
               table.innerHTML += row;
             }
@@ -38,6 +42,11 @@
 
           socket.emit('check pregame status');
       });
+
+      function remove_player(name_of_player_to_remove){
+        ;
+        // code to remove player from the lobby
+      }
       
       //if a player leaves the room (WIP)
       function leave_room() {
@@ -47,8 +56,10 @@
           };
 
       function test() {
-        $('#players').val('wertyuiofghj');
-      };
+        ;
+        //code to remove yourself from the loby
+        //$('#players').val('wertyuiofghj'); //not sure what this is
+      }
 
       //calls function every 2.5seconds
       setInterval(function() {
@@ -60,22 +71,21 @@
 
     </script>
 
-    <p>waiting room</p>
+    <p id="aaa">welcome to the lobby</p>
     <p>code: {{room_code}}</p>
     <!--<p>HOST:</p>-->
-
     <table>
       <thead>
         <tr>
-          <th>player</th>
+          <th>number</th>
+          <th>name</th>
           <th>button</th>
         </tr>
       </thead>
       <tbody id="playersTable"></tbody>
     </table>
 
-    <p name="players" id="players">Loading...</p>
-    <button type='button' id="leave room" onclick=test()>Leave room</button>
+    <button type='button' id="leave room" onclick="test()">Leave room</button>
 
 </body>
 
