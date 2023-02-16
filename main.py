@@ -50,8 +50,12 @@ class Account(db.Model):
 #db.session.add(admin1)
 #db.session.add(Game(game_name='wooga'))
 if True:
-    Game.__table__.drop(engine)
-    Player.__table__.drop(engine)
+    try:
+        Game.__table__.drop(engine)
+        Player.__table__.drop(engine)
+    except Exception as e:
+        print(e)
+         
 db.create_all()
 db.session.commit()
 
@@ -200,7 +204,7 @@ def lobby():
     if request.method == 'GET':
         return render_template('lobby.html', game_code=game_code, session=session)
 
-    game = Game.query.filter_by(room_code=room_code).first()
+    game = Game.query.filter_by(game_code=game_code).first()
     player = Player.query.filter_by(username=username).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'leave room':
@@ -215,6 +219,18 @@ def lobby():
         return redirect(url_for('game_room'))
 
     return render_template('lobby.html', game_code=game_code, session=session)
+
+@socketio.on('remove', namespace='/lobby')
+def remove(data):
+    try:
+        username = session['username']
+    except:
+        print('INTRUDER')
+        return False
+    
+    Player.query.filter_by(username=data['username']).delete()
+    db.session.commit()
+    print(data['username'])
 
 
        

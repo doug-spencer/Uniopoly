@@ -34,35 +34,12 @@
               table.innerHTML += row;
             }
           });
-
-          //when the send message box is pressed
-          $('#leave game').click(function(e) {
-              socket.emit('leave lobby');
-          });
-
+          
           socket.emit('check pregame status');
       });
 
       function remove_player(name_of_player_to_remove){
-        ;
-        // code to remove player from the lobby
-      }
-
-      function start_game(){
-
-      }
-      
-      //if a player leaves the room (WIP)
-      function leave_room() {
-          socket.emit('left', {})
-          socket.disconnect();
-          window.location.href = "{{ url_for('index') }}";
-          };
-
-      function test() {
-        ;
-        //code to remove yourself from the loby
-        //$('#players').val('wertyuiofghj'); //not sure what this is
+        socket.emit('remove', {username:name_of_player_to_remove})
       }
 
       //calls function every 2.5seconds
