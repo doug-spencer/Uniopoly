@@ -137,7 +137,7 @@ def menu():
                     db.session.add(player)
                     db.session.commit()
                     flash("Game joined!")
-                    session['room_code'] = code #########
+                    session['room_code'] = code 
                     return redirect(url_for('lobby'))
         flash("Code was not valid")
         return render_template('menu.html')
@@ -160,7 +160,7 @@ def menu():
         db.session.add(player)
         db.session.add(game)
         db.session.commit()
-        session['room_code'] = new_id  ########
+        session['room_code'] = new_id 
         flash("Game created with code " + new_id)
         return redirect(url_for('lobby'))
 
@@ -186,14 +186,30 @@ def test_connect():
 def test_disconnect():
     print('Client disconnected')
 '''
-@app.route('/lobby')
+@app.route('/lobby', methods=['GET', 'POST'])
 def lobby():
     try:
         username = session['username']
     except:
         return False
     room_code = session['room_code']
-    return render_template('lobby.html',room_code=room_code, session=session)    
+
+    if request.method == 'GET':
+        return render_template('lobby.html', room_code=room_code, session=session)
+
+    #only runs if POST
+    if request.form.get('leaveButton') == 'leave room':
+        return redirect(url_for('menu'))
+    elif request.form.get('startButton') == 'start game':
+        return redirect(url_for('game_room'))
+
+    return render_template('lobby.html', room_code=room_code, session=session)
+
+
+       
+
+
+     
 
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
 def check_pregame_status():
