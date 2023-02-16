@@ -247,6 +247,9 @@ def check_pregame_status():
         return False
     player = Player.query.filter_by(username=username).first()
     game = Game.query.filter_by(game_code=player.game_code).first()
+    if player.username not in [i.username for i in game.players_conected]:
+        #players been removed from game
+        return render_template('menu.html')
     if game.game_started:
         emit('game started', session=session)
     else: #updates list of players in game so far
