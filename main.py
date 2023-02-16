@@ -49,6 +49,9 @@ class Account(db.Model):
 #admin1 = Account(username='jacob')
 #db.session.add(admin1)
 #db.session.add(Game(game_name='wooga'))
+if True:
+    Game.__table__.drop(engine)
+    Player.__table__.drop(engine)
 db.create_all()
 db.session.commit()
 
@@ -197,7 +200,7 @@ def lobby():
     if request.method == 'GET':
         return render_template('lobby.html', game_code=game_code, session=session)
 
-    game = Game.query.filter_by(game_code=game_code).first()
+    game = Game.query.filter_by(room_code=room_code).first()
     player = Player.query.filter_by(username=username).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'leave room':
