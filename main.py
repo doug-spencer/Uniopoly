@@ -17,7 +17,7 @@ app.app_context().push()
 socketio = SocketIO(app, cors_allowed_origins='*')
 #socketio = SocketIO(app, logger=True, engineio_logger=True)
 db = SQLAlchemy(app)
-engine = create_engine('sqlite:///database.db', echo=False)
+engine = create_engine('sqlite:/// instace/database.db', echo=False)
 
 #global session_id
 #session_id = {}
@@ -55,7 +55,7 @@ if True:
         Player.__table__.drop(engine)
     except Exception as e:
         print(e)
-         
+
 db.create_all()
 db.session.commit()
 
@@ -246,10 +246,10 @@ def check_pregame_status():
         print('INTRUDER')
         return False
     player = Player.query.filter_by(username=username).first()
-    game = Game.query.filter_by(game_code=player.game_code).first()
-    if player.username not in [i.username for i in game.players_conected]:
+    if not player:
         #players been removed from game
         return render_template('menu.html')
+    game = Game.query.filter_by(game_code=player.game_code).first()
     if game.game_started:
         emit('game started', session=session)
     else: #updates list of players in game so far
