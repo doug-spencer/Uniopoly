@@ -197,10 +197,17 @@ def lobby():
     if request.method == 'GET':
         return render_template('lobby.html', room_code=room_code, session=session)
 
+    game = Game.query.filter_by(room_code=room_code).fisrt()
+    player = Player.query.filter_by(username=username).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'leave room':
         return redirect(url_for('menu'))
     elif request.form.get('startButton') == 'start game':
+        if game.players_connected[0].username != username:
+            #player isnt host
+            return False
+        game.game_started = True
+        db.session.commit()
         return redirect(url_for('game_room'))
 
     return render_template('lobby.html', room_code=room_code, session=session)
