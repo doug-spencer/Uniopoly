@@ -140,7 +140,7 @@ def menu():
                     db.session.add(player)
                     db.session.commit()
                     flash("Game joined!")
-                    session['room_code'] = code 
+                    session['game_code'] = code 
                     return redirect(url_for('lobby'))
         flash("Code was not valid")
         return render_template('menu.html')
@@ -163,7 +163,7 @@ def menu():
         db.session.add(player)
         db.session.add(game)
         db.session.commit()
-        session['room_code'] = new_id 
+        session['game_code'] = new_id
         flash("Game created with code " + new_id)
         return redirect(url_for('lobby'))
 
@@ -195,12 +195,12 @@ def lobby():
         username = session['username']
     except:
         return False
-    room_code = session['room_code']
+    game_code = session['game_code']
 
     if request.method == 'GET':
-        return render_template('lobby.html', room_code=room_code, session=session)
+        return render_template('lobby.html', game_code=game_code, session=session)
 
-    game = Game.query.filter_by(room_code=room_code).fisrt()
+    game = Game.query.filter_by(game_code=game_code).fisrt()
     player = Player.query.filter_by(username=username).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'leave room':
@@ -213,7 +213,7 @@ def lobby():
         db.session.commit()
         return redirect(url_for('game_room'))
 
-    return render_template('lobby.html', room_code=room_code, session=session)
+    return render_template('lobby.html', game_code=game_code), session=session)
 
 
        
