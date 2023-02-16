@@ -49,6 +49,9 @@ class Account(db.Model):
 #admin1 = Account(username='jacob')
 #db.session.add(admin1)
 #db.session.add(Game(game_name='wooga'))
+if True:
+    Game.__table__.drop(engine)
+    Player.__table__.drop(engine)
 db.create_all()
 db.session.commit()
 
