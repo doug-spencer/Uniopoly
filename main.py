@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from flask_socketio import SocketIO, emit, join_room, leave_room, send
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Column, Integer, Boolean, String
 import random
 from datetime import timedelta
 from re import search
@@ -22,22 +22,53 @@ engine = create_engine('sqlite:///instace/database.db', echo=False)
 #global session_id
 #session_id = {}
 
+link_player_property = db.Table('link_player_property',
+        Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
+        Column('property_id', Integer, db.ForeignKey('property.id'), primary_key=True),
+        Column('houses', Integer)
+        )
+
+link_player_utilities = db.Table('link_player_utilities',
+        Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
+        Column('utilities_id', Integer, db.ForeignKey('utilities.id'), primary_key=True)
+        )
+
+link_player_student_union = db.Table('link_player_student_union',
+        Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
+        Column('student_union', Integer, db.ForeignKey('student_union.id'), primary_key=True)
+        )
+
+link_player_email = db.Table('link_player_email',
+        Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
+        Column('email', Integer, db.ForeignKey('email.id'), primary_key=True)
+        )
+
+link_player_bus_stop = db.Table('link_player_bus_stop',
+        Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
+        Column('bus_stop', Integer, db.ForeignKey('bus_stop.id'), primary_key=True)
+        )
+
 class Game(db.Model):
-    game_code = db.Column(db.Integer, primary_key=True)
-    index_of_turn = db.Column(db.Integer)
-    game_started = db.Column(db.Boolean)
+    game_code = Column(Integer, primary_key=True)
+    index_of_turn = Column(Integer)
+    game_started = Column(Boolean)
     #host_id = db.relationship('Player', lazy='select', uselist=False)#use=Flase for one to one 
     players_connected = db.relationship('Player', backref='game', lazy='select')
     #action for specific index
 
 class Player(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    position = db.Column(db.Integer)
-    index_in_game = db.Column(db.Integer) #order of players
-    symbol = db.Column(db.Integer)
-    money = db.Column(db.Integer)
-    game_code = db.Column(db.Integer, db.ForeignKey('game.game_code'))
-    username = db.Column(db.Integer, db.ForeignKey('account.username'))
+    id = Column(Integer, primary_key=True)
+    position = Column(Integer)
+    index_in_game = Column(Integer) #order of players
+    symbol = Column(Integer)
+    money = Column(Integer)
+    game_code = Column(Integer, db.ForeignKey('game.game_code'))
+    username = Column(Integer, db.ForeignKey('account.username'))
+    utilities = db.relationship('utilities', secondary=link_player_utilities, backref='player', lazy='select')
+    properties = db.relationship('property', secondary=link_player_property, backref='player', lazy='select')
+    bus_stop = db.relationship('bus_stop', secondary=link_player_bus_stop, backref='player', lazy='select')
+    student_union = db.relationship('student_union', secondary=link_player_student_union, backref='player', lazy='select')
+    email = db.relationship('email', secondary=link_player_email, backref='player', lazy='select')
 
 class Account(db.Model):
     username = db.Column(db.String(100), primary_key=True)
@@ -45,6 +76,46 @@ class Account(db.Model):
     total_played = db.Column(db.Integer)
     games_won = db.Column(db.Integer)
     game_instances = db.relationship('Player', backref='account', lazy='select')
+
+class Utilities(db.Model):
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    text = Column(String(300))
+    photo = Column(String(200))
+    position = Column(Integer)
+    morgage_value = Column(Integer)
+    players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')
+    
+class Property(db.Model):
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    colour = Column(String(20))
+    photo = Column(String(200))
+    position = Column(Integer)
+    morgage_value = Column(Integer)
+    rents = Column(String(200))
+    players = db.relationship('players', secondary=link_player_property, backref='property', lazy='select')
+
+class Bus_stop(db.Model):
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    position = Column(Integer)
+    players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
+
+class Student_union(db.Model):
+    id = Column(Integer, primary_key=True)
+    text = Column(String(500))
+    amount = Column(Integer)
+    save_for_later = Column(Boolean)
+    players = db.relationship('players', secondary=link_player_property, backref='student_union', lazy='select')
+
+class Email(db.Model):
+    id = Column(Integer, primary_key=True)
+    text = Column(String(500))
+    amount = Column(Integer)
+    save_for_later = Column(Boolean)
+    players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
+
 
 #admin1 = Account(username='jacob')
 #db.session.add(admin1)
