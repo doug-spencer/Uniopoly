@@ -22,6 +22,8 @@ engine = create_engine('sqlite:///instace/database.db', echo=False)
 #global session_id
 #session_id = {}
 
+
+'''
 link_player_property = db.Table('link_player_property',
         Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
         Column('property_id', Integer, db.ForeignKey('property.id'), primary_key=True),
@@ -47,7 +49,8 @@ link_player_bus_stop = db.Table('link_player_bus_stop',
         Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
         Column('bus_stop', Integer, db.ForeignKey('bus_stop.id'), primary_key=True)
         )
-
+'''
+        
 class Game(db.Model):
     game_code = Column(Integer, primary_key=True)
     index_of_turn = Column(Integer)
@@ -64,11 +67,13 @@ class Player(db.Model):
     money = Column(Integer)
     game_code = Column(Integer, db.ForeignKey('game.game_code'))
     username = Column(Integer, db.ForeignKey('account.username'))
+    '''
     utilities = db.relationship('Utilities', secondary=link_player_utilities, backref='player', lazy='select')
     properties = db.relationship('Property', secondary=link_player_property, backref='player', lazy='select')
     bus_stop = db.relationship('Bus_stop', secondary=link_player_bus_stop, backref='player', lazy='select')
     student_union = db.relationship('Student_union', secondary=link_player_student_union, backref='player', lazy='select')
     email = db.relationship('Email', secondary=link_player_email, backref='player', lazy='select')
+    '''
 
 class Account(db.Model):
     username = db.Column(db.String(100), primary_key=True)
@@ -77,6 +82,7 @@ class Account(db.Model):
     games_won = db.Column(db.Integer)
     game_instances = db.relationship('Player', backref='account', lazy='select')
 
+'''
 class Utilities(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -115,7 +121,7 @@ class Email(db.Model):
     amount = Column(Integer)
     save_for_later = Column(Boolean)
     players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
-
+'''
 
 #admin1 = Account(username='jacob')
 #db.session.add(admin1)
