@@ -6,7 +6,7 @@ the requirements.
 
 BACKEND TO FRONTEND
 in flask
-emit('name', {'msg':  any string}, room=game_name) sends to room
+emit('name', {'msg':  any string}, room=game_code) sends to room
 or
 emit('name', {'msg':  any string}, session=session) sends to person
 
@@ -34,10 +34,10 @@ $('#send').click(function(e) {
 in flask
 @socketio.on('text', namespace='/gameroom')
 def text_is_being_sent(data):
-    game_name = session.get('game_name')
+    game_code = session.get('game_code')
     username = session.get('username')
     
-    game, player = check_in_game(game_name, username)
+    game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
 

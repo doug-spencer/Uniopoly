@@ -23,7 +23,6 @@ engine = create_engine('sqlite:///instace/database.db', echo=False)
 #session_id = {}
 
 
-'''
 link_player_property = db.Table('link_player_property',
         Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
         Column('property_id', Integer, db.ForeignKey('property.id'), primary_key=True),
@@ -49,7 +48,7 @@ link_player_bus_stop = db.Table('link_player_bus_stop',
         Column('username', Integer, db.ForeignKey('player.username'), primary_key=True),
         Column('bus_stop', Integer, db.ForeignKey('bus_stop.id'), primary_key=True)
         )
-'''
+
         
 class Game(db.Model):
     game_code = Column(Integer, primary_key=True)
@@ -67,13 +66,12 @@ class Player(db.Model):
     money = Column(Integer)
     game_code = Column(Integer, db.ForeignKey('game.game_code'))
     username = Column(Integer, db.ForeignKey('account.username'))
-    '''
     utilities = db.relationship('Utilities', secondary=link_player_utilities, backref='player', lazy='select')
     properties = db.relationship('Property', secondary=link_player_property, backref='player', lazy='select')
     bus_stop = db.relationship('Bus_stop', secondary=link_player_bus_stop, backref='player', lazy='select')
     student_union = db.relationship('Student_union', secondary=link_player_student_union, backref='player', lazy='select')
     email = db.relationship('Email', secondary=link_player_email, backref='player', lazy='select')
-    '''
+
 
 class Account(db.Model):
     username = db.Column(db.String(100), primary_key=True)
@@ -82,7 +80,7 @@ class Account(db.Model):
     games_won = db.Column(db.Integer)
     game_instances = db.relationship('Player', backref='account', lazy='select')
 
-'''
+
 class Utilities(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -90,7 +88,7 @@ class Utilities(db.Model):
     photo = Column(String(200))
     position = Column(Integer)
     morgage_value = Column(Integer)
-    players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')
+    #players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')
     
 class Property(db.Model):
     id = Column(Integer, primary_key=True)
@@ -100,32 +98,32 @@ class Property(db.Model):
     position = Column(Integer)
     morgage_value = Column(Integer)
     rents = Column(String(200))
-    players = db.relationship('players', secondary=link_player_property, backref='property', lazy='select')
+    #players = db.relationship('players', secondary=link_player_property, backref='property', lazy='select')
 
 class Bus_stop(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     position = Column(Integer)
-    players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
+    #players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
 
 class Student_union(db.Model):
     id = Column(Integer, primary_key=True)
     text = Column(String(500))
     amount = Column(Integer)
     save_for_later = Column(Boolean)
-    players = db.relationship('players', secondary=link_player_property, backref='student_union', lazy='select')
+    #players = db.relationship('players', secondary=link_player_property, backref='student_union', lazy='select')
 
 class Email(db.Model):
     id = Column(Integer, primary_key=True)
     text = Column(String(500))
     amount = Column(Integer)
     save_for_later = Column(Boolean)
-    players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
-'''
+    #players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
+
 
 #admin1 = Account(username='jacob')
 #db.session.add(admin1)
-#db.session.add(Game(game_name='wooga'))
+#db.session.add(Game(game_code='wooga'))
 if True:
     try:
         Game.__table__.drop(engine)
@@ -136,8 +134,8 @@ if True:
 db.create_all()
 db.session.commit()
 
-def check_in_game(game_name, username): #verification fucntion
-    game = Game.query.filter_by(game_name = game_name).first()
+def check_in_game(game_code, username): #verification fucntion
+    game = Game.query.filter_by(game_code = game_code).first()
     if not game:
         return False, False
     account = Account.query.filter_by(username=username).first()
@@ -279,7 +277,7 @@ def lobby():
     game_code = session['game_code']
 
     if request.method == 'GET':
-        return render_template('lobby.html', game_code=game_code, session=session)
+        return render_template('lobby.html',game_code=game_code, session=session)
 
     game = Game.query.filter_by(game_code=game_code).first()
     player = Player.query.filter_by(username=username).first()
@@ -295,7 +293,7 @@ def lobby():
         db.session.commit()
         return redirect(url_for('game_room'))
 
-    return render_template('lobby.html', game_code=game_code, session=session)
+    return render_template('lobby.html',game_code=game_code, session=session)
 
 @socketio.on('remove', namespace='/lobby')
 def remove(data):
@@ -349,7 +347,8 @@ def leave_lobby():
 
 @app.route('/gameroom', methods=['GET', 'POST'])
 def game_room():
-    if(request.method=='POST'): #player has made a game or is joining one
+    if(request.method=='POST') and False: #player has made a game or is joining one
+        ### not used any more
         username = request.form['username']
         choice = request.form['choice'] #if the made a game or the name of the game they joined
         account = Account.query.filter_by(username=username).first()
@@ -360,41 +359,41 @@ def game_room():
         db.session.add(player)
         account.game_instances.append(player) #links account with the player in the new game
         if choice == 'make': #imaking a game
-            game_name = request.form['game_name']
-            game = Game(game_name=game_name, index_of_turn=0, game_started=False)
+            game_code = request.form['game_code']
+            game = Game(game_code=game_code, index_of_turn=0, game_started=False)
             db.session.add(game)
         else: #joining game
-            game_name = choice
-            game=Game.query.filter_by(game_name=choice).first()
+            game_code = choice
+            game=Game.query.filter_by(game_code=choice).first()
         game.players_connected.append(player)#adds player to game    
         player.index_in_game = len(game.players_connected) - 1
         db.session.commit()
         #Store the data in session
         session['username'] = username
-        session['game_name'] = game_name
+        session['game_code'] = game_code
         #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
-    else: 
+    else:
         if(session.get('username') is not None): #player is already in a session
             return render_template('game_room.html', session = session)
         else: #if not logged in
             games = Game.query.all()
-            game_names = []
+            game_codes = []
             for i in games:
-                game_names.append(i.game_name)
-            return redirect(url_for('index'), games = game_names)
+                game_codes.append(i.game_code)
+            return redirect(url_for(''))
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
-    game_name = session.get('game_name')
-    join_room(game_name)
-    emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_name)
+    game_code = session.get('game_code')
+    join_room(game_code)
+    emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_code)
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
 def roll_dice():
-    game_name = session.get('game_name')
+    game_code = session.get('game_code')
     username = session.get('username')
-    game, player = check_in_game(game_name, username)
+    game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
     roll_value = random.randint(1,6)
@@ -409,51 +408,51 @@ def roll_dice():
     else:
         game.index_of_turn = game.index_of_turn + 1
     db.session.commit()
-    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_name)
+    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_code)
     emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
 @socketio.on('update turn', namespace='/gameroom') #check if its players turn yet (if roll dice button should be shown)
 def update_turn():
-    game_name = session.get('game_name')
+    game_code = session.get('game_code')
     username = session.get('username')
-    game, player = check_in_game(game_name, username)
+    game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
     if game.index_of_turn == player.index_in_game:
         #emit('roll dice button change', {'operation': 'show'}, session=session_id[player.id])
         emit('roll dice button change', {'operation': 'show'}, session=session)
-        emit('message', {'msg': 'It is ' + player.username + ' turn to roll the dice'}, room=game.game_name)
+        emit('message', {'msg': 'It is ' + player.username + ' turn to roll the dice'}, room=game.game_code)
     else:
         #emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
         emit('roll dice button change', {'operation': 'hide'}, session=session)
 
 '''
-def players_turn_to_roll(game_name):
-    game = Game.query.filter_by(game_name=game_name).first()
+def players_turn_to_roll(game_code):
+    game = Game.query.filter_by(game_code=game_code).first()
     if not game:
         return False
     index = game.index_of_turn
     for i in game.players_connected:
         if i.index_in_game == index:
             emit('roll dice button change', {'operation': 'show'}, session=session_id[i.id])
-            emit('message', {'msg': 'It is ' + i.username + ' turn to roll the dice'}, room=game.game_name)
+            emit('message', {'msg': 'It is ' + i.username + ' turn to roll the dice'}, room=game.game_code)
         else:
             emit('roll dice button change', {'operation': 'hide'}, session=session_id[i.id])
 '''
 
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):
-    game_name = session.get('game_name')
-    emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=game_name)
+    game_code = session.get('game_code')
+    emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room=game_code)
 
 @socketio.on('left', namespace='/gameroom') #leaving room
 def left(message):
-    game_name = session.get('game_name')
+    game_code = session.get('game_code')
     username = session.get('username')
-    leave_room(game_name)
+    leave_room(game_code)
     session.clear()
-    emit('status', {'msg': username + ' has left the room.'}, room=game_name)
+    emit('status', {'msg': username + ' has left the room.'}, room=game_code)
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0')
