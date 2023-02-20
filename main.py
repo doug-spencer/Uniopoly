@@ -88,6 +88,7 @@ def index():
         return render_template('login.html')
         
     elif(request.method=='POST'):
+        login_message = ""
         account_usernames = get_account_usernames()
         formSubmitted = request.form.get("button")
         print(formSubmitted)
@@ -101,11 +102,10 @@ def index():
                 db.session.add(new_player)
                 db.create_all()
                 db.session.commit()
-                print("success i think")
                 return redirect(url_for('menu'))
             else:
-                print("account taken")
-                return render_template('login.html')
+                login_message = "account taken"
+                return render_template('login.html', login_message=login_message)
 
         elif formSubmitted == "login":
             #render menu once it has been made
@@ -115,8 +115,8 @@ def index():
                 session['username'] = username
                 return redirect(url_for('menu'))
             else:
-                print("account doesnt exist")
-                return render_template('login.html')
+                login_message = "account doesnt exist"
+                return render_template('login.html', login_message=login_message)
 
 @app.route('/help', methods=['GET', 'POST'])
 def help():
