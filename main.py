@@ -193,6 +193,12 @@ def index():
                 print("account doesnt exist")
                 return render_template('login.html')
 
+@app.route('/help', methods=['GET', 'POST'])
+def help():
+    if(request.method=='POST'):
+        return redirect(url_for('menu'))
+    return render_template('help.html')
+
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
     try:
@@ -223,6 +229,8 @@ def menu():
                     return redirect(url_for('lobby'))
         flash("Code was not valid")
         return render_template('menu.html')
+    elif formType == "Help Page":
+        return redirect(url_for('help'))
     else:
         new_id = ""
         unique = False
