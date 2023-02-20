@@ -110,3 +110,17 @@ def pause_page():
 
 
 '''Just a list of functions that could be used.'''
+
+def roll_dice():
+    dice1 = random.randint(1, 6)
+    dice2 = random.randint(1, 6)
+    return dice1 + dice2
+
+def move_player(player_position, dice_roll):
+    player_position += dice_roll
+    if player_position > 40:
+        player_position -= 40
+    return player_position
+
+def check_space(player_position, player, board):
+    

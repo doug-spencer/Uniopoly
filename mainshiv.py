@@ -4,14 +4,10 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 import random
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import timedelta
 from re import search
 
 app = Flask(__name__)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret'
@@ -29,9 +25,11 @@ engine = create_engine('sqlite:///database.db', echo=False)
 class Game(db.Model):
     game_code = db.Column(db.Integer, primary_key=True)
     index_of_turn = db.Column(db.Integer)
+    game_started = db.Column(db.Boolean)
     #host_id = db.relationship('Player', lazy='select', uselist=False)#use=Flase for one to one 
     players_connected = db.relationship('Player', backref='game', lazy='select')
     #action for specific index
+    #add in list of properties as well
 
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,17 +37,12 @@ class Player(db.Model):
     index_in_game = db.Column(db.Integer) #order of players
     symbol = db.Column(db.Integer)
     money = db.Column(db.Integer)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.game_code'))
+    game_code = db.Column(db.Integer, db.ForeignKey('game.game_code'))
     username = db.Column(db.Integer, db.ForeignKey('account.username'))
-
-# class User(UserMixin, db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(100), unique=True)
-#     password = db.Column(db.String(100), nullable=False)
 
 class Account(db.Model):
     username = db.Column(db.String(100), primary_key=True)
-    # password = db.Column(db.String(100), nullable=False)
+#    password = db.Column(db.String(100), nullable=False)
     total_played = db.Column(db.Integer)
     games_won = db.Column(db.Integer)
     game_instances = db.relationship('Player', backref='account', lazy='select')
@@ -59,10 +52,6 @@ class Account(db.Model):
 #db.session.add(Game(game_name='wooga'))
 db.create_all()
 db.session.commit()
-
-@login_manager.user_loader
-def load_user(user_id):
-    return Account.query.get(int(user_id))
 
 def check_in_game(game_name, username): #verification fucntion
     game = Game.query.filter_by(game_name = game_name).first()
@@ -81,7 +70,6 @@ def check_in_game(game_name, username): #verification fucntion
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    
     def get_account_usernames():
         accounts = Account.query.all()
         account_usernames = []
@@ -101,62 +89,80 @@ def index():
         if formSubmitted == "signup":
             ##render menu once it has been made
             username = request.form.get("signupname")
-            
+            session['username'] = username            
             if username not in account_usernames:
                 new_player = Account(username=username)
                 db.session.add(new_player)
                 db.create_all()
                 db.session.commit()
                 print("success i think")
-                
+                return redirect(url_for('menu'))
             else:
                 print("account taken")
-            return render_template('login.html')
+                return render_template('login.html')
 
         elif formSubmitted == "login":
             #render menu once it has been made
             username = request.form.get("loginname")
             if username in account_usernames:
                 print("you can log in")
-                # login_user(Account.query.filter_by(username=username).first())
+                session['username'] = username
+                return redirect(url_for('menu'))
             else:
                 print("account doesnt exist")
-            return render_template('login.html')
-        
-       
-
-@app.route('/removeplayer', methods=['GET', 'POST'])
-def removeplayer():
-    if(request.method=='GET'):
-        
-        return render_template('removeplayer.html')
-    elif (request.method=='POST'):
-        formSubmitted = request.form.get("button")
-        if formSubmitted == "username":
-            username = request.form.get("username")
-            account = Account.query.filter_by(username=username).first()
-            if account is None:
-                print("You are not authorized to remove this player")
-                return redirect(url_for('index'))
-            else:
-                print("You are authorized to remove this player")
-                db.session.delete(account)
-                db.session.commit()
-                print("account deleted")
-                return render_template('removeplayer.html')
-
-                
-        return render_template('removeplayer.html')
+                return render_template('login.html')
+#auction page
+@app.route('/auction', methods=['GET', 'POST'])
+def auction():
+    game_code = request.args.get('game_code')
+    property_name = request.args.get('property_name')
+    player_username = session['username']
+    game, player = check_in_game(game_code, player_username)
+    if not game and not player:
+        return False
     
+    # find the property to be auctioned
+    for property in game.board.properties:
+        if property.name == property_name:
+            auction_property = property
+            break
+    else:
+        # property not found
+        return False
+    
+    if request.method == 'GET':
+        return render_template('auction.html', property=auction_property)
+    elif request.method == 'POST':
+        if request.form['bid'] == '':
+            # no bid entered, display an error message
+            flash('Please enter a bid.')
+            return redirect(url_for('auction', game_code=game_code, property_name=property_name))
+        else:
+            # save the new bid
+            new_bid = int(request.form['bid'])
+            if new_bid <= player.money:
+                auction_property.current_bid = new_bid
+                auction_property.current_bidder = player
+                db.session.commit()
+                emit('message', {'msg': player.username + ' bid ' + str(new_bid) + ' on ' + auction_property.name + '!'}, room=game.game_name)
+                return redirect(url_for('game', game_code=game_code))
+            else:
+                # not enough money to make the bid, display an error message
+                flash('Not enough money to make the bid.')
+                return redirect(url_for('auction', game_code=game_code, property_name=property_name))
+
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
+    try:
+        username = session['username']
+    except: #player isnt in session (hasnt logged in)
+        return False
     if request.method == 'GET':
         # temp code
         flash("current game codes:")
         for game in Game.query.all():
             flash(game.game_code)
-        #
         return render_template('menu.html')
     formType = request.form.get('button')
     games = Game.query.all()
@@ -165,8 +171,14 @@ def menu():
         if search("^\d{6}$", code):
             for game in games:
                 if game.game_code == int(code):
+                    account = Account.query.filter_by(username=username).first()
+                    player = Player(position=0, index_in_game=len(game.players_connected), money=7)
+                    account.game_instances.append(player)
+                    game.players_connected.append(player)
+                    db.session.add(player)
+                    db.session.commit()
                     flash("Game joined!")
-                    return render_template('lobby.html')
+                    return redirect(url_for('lobby'))
         flash("Code was not valid")
         return render_template('menu.html')
     else:
@@ -180,13 +192,18 @@ def menu():
             for game in games:
                 if game.game_code == int(new_id):
                     unique = False
-        game = Game(game_code=int(new_id), index_of_turn=0)
+        game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
+        account = Account.query.filter_by(username=username).first()
+        player = Player(position=0, index_in_game=0, money=7)
+        account.game_instances.append(player)
+        game.players_connected.append(player)
+        db.session.add(player)
         db.session.add(game)
         db.session.commit()
         flash("Game created with code " + new_id)
-        return render_template('lobby.html')
-                
-    
+        return redirect(url_for('lobby'))
+
+
 '''
 @socketio.on('my event')
 def test_message(message):
@@ -208,6 +225,42 @@ def test_connect():
 def test_disconnect():
     print('Client disconnected')
 '''
+@app.route('/lobby')
+def lobby():
+    try:
+        username = session['username']
+    except:
+        return False
+    #get room code
+    return render_template('lobby.html',room_code='i will get that later' , session=session)    
+
+@socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
+def check_pregame_status():
+    try:
+        username = session['username']
+    except:
+        print('INTRUDER')
+        return False
+    player = Player.query.filter_by(username=username).first()
+    game = Game.query.filter_by(game_code=player.game_code).first()
+    if game.game_started:
+        emit('game started', session=session)
+    else: #updates list of players in game so far
+        usernames = ''
+        for i in game.players_connected:
+            usernames += str(i.username) + ', '
+        if usernames == '':
+            usernames = 'None'
+        print('usrs: ', usernames)
+        emit('player list', {'players': usernames}, session=session)
+
+@socketio.on('leave lobby', namespace='/lobby') #player leaving lobby
+def leave_lobby():
+    try:
+        session['username']
+    except:
+        return False
+    #emit('status', {'msg':  session.get('username') + ' has entered the room.'}, session=session)
 
 @app.route('/gameroom', methods=['GET', 'POST'])
 def game_room():
@@ -223,8 +276,7 @@ def game_room():
         account.game_instances.append(player) #links account with the player in the new game
         if choice == 'make': #imaking a game
             game_name = request.form['game_name']
-
-            game = Game(game_name=game_name, index_of_turn=0)
+            game = Game(game_name=game_name, index_of_turn=0, game_started=False)
             db.session.add(game)
         else: #joining game
             game_name = choice

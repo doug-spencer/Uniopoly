@@ -1,7 +1,5 @@
 import random
 
-
-
 def roll_dice():
     dice1 = random.randint(1, 6)
     dice2 = random.randint(1, 6)
@@ -156,5 +154,4 @@ if __name__ == "__main__":
 
                 
     
-'''Probably quite a few mistakes in here, was just brainstorming. Add anything or change if you see mistakes
-Also I couldnt think of 40 properties for macnhester so just used the monopoly board.'''
+'''Probably quite a few mistakes in here, was just brainstorming. Add anything or change if you see mistakes'''
