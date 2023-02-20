@@ -149,6 +149,72 @@ def check_in_game(game_code, username): #verification fucntion
         return False, False
     return game, player
 
+def show_player_options(player, game, session):
+    return False #while db is empty
+    pos = player.position
+
+    all_properties = Property.query.all()
+    index_of_properties = [i.postion for i in all_properties]
+    if pos in index_of_properties:
+        return player_landed_on_property(player, game, session, all_properties[index_of_properties.index(pos)])
+    
+    all_utilities = Utilities.query.all()
+    index_of_utilities = [i.postion for i in all_utilities]
+    if pos in index_of_utilities:
+        return player_landed_on_utility(player, game, session, all_utilities[index_of_utilities.index(pos)])
+    
+    all_bus_stops = Bus_stop.query.all()
+    index_of_bus_stops = [i.postion for i in all_bus_stops]
+    if pos in index_of_bus_stops:
+        return player_landed_on_utility(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
+    
+    all_emails = Emails.query.all()
+    index_of_emails = [i.postion for i in all_emails]
+    if pos in index_of_emails:
+        return player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
+    
+    all_student_unions = Student_union.query.all()
+    index_of_student_unions = [i.postion for i in all_student_unions]
+    if pos in index_of_student_unions:
+        return player_landed_on_card(player, game, session, all_student_unions[index_of_student_unions.index(pos)])
+    
+    pos_go_to_jail = 29
+    pos_free_parking = 19
+    pos_jail = 9
+    pos_start = 0
+    if pos == pos_go_to_jail:
+        return player_landed_on_go_to_jail(player, game, session)
+    if pos == pos_jail:
+        return player_in_jail(player, game, session)
+    if pos == pos_start:
+        return player_landed_on_start(player, game, session)
+    if pos == pos_free_parking:
+        return player_landed_on_free_parking(player, game, session)
+
+def player_landed_on_start(player, game, session):
+    emit('message', {'msg': player.username + ' passed go '}, room=game.game_code)
+
+def player_landed_on_free_parking(player, game, session):
+    emit('message', {'msg': player.username + ' is on free parking '}, room=game.game_code)
+
+def player_in_jail(player, game, session):
+    emit('message', {'msg': player.username + ' is in jail '}, room=game.game_code)
+
+def player_landed_on_go_to_jail(player, game, session):
+    emit('message', {'msg': player.username + ' is sent to jail '}, room=game.game_code)
+
+def player_landed_on_utility(player, game, session):
+    emit('message', {'msg': player.username + ' landed on a utility '}, room=game.game_code)
+
+def player_landed_on_property(player, game, session, property):
+    emit('message', {'msg': player.username + ' landed on property '}, room=game.game_code)
+
+def player_landed_on_bus_stop(player, game, session):
+    emit('message', {'msg': player.username + ' landed on a bus stop '}, room=game.game_code)
+
+def player_landed_on_card(player, game, session):
+    emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game.game_code)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     def get_account_usernames():
@@ -313,13 +379,7 @@ def remove(data):
     
     Player.query.filter_by(username=data['username']).delete()
     db.session.commit()
-    print(data['username'])
-
-
-       
-
-
-     
+    print(data['username']) 
 
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
 def check_pregame_status():
@@ -418,6 +478,7 @@ def roll_dice():
     db.session.commit()
     emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_code)
     emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
+    show_player_options(player, game, session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
 @socketio.on('update turn', namespace='/gameroom') #check if its players turn yet (if roll dice button should be shown)
