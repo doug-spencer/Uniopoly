@@ -7,4 +7,4 @@ class Email(db.Model):
     text = Column(String(500))
     amount = Column(Integer)
     save_for_later = Column(Boolean)
-    players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
+    # players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')

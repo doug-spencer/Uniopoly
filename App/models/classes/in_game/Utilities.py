@@ -9,4 +9,4 @@ class Utilities(db.Model):
     photo = Column(String(200))
     position = Column(Integer)
     morgage_value = Column(Integer)
-    players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')
+    # players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')

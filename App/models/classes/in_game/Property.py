@@ -10,4 +10,4 @@ class Property(db.Model):
     position = Column(Integer)
     morgage_value = Column(Integer)
     rents = Column(String(200))
-    players = db.relationship('players', secondary=link_player_property, backref='property', lazy='select')
+    # players = db.relationship('players', secondary=link_player_property, backref='property', lazy='select')
