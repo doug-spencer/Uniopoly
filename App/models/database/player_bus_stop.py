@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer
-from app import db
+from App import db
 
 link_player_bus_stop = db.Table('link_player_bus_stop',
         Column('username', Integer, db.Foreignkey('player.username'), primary_key=True),
