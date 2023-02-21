@@ -11,42 +11,67 @@
     <script src="/static/js/script.js"></script>
     <script>
     var socket;
+      //runs on refresh or load of lobby
       $(document).ready(function(){
           socket = io.connect('http://' + document.domain + ':' + location.port + '/lobby');
           socket.on('game started', function(data) {
               window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"
           });
-          //update to players
+          //gathers the player list
+          //adds the players to a table with a remove button 
           socket.on('player list', function(data) {
-            document.getElementById("players").innerHTML = data.players;
+          table = document.getElementById("playersTable");
+
+            table.innerHTML = "";
+            for(var i=0; i<data.players.length; i++){
+              var row =  `<tr>
+                            <td>player ${i+1}</td>
+                            <td>${data.players[i]}</td>
+                            <td><button type="button" onclick="remove_player('${data.players[i]}')">remove</button></td>
+                          </tr>`
+              table.innerHTML += row;
+            }
           });
-          //when the send message box is pressed
-          $('#leave game').click(function(e) {
-              socket.emit('leave lobby');
-          });
+          
           socket.emit('check pregame status');
+          socket.on('player not in game', function() {
+            window.location.href = "http://" + document.domain + ":" + location.port + "/menu"
+          });
       });
-      //if a player leaves the room (WIP)
-      function leave_room() {
-          socket.emit('left', {})
-          socket.disconnect();
-          window.location.href = "{{ url_for('index') }}";
-          };
-      function test() {
-        $('#players').val('wertyuiofghj');
-      };
+
+      function remove_player(name_of_player_to_remove){
+        socket.emit('remove', {username:name_of_player_to_remove})
+      }
+
       //calls function every 2.5seconds
       setInterval(function() {
           socket.emit('check pregame status');
       }, 2500); 
+
+
+
+
     </script>
 
-    <p>waiting room</p>
-    <p>code:</p>
-    <p>{{room_code}}</p>
-    <p>players currently in game:</p>
-    <p name="players" id="players">Loading...</p>
-    <button type='button' id="leave room" onclick=test()>Leave room</button>
+    <p id="aaa">welcome to the lobby</p>
+    <p>code: {{game_code}}</p>
+    <!--<p>HOST:</p>-->
+    <table>
+      <thead>
+        <tr>
+          <th>number</th>
+          <th>name</th>
+          <th>button</th>
+        </tr>
+      </thead>
+      <tbody id="playersTable"></tbody>
+    </table>
+
+
+    <form action="/lobby" method="POST">  
+      <input type="submit" name="leaveButton" value="leave room"></input>
+      <input type="submit" name="startButton" value="start game"></input>
+    </form>
 
 </body>
 
