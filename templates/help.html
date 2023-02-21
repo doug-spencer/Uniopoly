@@ -15,25 +15,12 @@
           //add
       });
     </script>
+    <title>Help</title>
 </head>
 <body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
+    <H1>Help Page</H1>
     <form method="POST">
-        Code : <input name="code" type="text" placeholder="Enter Code">
-        <input type="submit" name="button" value="Join"><br>
-    </form>
-    <form method="POST">
-        <input type="submit" name="button" value="Create Game">
-    </form>
-    <form method="POST">
-        <input type="submit" name="button" value="Help Page">
+        <input type="submit" name="button" value="Menu Page">
     </form>
 </body>
 </html>

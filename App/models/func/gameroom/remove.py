@@ -1,6 +1,6 @@
 from flask import session
 from App import db, socketio
-from models.classes.main import Player
+from App.models.classes.main import Player
 
 @socketio.on('remove', namespace='/lobby')
 def remove(data):
