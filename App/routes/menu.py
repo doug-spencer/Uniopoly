@@ -17,12 +17,12 @@ def menu():
         for game in Game.Game.query.all():
             flash(game.game_code)
         return render_template('menu.html')
-
     formType = request.form.get('button')
 
     if formType == "Join":
         code = request.form.get('code')
         if search("^\d{6}$", code):
-            join_game.join_game(code)
+            return join_game.join_game(code, username)
+
     else:
-        create_game.create_game(username)
+        return create_game.create_game(username)

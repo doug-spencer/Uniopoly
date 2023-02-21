@@ -1,9 +1,9 @@
 from flask import flash, redirect, render_template, session, url_for
 from App import db
-from App.models.classes.main import Game, Player
+from App.models.classes.main import Account, Game, Player
 from App.models.auth import check_account
 
-def join_game(code):
+def join_game(code, username):
     game = Game.Game.query.filter_by(game_code=code).first()
     if not game:
         flash("Code was not valid")
