@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from App import db
-from database import link_player_property
+from App.models.database import link_player_property
 
 class Utilities(db.Model):
     id = Column(Integer, primary_key=True)
