@@ -13,11 +13,11 @@ def lobby():
     if request.method == 'GET':
         return render_template('lobby.html', game_code=game_code, session=session)
 
-    game = Game.Game.query.filter_by(game_code=game_code).first()
-    player = Player.Player.query.filter_by(username=username).first()
+    game = Game.query.filter_by(game_code=game_code).first()
+    player = Player.query.filter_by(username=username).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'leave room':
-        Player.query.filter_by(username=username).delete()
+        player.query.filter_by(username=username).delete()
         return redirect(url_for('menu'))
     elif request.form.get('startButton') == 'start game':
         if game.players_connected[0].username != username:
