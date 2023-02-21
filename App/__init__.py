@@ -16,7 +16,15 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 db = SQLAlchemy(app)
 engine = create_engine('sqlite:///database.db', echo=False)
 
+# if True:
+#     try:
+#         Game.__table__.drop(engine)
+#         Player.__table__.drop(engine)
+#     except Exception as e:
+#         print(e)
+
 db.create_all()
 db.session.commit()
 
-from App.routes import index, lobby, menu, rest
+from App.routes import index, lobby, menu, help, gameroom
+# import App.models.func
