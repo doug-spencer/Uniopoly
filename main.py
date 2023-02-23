@@ -143,8 +143,6 @@ def load_static_files():
         lines = [i for i in file.readlines()]
         index = 0
         current_line = lines[index]
-
-        #Properties
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
@@ -162,46 +160,6 @@ def load_static_files():
             print(index,current_line)
         index += 1
         current_line = lines[index]
-
-        #Utilities
-        while current_line != '\n':
-            details = current_line.split(';')
-            print(details)
-            db.session.add(Property(
-                name=details[0],
-                colour=details[1],
-                photo=details[2],
-                position=details[3],
-                buy_price=details[4],
-                morgage_value=details[5],
-                rents=details[6]
-                ))
-            index += 1
-            current_line = lines[index]
-            print(index,current_line)
-        index += 1
-        current_line = lines[index]      
-
-        #Bus stop  
-        while current_line != '\n':
-            details = current_line.split(';')
-            print(details)
-            db.session.add(Property(
-                name=details[0],
-                colour=details[1],
-                photo=details[2],
-                position=details[3],
-                buy_price=details[4],
-                morgage_value=details[5],
-                rents=details[6]
-                ))
-            index += 1
-            current_line = lines[index]
-            print(index,current_line)
-        index += 1
-        current_line = lines[index]    
-
-        #Student union    
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
@@ -219,8 +177,40 @@ def load_static_files():
             print(index,current_line)
         index += 1
         current_line = lines[index]        
-
-        #Email
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=details[3],
+                buy_price=details[4],
+                morgage_value=details[5],
+                rents=details[6]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]        
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Student_union(
+                text=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=details[3],
+                buy_price=details[4],
+                morgage_value=details[5],
+                rents=details[6]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]        
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
