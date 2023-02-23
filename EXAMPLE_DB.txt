@@ -16,4 +16,4 @@ name;text; amount; save_for_later?
 
 Email
 big mistake;you miss a deadline and have to bribe your teacher you lose 100;-100;False
-name;text; amount; save_for_later?
+text; amount; save_for_later?

@@ -108,7 +108,7 @@ class Bus_stop(db.Model):
     photo = Column(String(200))
     position = Column(Integer)
     buy_price = Column(Integer)
-    mortgage_value = Column(Integer)
+    morgage_value = Column(Integer)
     #players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
 
 class Student_union(db.Model):
@@ -156,7 +156,7 @@ def load_static_files():
                 position=int(details[3]),
                 buy_price=int(details[4]),
                 morgage_value=int(details[5]),
-                rents=details[6][0:len(details[6]-2)]
+                rents=details[6][0:len(details[6]) - 1]
                 ))
             index += 1
             current_line = lines[index]
@@ -174,7 +174,7 @@ def load_static_files():
                 photo=details[2],
                 position=int(details[3]),
                 buy_price=int(details[4]),
-                morgage_value=int(details[5])
+                morgage_value=int(details[5][0:len(details[5]) - 1])
                 ))
             index += 1
             current_line = lines[index]
@@ -186,12 +186,12 @@ def load_static_files():
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
-            db.session.add(Property(
+            db.session.add(Bus_stop(
                 name=details[0],
                 photo=details[1],
                 position=int(details[2]),
                 buy_price=int(details[3]),
-                mortgage_value=int(details[4])
+                morgage_value=int(details[4][0:len(details[4]) - 1])
                 ))
             index += 1
             current_line = lines[index]
@@ -206,7 +206,7 @@ def load_static_files():
             db.session.add(Student_union(
                 text=details[0],
                 amount=int(details[1]),
-                save_for_later=bool(details[2][0:len(details[2]-2)])
+                save_for_later=bool(details[2][0:len(details[2]) - 1])
                 ))
             index += 1
             current_line = lines[index]
@@ -221,13 +221,14 @@ def load_static_files():
             db.session.add(Email(
                 text=details[0],
                 amount=int(details[1]),
-                save_for_later=bool(details[2][0:len(details[2]-2)])
+                save_for_later=bool(details[2][0:len(details[2]) - 1])
                 ))
-            index += 1
-            current_line = lines[index]
+            try:
+                index += 1
+                current_line = lines[index]
+            except:
+                current_line = '\n'
             print(index,current_line)
-        index += 1
-        current_line = lines[index]
     db.session.commit()
 
 load_static_files()

@@ -35,6 +35,6 @@ its your birthday u get 10;+10;False
 its your birthday u get 20;+20;False
 its your birthday u get 30;+30;False
 
-big mistake;you miss a deadline and have to bribe your teacher you lose 100;-100;False
-big mistake;you miss a deadline and have to bribe your teacher you lose 200;-200;False
-big mistake;you miss a deadline and have to bribe your teacher you lose 300;-300;False
+you miss a deadline and have to bribe your teacher you lose 100;-100;False
+you miss a deadline and have to bribe your teacher you lose 200;-200;False
+you miss a deadline and have to bribe your teacher you lose 300;-300;False
