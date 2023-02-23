@@ -108,6 +108,7 @@ class Bus_stop(db.Model):
     photo = Column(String(200))
     position = Column(Integer)
     buy_price = Column(Integer)
+    mortgage_value = Column(Integer)
     #players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
 
 class Student_union(db.Model):
@@ -167,14 +168,13 @@ def load_static_files():
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
-            db.session.add(Property(
+            db.session.add(Utilities(
                 name=details[0],
-                colour=details[1],
+                text=details[1],
                 photo=details[2],
                 position=details[3],
                 buy_price=details[4],
-                morgage_value=details[5],
-                rents=details[6]
+                morgage_value=details[5]
                 ))
             index += 1
             current_line = lines[index]
@@ -188,12 +188,10 @@ def load_static_files():
             print(details)
             db.session.add(Property(
                 name=details[0],
-                colour=details[1],
-                photo=details[2],
-                position=details[3],
-                buy_price=details[4],
-                morgage_value=details[5],
-                rents=details[6]
+                photo=details[1],
+                position=details[2],
+                buy_price=details[3],
+                mortgage_value=details[4]
                 ))
             index += 1
             current_line = lines[index]
