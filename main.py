@@ -155,7 +155,7 @@ def load_static_files():
                 position=details[3],
                 buy_price=details[4],
                 morgage_value=details[5],
-                rents=details[6]
+                rents=details[6][0:len(details[6]-2)]
                 ))
             index += 1
             current_line = lines[index]
@@ -224,7 +224,7 @@ def load_static_files():
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
-            db.session.add(Property(
+            db.session.add(Email(
                 name=details[0],
                 colour=details[1],
                 photo=details[2],

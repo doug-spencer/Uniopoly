@@ -30,10 +30,10 @@ bs2;bus_stop_2.png;14;200;100
 bs3;bus_stop_3.png;24;200;100
 bs4;bus_stop_4.png;34;200;100
 
-birthday!;its your birthday u get 50;+50;False
-birthday!;its your birthday u get 10;+10;False
-birthday!;its your birthday u get 20;+20;False
-birthday!;its your birthday u get 30;+30;False
+its your birthday u get 50;+50;False
+its your birthday u get 10;+10;False
+its your birthday u get 20;+20;False
+its your birthday u get 30;+30;False
 
 big mistake;you miss a deadline and have to bribe your teacher you lose 100;-100;False
 big mistake;you miss a deadline and have to bribe your teacher you lose 200;-200;False
