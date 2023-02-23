@@ -56,6 +56,7 @@ class Game(db.Model):
     game_started = Column(Boolean)
     #host_id = db.relationship('Player', lazy='select', uselist=False)#use=Flase for one to one 
     players_connected = db.relationship('Player', backref='game', lazy='select')
+    players_active = []
     #action for specific index
 
 class Player(db.Model):
@@ -321,6 +322,11 @@ def menu():
                     print(account.game_instances)
                     print([p.game_code for p in account.game_instances])
                     print(game.players_connected)
+                    if username in game.players_active:
+                        flash("This player is already active in the game")
+                        return render_template('menu.html')
+                    else:
+                        game.players_active.append(username)
                     in_game = False
                     for player in account.game_instances:
                         if player.game_code == game.game_code:
@@ -355,6 +361,7 @@ def menu():
         player = Player(position=0, index_in_game=0, money=7)
         account.game_instances.append(player)
         game.players_connected.append(player)
+        game.players_active.append(username)
         db.session.add(player)
         db.session.add(game)
         db.session.commit()
