@@ -22,14 +22,14 @@
           socket.on('player list', function(data) {
           table = document.getElementById("playersTable");
 
-            table.innerHTML = "";
-            for(var i=0; i<data.players.length; i++){
-              var row =  `<tr>
-                            <td>player ${i+1}</td>
+            table.innerHTML = `<tr><td>Player 1</td><td>${data.players[0]}</td></tr>`;
+            for(var i=1; i<data.players.length; i++){
+              var row = `<tr>
+                            <td>Player ${i+1}</td>
                             <td>${data.players[i]}</td>
-                            <td><button type="button" onclick="remove_player('${data.players[i]}')">remove</button></td>
+                            <td><button type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td>
                           </tr>`
-              table.innerHTML += row;
+              table.innerHTML += row
             }
           });
           
@@ -53,15 +53,14 @@
 
     </script>
 
-    <p id="aaa">welcome to the lobby</p>
-    <p>code: {{game_code}}</p>
+    <p id="aaa">Welcome to the lobby</p>
+    <p>Code: {{game_code}}</p>
     <!--<p>HOST:</p>-->
     <table>
       <thead>
         <tr>
-          <th>number</th>
-          <th>name</th>
-          <th>button</th>
+          <th>Number</th>
+          <th>Name</th>
         </tr>
       </thead>
       <tbody id="playersTable"></tbody>
@@ -69,8 +68,8 @@
 
 
     <form action="/lobby" method="POST">  
-      <input type="submit" name="leaveButton" value="leave room"></input>
-      <input type="submit" name="startButton" value="start game"></input>
+      <input type="submit" name="leaveButton" value="Leave Room"></input>
+      <input type="submit" name="startButton" value="Start Game"></input>
     </form>
 
 </body>

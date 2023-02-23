@@ -318,11 +318,20 @@ def menu():
             for game in games:
                 if game.game_code == int(code):
                     account = Account.query.filter_by(username=username).first()
-                    player = Player(position=0, index_in_game=len(game.players_connected), money=7)
-                    account.game_instances.append(player)
-                    game.players_connected.append(player)
-                    db.session.add(player)
-                    db.session.commit()
+                    print(account.game_instances)
+                    print([p.game_code for p in account.game_instances])
+                    print(game.players_connected)
+                    in_game = False
+                    for player in account.game_instances:
+                        if player.game_code == game.game_code:
+                            in_game = True
+                            break
+                    if not in_game:
+                        player = Player(position=0, index_in_game=len(game.players_connected), money=7)
+                        account.game_instances.append(player)
+                        game.players_connected.append(player)
+                        db.session.add(player)
+                        db.session.commit()
                     flash("Game joined!")
                     session['game_code'] = code 
                     return redirect(url_for('lobby'))
@@ -337,7 +346,7 @@ def menu():
             unique = True
             new_id = ""
             for i in range(6):
-                new_id += str(random.randint(0, 9))
+                new_id += str(random.randint(1, 9))
             for game in games:
                 if game.game_code == int(new_id):
                     unique = False
@@ -389,10 +398,10 @@ def lobby():
     game = Game.query.filter_by(game_code=game_code).first()
     player = Player.query.filter_by(username=username, game_code=game_code).first()
     #only runs if POST
-    if request.form.get('leaveButton') == 'leave room':
+    if request.form.get('leaveButton') == 'Leave Room':
         Player.query.filter_by(username=username).delete()
         return redirect(url_for('menu'))
-    elif request.form.get('startButton') == 'start game':
+    elif request.form.get('startButton') == 'Start Game':
         if game.players_connected[0].username != username:
             #player isnt host
             return False
@@ -447,43 +456,12 @@ def leave_lobby():
         return False
     #emit('status', {'msg':  session.get('username') + ' has entered the room.'}, session=session)
 
-@app.route('/gameroom', methods=['GET', 'POST'])
+@app.route('/gameroom')
 def game_room():
-    if(request.method=='POST') and False: #player has made a game or is joining one
-        ### not used any more
-        username = request.form['username']
-        choice = request.form['choice'] #if the made a game or the name of the game they joined
-        account = Account.query.filter_by(username=username).first()
-        if not account: #player doesnt have account
-            account = Account(username=username)
-            db.session.add(account)
-        player = Player(position=0)
-        db.session.add(player)
-        account.game_instances.append(player) #links account with the player in the new game
-        if choice == 'make': #imaking a game
-            game_code = request.form['game_code']
-            game = Game(game_code=game_code, index_of_turn=0, game_started=False)
-            db.session.add(game)
-        else: #joining game
-            game_code = choice
-            game=Game.query.filter_by(game_code=choice).first()
-        game.players_connected.append(player)#adds player to game    
-        player.index_in_game = len(game.players_connected) - 1
-        db.session.commit()
-        #Store the data in session
-        session['username'] = username
-        session['game_code'] = game_code
-        #session_id[player.id] = session.get('session_id') 
+    if(session.get('username') is not None): #player is already in a session
         return render_template('game_room.html', session = session)
-    else:
-        if(session.get('username') is not None): #player is already in a session
-            return render_template('game_room.html', session = session)
-        else: #if not logged in
-            games = Game.query.all()
-            game_codes = []
-            for i in games:
-                game_codes.append(i.game_code)
-            return redirect(url_for(''))
+    else: #if not logged in
+        return redirect(url_for('index'))
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
