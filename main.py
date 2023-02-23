@@ -387,7 +387,7 @@ def lobby():
         return render_template('lobby.html',game_code=game_code, session=session)
 
     game = Game.query.filter_by(game_code=game_code).first()
-    player = Player.query.filter_by(username=username).first()
+    player = Player.query.filter_by(username=username, game_code=game_code).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'leave room':
         Player.query.filter_by(username=username).delete()
@@ -414,12 +414,6 @@ def remove(data):
     db.session.commit()
     print(data['username'])
 
-
-       
-
-
-     
-
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
 def check_pregame_status():
     try:
@@ -427,13 +421,14 @@ def check_pregame_status():
     except:
         print('INTRUDER')
         return False
-    player = Player.query.filter_by(username=username).first()
+    game_code=session['game_code']
+    player = Player.query.filter_by(username=username, game_code=game_code).first()
     if player == None:
         print(2345678765432)
         #players been removed from game
         emit('player not in game', session=session)
         return False
-    game = Game.query.filter_by(game_code=player.game_code).first()
+    game = Game.query.filter_by(game_code=game_code).first()
     if game.game_started:
         emit('game started', session=session)
     else: #updates list of players in game so far
