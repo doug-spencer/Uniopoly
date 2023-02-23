@@ -153,9 +153,9 @@ def load_static_files():
                 name=details[0],
                 colour=details[1],
                 photo=details[2],
-                position=details[3],
-                buy_price=details[4],
-                morgage_value=details[5],
+                position=int(details[3]),
+                buy_price=int(details[4]),
+                morgage_value=int(details[5]),
                 rents=details[6][0:len(details[6]-2)]
                 ))
             index += 1
@@ -206,7 +206,7 @@ def load_static_files():
             db.session.add(Student_union(
                 text=details[0],
                 amount=int(details[1]),
-                save_for_later=bool(details[2])
+                save_for_later=bool(details[2][0:len(details[2]-2)])
                 ))
             index += 1
             current_line = lines[index]
@@ -219,13 +219,9 @@ def load_static_files():
             details = current_line.split(';')
             print(details)
             db.session.add(Email(
-                name=details[0],
-                colour=details[1],
-                photo=details[2],
-                position=details[3],
-                buy_price=details[4],
-                morgage_value=details[5],
-                rents=details[6]
+                text=details[0],
+                amount=int(details[1]),
+                save_for_later=bool(details[2][0:len(details[2]-2)])
                 ))
             index += 1
             current_line = lines[index]
