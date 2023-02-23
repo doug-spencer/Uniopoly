@@ -301,10 +301,47 @@ def help():
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
+    def create_game():
+        game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
+        account = Account.query.filter_by(username=username).first()
+        player = Player(position=0, index_in_game=0, money=7)
+        account.game_instances.append(player)
+        game.players_connected.append(player)
+        game.players_active.append(username)
+        db.session.add(player)
+        db.session.add(game)
+        db.session.commit()
+        session['game_code'] = new_id 
+        flash("Game created with code " + new_id)
+        return redirect(url_for('lobby'))
+        
+    def join_game(game):
+        account = Account.query.filter_by(username=username).first()
+        if username in game.players_active:
+            flash("This player is already active in the game")
+            return render_template('menu.html')
+        else:
+            game.players_active.append(username)
+        in_game = False
+        for player in account.game_instances:
+            if player.game_code == game.game_code:
+                in_game = True
+                break
+        if not in_game:
+            player = Player(position=0, index_in_game=len(game.players_connected), money=7)
+            account.game_instances.append(player)
+            game.players_connected.append(player)
+            db.session.add(player)
+            db.session.commit()
+        flash("Game joined!")
+        session['game_code'] = code 
+        return redirect(url_for('lobby'))
+
     try:
         username = session['username']
     except: #player isnt in session (hasnt logged in)
         return False
+    
     if request.method == 'GET':
         # temp code
         flash("current game codes:")
@@ -318,29 +355,7 @@ def menu():
         if search("^\d{6}$", code):
             for game in games:
                 if game.game_code == int(code):
-                    account = Account.query.filter_by(username=username).first()
-                    print(account.game_instances)
-                    print([p.game_code for p in account.game_instances])
-                    print(game.players_connected)
-                    if username in game.players_active:
-                        flash("This player is already active in the game")
-                        return render_template('menu.html')
-                    else:
-                        game.players_active.append(username)
-                    in_game = False
-                    for player in account.game_instances:
-                        if player.game_code == game.game_code:
-                            in_game = True
-                            break
-                    if not in_game:
-                        player = Player(position=0, index_in_game=len(game.players_connected), money=7)
-                        account.game_instances.append(player)
-                        game.players_connected.append(player)
-                        db.session.add(player)
-                        db.session.commit()
-                    flash("Game joined!")
-                    session['game_code'] = code 
-                    return redirect(url_for('lobby'))
+                    return join_game(game)
         flash("Code was not valid")
         return render_template('menu.html')
     elif formType == "Help Page":
@@ -356,18 +371,7 @@ def menu():
             for game in games:
                 if game.game_code == int(new_id):
                     unique = False
-        game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
-        account = Account.query.filter_by(username=username).first()
-        player = Player(position=0, index_in_game=0, money=7)
-        account.game_instances.append(player)
-        game.players_connected.append(player)
-        game.players_active.append(username)
-        db.session.add(player)
-        db.session.add(game)
-        db.session.commit()
-        session['game_code'] = new_id 
-        flash("Game created with code " + new_id)
-        return redirect(url_for('lobby'))
+        return create_game()
 
 
 '''
