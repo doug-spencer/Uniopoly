@@ -86,6 +86,7 @@ class Utilities(db.Model):
     name = Column(String(100))
     text = Column(String(300))
     photo = Column(String(200))
+    buy_price = Column(Integer)
     position = Column(Integer)
     morgage_value = Column(Integer)
     #players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')
@@ -95,6 +96,7 @@ class Property(db.Model):
     name = Column(String(100))
     colour = Column(String(20))
     photo = Column(String(200))
+    buy_price = Column(Integer)
     position = Column(Integer)
     morgage_value = Column(Integer)
     rents = Column(String(200))
@@ -103,7 +105,9 @@ class Property(db.Model):
 class Bus_stop(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
+    photo = Column(String(200))
     position = Column(Integer)
+    buy_price = Column(Integer)
     #players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
 
 class Student_union(db.Model):
@@ -133,6 +137,100 @@ if True:
 
 db.create_all()
 db.session.commit()
+
+def load_static_files():
+    with open('db_static_files.txt') as file:
+        lines = [i for i in file.readlines()]
+        index = 0
+        current_line = lines[index]
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=details[3],
+                buy_price=details[4],
+                morgage_value=details[5],
+                rents=details[6]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=details[3],
+                buy_price=details[4],
+                morgage_value=details[5],
+                rents=details[6]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]        
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=details[3],
+                buy_price=details[4],
+                morgage_value=details[5],
+                rents=details[6]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]        
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=details[3],
+                buy_price=details[4],
+                morgage_value=details[5],
+                rents=details[6]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]        
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=details[3],
+                buy_price=details[4],
+                morgage_value=details[5],
+                rents=details[6]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]
+    db.session.commit()
+
+load_static_files()
 
 def check_in_game(game_code, username): #verification fucntion
     game = Game.query.filter_by(game_code = game_code).first()
