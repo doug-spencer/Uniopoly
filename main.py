@@ -143,6 +143,8 @@ def load_static_files():
         lines = [i for i in file.readlines()]
         index = 0
         current_line = lines[index]
+
+        #Properties
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
@@ -160,6 +162,8 @@ def load_static_files():
             print(index,current_line)
         index += 1
         current_line = lines[index]
+
+        #Utilites
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
@@ -176,7 +180,9 @@ def load_static_files():
             current_line = lines[index]
             print(index,current_line)
         index += 1
-        current_line = lines[index]        
+        current_line = lines[index]   
+
+        #Bus stop     
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
@@ -193,7 +199,9 @@ def load_static_files():
             current_line = lines[index]
             print(index,current_line)
         index += 1
-        current_line = lines[index]        
+        current_line = lines[index]  
+
+        #Student union
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
@@ -210,7 +218,9 @@ def load_static_files():
             current_line = lines[index]
             print(index,current_line)
         index += 1
-        current_line = lines[index]        
+        current_line = lines[index] 
+
+        #Email       
         while current_line != '\n':
             details = current_line.split(';')
             print(details)
