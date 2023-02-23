@@ -231,7 +231,7 @@ def load_static_files():
             print(index,current_line)
     db.session.commit()
 
-load_static_files()
+#load_static_files()
 
 def check_in_game(game_code, username): #verification fucntion
     game = Game.query.filter_by(game_code = game_code).first()
