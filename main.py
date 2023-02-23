@@ -172,9 +172,9 @@ def load_static_files():
                 name=details[0],
                 text=details[1],
                 photo=details[2],
-                position=details[3],
-                buy_price=details[4],
-                morgage_value=details[5]
+                position=int(details[3]),
+                buy_price=int(details[4]),
+                morgage_value=int(details[5])
                 ))
             index += 1
             current_line = lines[index]
@@ -189,9 +189,9 @@ def load_static_files():
             db.session.add(Property(
                 name=details[0],
                 photo=details[1],
-                position=details[2],
-                buy_price=details[3],
-                mortgage_value=details[4]
+                position=int(details[2]),
+                buy_price=int(details[3]),
+                mortgage_value=int(details[4])
                 ))
             index += 1
             current_line = lines[index]
