@@ -253,71 +253,71 @@ def check_in_game(game_code, username): #verification fucntion
         return False, False
     return game, player
 
-def show_player_options(player, game, session):
+def show_player_options(player, game_code, session):
     #return False #while db is empty
     pos = player.position
 
     all_properties = Property.query.all()
     index_of_properties = [i.position for i in all_properties]
     if pos in index_of_properties:
-        return player_landed_on_property(player, game, session, all_properties[index_of_properties.index(pos)])
+        player_landed_on_property(player, game_code, session, all_properties[index_of_properties.index(pos)])
     
     all_utilities = Utilities.query.all()
     index_of_utilities = [i.position for i in all_utilities]
     if pos in index_of_utilities:
-        return player_landed_on_utility(player, game, session, all_utilities[index_of_utilities.index(pos)])
+        player_landed_on_utility(player, game_code, session, all_utilities[index_of_utilities.index(pos)])
     
     all_bus_stops = Bus_stop.query.all()
     index_of_bus_stops = [i.position for i in all_bus_stops]
     if pos in index_of_bus_stops:
-        return player_landed_on_utility(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
+        player_landed_on_bus_stop(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)])
     
-    all_emails = Email.query.all()
-    index_of_emails = [i.position for i in all_emails]
-    if pos in index_of_emails:
-        return player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
+    # all_emails = Email.query.all()
+    # index_of_emails = [i.position for i in all_emails]
+    # if pos in index_of_emails:
+    #     player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
     
-    all_student_unions = Student_union.query.all()
-    index_of_student_unions = [i.position for i in all_student_unions]
-    if pos in index_of_student_unions:
-        return player_landed_on_card(player, game, session, all_student_unions[index_of_student_unions.index(pos)])
+    # all_student_unions = Student_union.query.all()
+    # index_of_student_unions = [i.position for i in all_student_unions]
+    # if pos in index_of_student_unions:
+    #     player_landed_on_card(player, game, session, all_student_unions[index_of_student_unions.index(pos)])
     
     pos_go_to_jail = 29
     pos_free_parking = 19
     pos_jail = 9
     pos_start = 0
     if pos == pos_go_to_jail:
-        return player_landed_on_go_to_jail(player, game, session)
+        player_landed_on_go_to_jail(player, game_code, session)
     if pos == pos_jail:
-        return player_in_jail(player, game, session)
+        player_in_jail(player, game_code, session)
     if pos == pos_start:
-        return player_landed_on_start(player, game, session)
+        player_landed_on_start(player, game_code, session)
     if pos == pos_free_parking:
-        return player_landed_on_free_parking(player, game, session)
+        player_landed_on_free_parking(player, game_code, session)
 
-def player_landed_on_start(player, game, session):
-    emit('message', {'msg': player.username + ' passed go '}, room=game.game_code)
+def player_landed_on_start(player, game_code, session):
+    emit('message', {'msg': player.username + ' passed go '}, room=game_code)
 
-def player_landed_on_free_parking(player, game, session):
-    emit('message', {'msg': player.username + ' is on free parking '}, room=game.game_code)
+def player_landed_on_free_parking(player, game_code, session):
+    emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
 
-def player_in_jail(player, game, session):
-    emit('message', {'msg': player.username + ' is in jail '}, room=game.game_code)
+def player_in_jail(player, game_code, session):
+    emit('message', {'msg': player.username + ' is in jail '}, room=game_code)
 
-def player_landed_on_go_to_jail(player, game, session):
-    emit('message', {'msg': player.username + ' is sent to jail '}, room=game.game_code)
+def player_landed_on_go_to_jail(player, game_code, session):
+    emit('message', {'msg': player.username + ' is sent to jail '}, room=game_code)
 
-def player_landed_on_utility(player, game, session, utility):
-    emit('message', {'msg': player.username + ' landed on a utility '}, room=game.game_code)
+def player_landed_on_utility(player, game_code, session, utility):
+    emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
 
-def player_landed_on_property(player, game, session, property):
-    emit('message', {'msg': player.username + ' landed on property '}, room=game.game_code)
+def player_landed_on_property(player, game_code, session, property):
+    emit('message', {'msg': player.username + ' landed on  ' + property.name}, room=game_code)
 
-def player_landed_on_bus_stop(player, game, session, bus_stop):
-    emit('message', {'msg': player.username + ' landed on a bus stop '}, room=game.game_code)
+def player_landed_on_bus_stop(player, game_code, session, bus_stop):
+    emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)
 
-def player_landed_on_card(player, game, session, card):
-    emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game.game_code)
+def player_landed_on_card(player, game_code, session, card):
+    emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -580,9 +580,9 @@ def roll_dice():
     else:
         game.index_of_turn = game.index_of_turn + 1
     db.session.commit()
-    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_code)
+    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room=game_code)
     emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
-    show_player_options(player, game, session)
+    show_player_options(player, game_code, session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
 @socketio.on('update turn', namespace='/gameroom') #check if its players turn yet (if roll dice button should be shown)
