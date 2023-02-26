@@ -87,6 +87,7 @@ class Utilities(db.Model):
     text = Column(String(300))
     photo = Column(String(200))
     position = Column(Integer)
+    buy_price = Column(Integer)
     morgage_value = Column(Integer)
     #players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')
     
@@ -96,6 +97,7 @@ class Property(db.Model):
     colour = Column(String(20))
     photo = Column(String(200))
     position = Column(Integer)
+    buy_price = Column(Integer)
     morgage_value = Column(Integer)
     rents = Column(String(200))
     #players = db.relationship('players', secondary=link_player_property, backref='property', lazy='select')
@@ -103,7 +105,12 @@ class Property(db.Model):
 class Bus_stop(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
+    photo = Column(String(200))
     position = Column(Integer)
+    buy_price = Column(Integer)
+    morgage_value = Column(Integer)
+
+
     #players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
 
 class Student_union(db.Model):
@@ -134,6 +141,103 @@ if True:
 db.create_all()
 db.session.commit()
 
+def load_static_files():
+    with open('db_static_files.txt') as file:
+        lines = [i for i in file.readlines()]
+        index = 0
+        current_line = lines[index]
+
+        #Properties
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=int(details[3]),
+                buy_price=int(details[4]),
+                morgage_value=int(details[5]),
+                rents=details[6][0:len(details[6]) - 1]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+            db.session.commit()
+        index += 1
+        current_line = lines[index]
+        
+
+        #Utilites
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Utilities(
+                name=details[0],
+                text=details[1],
+                photo=details[2],
+                position=int(details[3]),
+                buy_price=int(details[4]),
+                morgage_value=int(details[5][0:len(details[5]) - 1])
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]   
+
+        #Bus stop     
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Bus_stop(
+                name=details[0],
+                photo=details[1],
+                position=int(details[2]),
+                buy_price=int(details[3]),
+                morgage_value=int(details[4][0:len(details[4]) - 1])
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]  
+
+        #Student union
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Student_union(
+                text=details[0],
+                amount=int(details[1]),
+                save_for_later=bool(details[2][0:len(details[2]) - 1])
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index] 
+
+        #Email       
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Email(
+                text=details[0],
+                amount=int(details[1]),
+                save_for_later=bool(details[2][0:len(details[2]) - 1])
+                ))
+            try:
+                index += 1
+                current_line = lines[index]
+            except:
+                current_line = '\n'
+            print(index,current_line)
+    db.session.commit()
+
+load_static_files()
+
+
 def check_in_game(game_code, username): #verification fucntion
     game = Game.query.filter_by(game_code = game_code).first()
     if not game:
@@ -150,31 +254,34 @@ def check_in_game(game_code, username): #verification fucntion
     return game, player
 
 def show_player_options(player, game, session):
-    return False #while db is empty
+    #return False #while db is empty
     pos = player.position
 
     all_properties = Property.query.all()
-    index_of_properties = [i.postion for i in all_properties]
+    print(all_properties[0])
+    print(all_properties[0].position)
+
+    index_of_properties = [i.position for i in all_properties]
     if pos in index_of_properties:
         return player_landed_on_property(player, game, session, all_properties[index_of_properties.index(pos)])
     
     all_utilities = Utilities.query.all()
-    index_of_utilities = [i.postion for i in all_utilities]
+    index_of_utilities = [i.position for i in all_utilities]
     if pos in index_of_utilities:
         return player_landed_on_utility(player, game, session, all_utilities[index_of_utilities.index(pos)])
     
     all_bus_stops = Bus_stop.query.all()
-    index_of_bus_stops = [i.postion for i in all_bus_stops]
+    index_of_bus_stops = [i.position for i in all_bus_stops]
     if pos in index_of_bus_stops:
         return player_landed_on_utility(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
     
     all_emails = Emails.query.all()
-    index_of_emails = [i.postion for i in all_emails]
+    index_of_emails = [i.position for i in all_emails]
     if pos in index_of_emails:
         return player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
     
     all_student_unions = Student_union.query.all()
-    index_of_student_unions = [i.postion for i in all_student_unions]
+    index_of_student_unions = [i.position for i in all_student_unions]
     if pos in index_of_student_unions:
         return player_landed_on_card(player, game, session, all_student_unions[index_of_student_unions.index(pos)])
     
