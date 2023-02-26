@@ -66,6 +66,7 @@ class Player(db.Model):
     money = Column(Integer)
     game_code = Column(Integer, db.ForeignKey('game.game_code'))
     username = Column(Integer, db.ForeignKey('account.username'))
+    turns_in_jail = Column(Integer)
     utilities = db.relationship('Utilities', secondary=link_player_utilities, backref='player', lazy='select')
     properties = db.relationship('Property', secondary=link_player_property, backref='player', lazy='select')
     bus_stop = db.relationship('Bus_stop', secondary=link_player_bus_stop, backref='player', lazy='select')
@@ -289,7 +290,7 @@ def show_player_options(player, game_code, session):
     if pos == pos_go_to_jail:
         player_landed_on_go_to_jail(player, game_code, session)
     if pos == pos_jail:
-        player_in_jail(player, game_code, session)
+        player_on_jail(player, game_code, session)
     if pos == pos_start:
         player_landed_on_start(player, game_code, session)
     if pos == pos_free_parking:
@@ -301,11 +302,23 @@ def player_landed_on_start(player, game_code, session):
 def player_landed_on_free_parking(player, game_code, session):
     emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
 
-def player_in_jail(player, game_code, session):
-    emit('message', {'msg': player.username + ' is in jail '}, room=game_code)
+def player_on_jail(player, game_code, session):
+    if player.turns_in_jail == 0:
+        emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
+    elif player.turns_in_jail == 1:
+        emit('message', {'msg': f'{player.username} must pay 50 or use a get out of jail free card'}, room=game_code)
+        player.turns_in_jail == 0
+    else:
+        emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
+    player.turns_in_jail == max(0, player.turns_in_jail-1)
+    db.session.commit()
+
 
 def player_landed_on_go_to_jail(player, game_code, session):
-    emit('message', {'msg': player.username + ' is sent to jail '}, room=game_code)
+    player.turns_in_jail += 3
+    player.position = 9
+    db.session.commit()
+    emit('message', {'msg': player.username + ' is sent to jail'}, room=game_code)
 
 def player_landed_on_utility(player, game_code, session, utility):
     emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
@@ -343,8 +356,8 @@ def index():
             username = request.form.get("signupname")
             session['username'] = username            
             if username not in account_usernames:
-                new_player = Account(username=username)
-                db.session.add(new_player)
+                new_account = Account(username=username)
+                db.session.add(new_account)
                 db.create_all()
                 db.session.commit()
                 return redirect(url_for('menu'))
@@ -414,7 +427,7 @@ def menu():
                     unique = False
         game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
         account = Account.query.filter_by(username=username).first()
-        player = Player(position=0, index_in_game=0, money=7)
+        player = Player(position=0, index_in_game=0, money=7, turns_in_jail=0)
         account.game_instances.append(player)
         game.players_connected.append(player)
         db.session.add(player)
@@ -568,20 +581,25 @@ def roll_dice():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
-    roll_value = random.randint(1,6)
-    current_value = player.position
-    new_value = roll_value + current_value
-    if new_value > 39:
-        new_value -= 40
-    player.position = new_value
-    turn = game.index_of_turn
-    if turn == len(game.players_connected) - 1:
-        game.index_of_turn = 0
-    else:
-        game.index_of_turn = game.index_of_turn + 1
-    db.session.commit()
-    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room=game_code)
-    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
+    
+    if player.turns_in_jail == 0:
+        roll_value = random.randint(1,6)
+        current_value = player.position
+        new_value = roll_value + current_value
+        
+        if new_value > 39:
+            new_value -= 40
+        
+        player.position = new_value
+        
+        turn = game.index_of_turn
+        if turn == len(game.players_connected) - 1:
+            game.index_of_turn = 0
+        else:
+            game.index_of_turn += 1
+        db.session.commit()
+        emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room=game_code)
+        emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
     show_player_options(player, game_code, session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
