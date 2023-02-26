@@ -258,9 +258,6 @@ def show_player_options(player, game, session):
     pos = player.position
 
     all_properties = Property.query.all()
-    print(all_properties[0])
-    print(all_properties[0].position)
-
     index_of_properties = [i.position for i in all_properties]
     if pos in index_of_properties:
         return player_landed_on_property(player, game, session, all_properties[index_of_properties.index(pos)])
@@ -275,7 +272,7 @@ def show_player_options(player, game, session):
     if pos in index_of_bus_stops:
         return player_landed_on_utility(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
     
-    all_emails = Emails.query.all()
+    all_emails = Email.query.all()
     index_of_emails = [i.position for i in all_emails]
     if pos in index_of_emails:
         return player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
@@ -310,16 +307,16 @@ def player_in_jail(player, game, session):
 def player_landed_on_go_to_jail(player, game, session):
     emit('message', {'msg': player.username + ' is sent to jail '}, room=game.game_code)
 
-def player_landed_on_utility(player, game, session):
+def player_landed_on_utility(player, game, session, utility):
     emit('message', {'msg': player.username + ' landed on a utility '}, room=game.game_code)
 
 def player_landed_on_property(player, game, session, property):
     emit('message', {'msg': player.username + ' landed on property '}, room=game.game_code)
 
-def player_landed_on_bus_stop(player, game, session):
+def player_landed_on_bus_stop(player, game, session, bus_stop):
     emit('message', {'msg': player.username + ' landed on a bus stop '}, room=game.game_code)
 
-def player_landed_on_card(player, game, session):
+def player_landed_on_card(player, game, session, card):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game.game_code)
 
 @app.route('/', methods=['GET', 'POST'])
