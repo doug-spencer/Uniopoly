@@ -324,7 +324,31 @@ def player_landed_on_utility(player, game_code, session, utility):
     emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
 
 def player_landed_on_property(player, game_code, session, property):
-    emit('message', {'msg': player.username + ' landed on  ' + property.name}, room=game_code)
+    emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
+    #p_link_player = db.session.query(link_player_property).query.all()
+    #p_owned = True
+    #for i in p_link_player:
+        # if i.property_id == property.id:
+            # p_owned = True
+            # owned_property = i
+            # break
+    if False:
+        emit('message', {'msg':property.name + ' is owned by me'}, room=game_code)
+        rent_list = property.rents.split(',')
+        rent = rent_list[3]
+        emit('message', {'msg': player.username + ' owes me §' + rent}, room=game_code)
+        player.money -= int(rent)
+        db.session.commit()
+    else:
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player = check_in_game(game_code, username)
+        if not game and not player:
+            return False
+        emit('buy button change', {'operation': 'show'}, session=session)
+        emit('message', {'msg': 'Click Buy to buy the button'}, room=game.game_code)
+
+
 
 def player_landed_on_bus_stop(player, game_code, session, bus_stop):
     emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)

@@ -22,6 +22,14 @@ $(document).ready(function(){
             $('#dice-button').hide();
         };
     });
+        //show or hide buy property button
+        socket.on('buy button change', function(data) {
+            if(data.operation == 'show'){
+                $('#buy-button').show();
+            } else {
+                $('#buy-button').hide();
+            };
+        });
     //show roll value of dice roll
     socket.on('dice_roll', function(data) {
         document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
