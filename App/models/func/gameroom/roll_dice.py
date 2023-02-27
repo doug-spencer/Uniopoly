@@ -1,14 +1,14 @@
 from flask import session
 from flask_socketio import emit
 import random
-from App import db, socketio
+from App.main import db, socketio
 from App.models.auth import check_in_game
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
 def roll_dice():
-    game_name = session.get('game_name')
+    game_code = session.get('game_code')
     username = session.get('username')
-    game, player = check_in_game(game_name, username)
+    game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
     roll_value = random.randint(1,6)
@@ -23,6 +23,6 @@ def roll_dice():
     else:
         game.index_of_turn = game.index_of_turn + 1
     db.session.commit()
-    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_name)
+    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room = game_code)
     emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])

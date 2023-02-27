@@ -9,3 +9,4 @@ from .gameroom.leave_room import left
 from .gameroom.update_turn import update_turn
 from .gameroom.roll_dice import roll_dice
 from .gameroom.remove import remove
+from .gameroom.leave_room import left

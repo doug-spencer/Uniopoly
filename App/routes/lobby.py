@@ -1,5 +1,5 @@
 from flask import redirect, render_template, request, session, url_for
-from App import app, db
+from App.main import app, db
 from App.models.classes.main import Game, Player
 
 @app.route('/lobby', methods=['GET', 'POST'])

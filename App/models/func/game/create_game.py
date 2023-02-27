@@ -1,6 +1,6 @@
 from flask import flash, redirect, session, url_for
 import random
-from App import db
+from App.main import db
 from App.models.classes.main import Account, Game, Player
 
 def create_game(username):

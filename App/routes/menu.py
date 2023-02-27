@@ -1,6 +1,6 @@
 from flask import flash, render_template, request, session
 from re import search
-from App import app
+from App.main import app
 from App.models.classes.main import Game
 from App.models.func import create_game, join_game
 

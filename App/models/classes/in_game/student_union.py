@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
-from App import db
+from App.main import db
 from App.models.database import link_player_property
 
 class Student_union(db.Model):

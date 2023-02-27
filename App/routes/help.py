@@ -1,5 +1,5 @@
 from flask import redirect, render_template, request, url_for
-from App import app
+from App.main import app
 
 @app.route('/help', methods=['GET', 'POST'])
 def help():

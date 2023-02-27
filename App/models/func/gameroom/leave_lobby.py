@@ -1,5 +1,5 @@
 from flask import session
-from App import socketio
+from App.main import socketio
 
 @socketio.on('leave lobby', namespace='/lobby') #player leaving lobby
 def leave_lobby():

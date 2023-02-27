@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Column, Integer
-from App import db
+from App.main import db
 
 class Game(db.Model):
     game_code = Column(Integer, primary_key=True)

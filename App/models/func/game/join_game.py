@@ -1,5 +1,5 @@
 from flask import flash, redirect, render_template, session, url_for
-from App import db
+from App.main import db
 from App.models.classes.main import Game, Player
 from App.models.auth import check_account
 

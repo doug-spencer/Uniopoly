@@ -1,6 +1,6 @@
 from flask import session
 from flask_socketio import emit
-from App import socketio
+from App.main import socketio
 from App.models.classes.main import Game, Player
 
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
@@ -15,10 +15,10 @@ def check_pregame_status():
     if game.game_started:
         emit('game started', session=session)
     else: #updates list of players in game so far
-        usernames = ''
+        usernames = []
         for i in game.players_connected:
-            usernames += str(i.username) + ', '
+            usernames += [str(i.username)]
         if usernames == '':
-            usernames = 'None'
+            usernames = []
         print('usrs: ', usernames)
         emit('player list', {'players': usernames}, session=session)

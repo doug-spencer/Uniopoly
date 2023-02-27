@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer
-from App import db
+from App.main import db
 # from App.models.database import link_player_bus_stop, link_player_property, link_player_email, link_player_student_union, link_player_utilities
 
 class Player(db.Model):

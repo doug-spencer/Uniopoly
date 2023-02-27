@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from App import db
+from App.main import db
 from App.models.database import link_player_property
 
 class Bus_stop(db.Model):

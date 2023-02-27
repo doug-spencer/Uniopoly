@@ -1,5 +1,5 @@
 from flask import render_template, request
-from App import app
+from App.main import app
 from App.models.auth import login, signup
 
 @app.route('/', methods=['GET', 'POST'])
