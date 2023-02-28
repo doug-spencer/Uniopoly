@@ -68,6 +68,7 @@ class Player(db.Model):
     money = Column(Integer)
     game_code = Column(Integer, db.ForeignKey('game.game_code'))
     username = Column(Integer, db.ForeignKey('account.username'))
+    turns_in_jail = Column(Integer)
     utilities = db.relationship('Utilities', secondary=link_player_utilities, backref='player', lazy='select')
     properties = db.relationship('Property', secondary=link_player_property, backref='player', lazy='select')
     bus_stop = db.relationship('Bus_stop', secondary=link_player_bus_stop, backref='player', lazy='select')
@@ -89,6 +90,7 @@ class Utilities(db.Model):
     text = Column(String(300))
     photo = Column(String(200))
     position = Column(Integer)
+    buy_price = Column(Integer)
     morgage_value = Column(Integer)
     #players = db.relationship('players', secondary=link_player_property, backref='utilities', lazy='select')
     
@@ -98,6 +100,7 @@ class Property(db.Model):
     colour = Column(String(20))
     photo = Column(String(200))
     position = Column(Integer)
+    buy_price = Column(Integer)
     morgage_value = Column(Integer)
     rents = Column(String(200))
     #players = db.relationship('players', secondary=link_player_property, backref='property', lazy='select')
@@ -105,11 +108,16 @@ class Property(db.Model):
 class Bus_stop(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
+    photo = Column(String(200))
     position = Column(Integer)
     #rents = {'0': 0, '1': 25, '2': 50, '3': 100, '4': 200}
     # owner = Column(String(100))
     # morgage_value = Column(Integer)
     # is_owned = Column(Boolean, default=False)
+    buy_price = Column(Integer)
+    morgage_value = Column(Integer)
+
+
     #players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
 
 class Student_union(db.Model):
@@ -175,6 +183,103 @@ if True:
 db.create_all()
 db.session.commit()
 
+def load_static_files():
+    with open('db_static_files.txt') as file:
+        lines = [i for i in file.readlines()]
+        index = 0
+        current_line = lines[index]
+
+        #Properties
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Property(
+                name=details[0],
+                colour=details[1],
+                photo=details[2],
+                position=int(details[3]),
+                buy_price=int(details[4]),
+                morgage_value=int(details[5]),
+                rents=details[6][0:len(details[6]) - 1]
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+            db.session.commit()
+        index += 1
+        current_line = lines[index]
+        
+
+        #Utilites
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Utilities(
+                name=details[0],
+                text=details[1],
+                photo=details[2],
+                position=int(details[3]),
+                buy_price=int(details[4]),
+                morgage_value=int(details[5][0:len(details[5]) - 1])
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]   
+
+        #Bus stop     
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Bus_stop(
+                name=details[0],
+                photo=details[1],
+                position=int(details[2]),
+                buy_price=int(details[3]),
+                morgage_value=int(details[4][0:len(details[4]) - 1])
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index]  
+
+        #Student union
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Student_union(
+                text=details[0],
+                amount=int(details[1]),
+                save_for_later=bool(details[2][0:len(details[2]) - 1])
+                ))
+            index += 1
+            current_line = lines[index]
+            print(index,current_line)
+        index += 1
+        current_line = lines[index] 
+
+        #Email       
+        while current_line != '\n':
+            details = current_line.split(';')
+            print(details)
+            db.session.add(Email(
+                text=details[0],
+                amount=int(details[1]),
+                save_for_later=bool(details[2][0:len(details[2]) - 1])
+                ))
+            try:
+                index += 1
+                current_line = lines[index]
+            except:
+                current_line = '\n'
+            print(index,current_line)
+    db.session.commit()
+
+load_static_files()
+
+
 def check_in_game(game_code, username): #verification fucntion
     game = Game.query.filter_by(game_code = game_code).first()
     if not game:
@@ -190,65 +295,120 @@ def check_in_game(game_code, username): #verification fucntion
         return False, False
     return game, player
 
-def show_player_options(player, game, session):
-    # return False #while db is empty
+def show_player_options(player, game_code, session):
+    #return False #while db is empty
     pos = player.position
 
     all_properties = Property.query.all()
-    index_of_properties = [i.postion for i in all_properties]
+    index_of_properties = [i.position for i in all_properties]
     if pos in index_of_properties:
-        return player_landed_on_property(player, game, session, all_properties[index_of_properties.index(pos)])
+        player_landed_on_property(player, game_code, session, all_properties[index_of_properties.index(pos)])
     
     all_utilities = Utilities.query.all()
-    index_of_utilities = [i.postion for i in all_utilities]
+    index_of_utilities = [i.position for i in all_utilities]
     if pos in index_of_utilities:
-        return player_landed_on_utility(player, game, session, all_utilities[index_of_utilities.index(pos)])
+        player_landed_on_utility(player, game_code, session, all_utilities[index_of_utilities.index(pos)])
     
     all_bus_stops = Bus_stop.query.all()
-    index_of_bus_stops = [i.postion for i in all_bus_stops]
+    index_of_bus_stops = [i.position for i in all_bus_stops]
     if pos in index_of_bus_stops:
-        return player_landed_on_bus_stop(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
+        player_landed_on_bus_stop(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)])
     
     all_emails = Email.query.all()
     index_of_emails = [i.postion for i in all_emails]
     if pos in index_of_emails:
         return player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
     
-    all_student_unions = Student_union.query.all()
-    index_of_student_unions = [i.postion for i in all_student_unions]
-    if pos in index_of_student_unions:
-        return player_landed_on_card(player, game, session, all_student_unions[index_of_student_unions.index(pos)])
+    # all_student_unions = Student_union.query.all()
+    # index_of_student_unions = [i.position for i in all_student_unions]
+    # if pos in index_of_student_unions:
+    #     player_landed_on_card(player, game, session, all_student_unions[index_of_student_unions.index(pos)])
     
     pos_go_to_jail = 29
     pos_free_parking = 19
     pos_jail = 9
     pos_start = 0
     if pos == pos_go_to_jail:
-        return player_landed_on_go_to_jail(player, game, session)
+        player_landed_on_go_to_jail(player, game_code, session)
     if pos == pos_jail:
-        return player_in_jail(player, game, session)
+        player_on_jail(player, game_code, session)
     if pos == pos_start:
-        return player_landed_on_start(player, game, session)
+        player_landed_on_start(player, game_code, session)
     if pos == pos_free_parking:
-        return player_landed_on_free_parking(player, game, session)
+        player_landed_on_free_parking(player, game_code, session)
 
-def player_landed_on_start(player, game, session):
-    emit('message', {'msg': player.username + ' passed go '}, room=game.game_code)
+def player_landed_on_start(player, game_code, session):
+    emit('message', {'msg': player.username + ' passed go '}, room=game_code)
 
-def player_landed_on_free_parking(player, game, session):
-    emit('message', {'msg': player.username + ' is on free parking '}, room=game.game_code)
+def player_landed_on_free_parking(player, game_code, session):
+    emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
 
-def player_in_jail(player, game, session):
-    emit('message', {'msg': player.username + ' is in jail '}, room=game.game_code)
+def player_on_jail(player, game_code, session):
+    if player.turns_in_jail == 0:
+        emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
+    elif player.turns_in_jail == 1:
+        emit('message', {'msg': f'{player.username} must pay 50 or use a get out of jail free card'}, room=game_code)
+        player.turns_in_jail == 0
+    else:
+        emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
+    player.turns_in_jail -= 1
+    player.turns_in_jail == max(0, player.turns_in_jail-1)
+    db.session.commit()
 
-def player_landed_on_go_to_jail(player, game, session):
-    emit('message', {'msg': player.username + ' is sent to jail '}, room=game.game_code)
 
-def player_landed_on_utility(player, game, session):
-    emit('message', {'msg': player.username + ' landed on a utility '}, room=game.game_code)
+def player_landed_on_go_to_jail(player, game_code, session):
+    player.turns_in_jail += 3
+    player.position = 9
+    db.session.commit()
+    emit('message', {'msg': player.username + ' is sent to jail'}, room=game_code)
 
-def player_landed_on_property(player, game, session, property):
-    emit('message', {'msg': player.username + ' landed on property '}, room=game.game_code)
+def player_landed_on_utility(player, game_code, session, utility):
+    emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
+
+def player_landed_on_property(player, game_code, session, property):
+    @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
+    def buy_property():
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player = check_in_game(game_code, username)
+        if not game and not player:
+            return False
+        
+        #Subtracts cost from money and adds new record of property ownership
+        player.money -= property.buy_price
+        insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
+        db.session.execute(insert_stmnt)
+        db.session.commit()
+
+        emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
+
+    emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
+    # Checks if property is already owned
+    p_link_player = db.session.query(link_player_property).all()
+    p_owned = False
+    for i in p_link_player:
+        if i.property_id == property.id:
+            p_owned = True
+            owned_property = i
+            break
+    if p_owned: # If owned rent is payed
+        emit('message', {'msg':property.name + ' is owned by me'}, room=game_code)
+        rent_list = property.rents.split(',')
+        rent = rent_list[3]
+        emit('message', {'msg': player.username + ' owes me §' + rent}, room=game_code)
+        player.money -= int(rent)
+        db.session.commit()
+    else: # If not owned, the option to buy the property is given
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player = check_in_game(game_code, username)
+        if not game and not player:
+            return False
+        
+        emit('buy property button change', {'operation': 'show'}, session=session)
+        emit('message', {'msg': 'Click Buy to buy the card for §' + str(property.buy_price)}, room=game.game_code)
+
+
 
 def player_landed_on_bus_stop(player, game, session, bus_stop):
 
@@ -367,8 +527,8 @@ def index():
             username = request.form.get("signupname")
             session['username'] = username            
             if username not in account_usernames:
-                new_player = Account(username=username)
-                db.session.add(new_player)
+                new_account = Account(username=username)
+                db.session.add(new_account)
                 db.create_all()
                 db.session.commit()
                 return redirect(url_for('menu'))
@@ -438,7 +598,7 @@ def menu():
                     unique = False
         game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
         account = Account.query.filter_by(username=username).first()
-        player = Player(position=0, index_in_game=0, money=7)
+        player = Player(position=0, index_in_game=0, money=7, turns_in_jail=0)
         account.game_instances.append(player)
         game.players_connected.append(player)
         db.session.add(player)
@@ -584,6 +744,7 @@ def join(message):
     game_code = session.get('game_code')
     join_room(game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_code)
+    emit('buy property button change', {'operation': 'hide'}, session=session)
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
 def roll_dice():
@@ -592,21 +753,26 @@ def roll_dice():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
-    roll_value = random.randint(1,6)
-    current_value = player.position
-    new_value = roll_value + current_value
-    if new_value > 39:
-        new_value -= 40
-    player.position = new_value
-    turn = game.index_of_turn
-    if turn == len(game.players_connected) - 1:
-        game.index_of_turn = 0
-    else:
-        game.index_of_turn = game.index_of_turn + 1
-    db.session.commit()
-    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room=game_code)
-    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
-    show_player_options(player, game, session)
+    
+    if player.turns_in_jail == 0:
+        roll_value = random.randint(1,6)
+        current_value = player.position
+        new_value = roll_value + current_value
+        
+        if new_value > 39:
+            new_value -= 40
+        
+        player.position = new_value
+        
+        turn = game.index_of_turn
+        if turn == len(game.players_connected) - 1:
+            game.index_of_turn = 0
+        else:
+            game.index_of_turn += 1
+        db.session.commit()
+        emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room=game_code)
+        emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
+    show_player_options(player, game_code, session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
 @socketio.on('update turn', namespace='/gameroom') #check if its players turn yet (if roll dice button should be shown)
@@ -688,7 +854,7 @@ def player_landed_on_bus(player, game, session, bus_stop):
             else:
                 # Put the property up for sale to other players
                 # Code to handle property auction here
-    return
+    return False
 
 '''
 def players_turn_to_roll(game_code):
