@@ -106,7 +106,7 @@ class Bus_stop(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     position = Column(Integer)
-    rents = {'0': 0, '1': 25, '2': 50, '3': 100, '4': 200}
+    #rents = {'0': 0, '1': 25, '2': 50, '3': 100, '4': 200}
     # owner = Column(String(100))
     # morgage_value = Column(Integer)
     # is_owned = Column(Boolean, default=False)
@@ -126,6 +126,7 @@ class Email(db.Model):
     save_for_later = Column(Boolean)
     #players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
 
+'''
 # create community chest and chace card class
 # create card class
 class Card(db.Model):
@@ -141,7 +142,7 @@ class Card(db.Model):
     card_top_deck = Column(Boolean, default=False)
     #method to return the card to the player
     card_to_player = Column(Boolean, default=False)
-    
+'''
 
 
 
@@ -208,7 +209,7 @@ def show_player_options(player, game, session):
     if pos in index_of_bus_stops:
         return player_landed_on_bus_stop(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
     
-    all_emails = Emails.query.all()
+    all_emails = Email.query.all()
     index_of_emails = [i.postion for i in all_emails]
     if pos in index_of_emails:
         return player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
