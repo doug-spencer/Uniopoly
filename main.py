@@ -310,6 +310,7 @@ def player_on_jail(player, game_code, session):
         player.turns_in_jail == 0
     else:
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
+    player.turns_in_jail -= 1
     player.turns_in_jail == max(0, player.turns_in_jail-1)
     db.session.commit()
 
@@ -583,7 +584,7 @@ def roll_dice():
         return False
     
     if player.turns_in_jail == 0:
-        roll_value = random.randint(1,6)
+        roll_value = random.randint(29,29)
         current_value = player.position
         new_value = roll_value + current_value
         
