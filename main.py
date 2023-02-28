@@ -852,6 +852,7 @@ def player_landed_on_bus(player, game, session, bus_stop):
                 bus_stop.players.append(player)
                 player.money -= bus_stop.price
             else:
+                pass
                 # Put the property up for sale to other players
                 # Code to handle property auction here
     return False
