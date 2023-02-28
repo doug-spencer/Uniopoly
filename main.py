@@ -325,7 +325,49 @@ def player_landed_on_utility(player, game_code, session, utility):
     emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
 
 def player_landed_on_property(player, game_code, session, property):
-    emit('message', {'msg': player.username + ' landed on  ' + property.name}, room=game_code)
+    @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
+    def buy_property():
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player = check_in_game(game_code, username)
+        if not game and not player:
+            return False
+        
+        #Subtracts cost from money and adds new record of property ownership
+        player.money -= property.buy_price
+        insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
+        db.session.execute(insert_stmnt)
+        db.session.commit()
+
+        emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
+
+    emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
+    # Checks if property is already owned
+    p_link_player = db.session.query(link_player_property).all()
+    p_owned = False
+    for i in p_link_player:
+        if i.property_id == property.id:
+            p_owned = True
+            owned_property = i
+            break
+    if p_owned: # If owned rent is payed
+        emit('message', {'msg':property.name + ' is owned by me'}, room=game_code)
+        rent_list = property.rents.split(',')
+        rent = rent_list[3]
+        emit('message', {'msg': player.username + ' owes me §' + rent}, room=game_code)
+        player.money -= int(rent)
+        db.session.commit()
+    else: # If not owned, the option to buy the property is given
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player = check_in_game(game_code, username)
+        if not game and not player:
+            return False
+        
+        emit('buy property button change', {'operation': 'show'}, session=session)
+        emit('message', {'msg': 'Click Buy to buy the card for §' + str(property.buy_price)}, room=game.game_code)
+
+
 
 def player_landed_on_bus_stop(player, game_code, session, bus_stop):
     emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)
@@ -574,6 +616,7 @@ def join(message):
     game_code = session.get('game_code')
     join_room(game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room=game_code)
+    emit('buy property button change', {'operation': 'hide'}, session=session)
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
 def roll_dice():
@@ -618,6 +661,7 @@ def update_turn():
     else:
         #emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
         emit('roll dice button change', {'operation': 'hide'}, session=session)
+    
 
 '''
 def players_turn_to_roll(game_code):
