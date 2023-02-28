@@ -1,35 +1,25 @@
-<!doctype html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <title>Monops</title>
-</head>
+{% block head %}
+<title>Login</title>
+<meta name="description" content="Some description of the login/sign up page.">
+<script type="text/javascript" src="/static/js/login.js"></script>
+<link rel="stylesheet" href="/static/css/login.css">
+{% endblock %} 
 
-<body class="text-center">
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
-  <script src="/static/js/script.js"></script>
-  <script>
-  var socket;
-    $(document).ready(function(){
-        socket = io.connect('http://' + document.domain + ':' + location.port + '/login');
-        //add
-    });
-  </script>
-
-  <p>error: {{login_message}}</p>
-
-  <form method="POST">  
-    <h1>Login</h1><br><br>
-    <input type="text" id="username" name="loginname" placeholder="Username" required autofocus><br>
-    <button name="button" value="login">log in</button>
-  </form>
-
-
-  <form method="POST">
-    <h1>Sign up</h1><br><br>
-    <input type="text" id="username" name="signupname" placeholder="Username" required autofocus><br>
-    <button name="button" value="signup">sign up</button>
-  </form>
-
-</body>
+{% block body %}
+<p>{{login_message}}</p>
+<div>
+    <form method="POST">  
+        <h1>Login</h1>
+        <input class="text-input" type="text" id="username" name="loginname" placeholder="Username" required autofocus><br>
+        <button class="button" name="button" value="login">log in</button>
+    </form>
+    <br>
+    <form method="POST">
+        <h1>Sign up</h1>
+        <input class="text-input" type="text" id="username" name="signupname" placeholder="Username" required autofocus><br>
+        <button class="button" name="button" value="signup">sign up</button>
+    </form>
+</div>
+{% endblock %}

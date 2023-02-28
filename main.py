@@ -263,10 +263,8 @@ def index():
         return render_template('login.html')
         
     elif(request.method=='POST'):
-        login_message = ""
         account_usernames = get_account_usernames()
         formSubmitted = request.form.get("button")
-        print(formSubmitted)
 
         if formSubmitted == "signup":
             ##render menu once it has been made
@@ -279,19 +277,18 @@ def index():
                 db.session.commit()
                 return redirect(url_for('menu'))
             else:
-                login_message = "account taken"
-                return render_template('login.html', login_message=login_message)
+                flash("Username already taken")
+                return render_template('login.html')
 
         elif formSubmitted == "login":
             #render menu once it has been made
             username = request.form.get("loginname")
             if username in account_usernames:
-                print("you can log in")
                 session['username'] = username
                 return redirect(url_for('menu'))
             else:
-                login_message = "account doesnt exist"
-                return render_template('login.html', login_message=login_message)
+                flash("Account doesn't exist")
+                return render_template('login.html')
 
 @app.route('/help', methods=['GET', 'POST'])
 def help():
@@ -343,10 +340,13 @@ def menu():
         return False
     
     if request.method == 'GET':
-        # temp code
+        #-- temp code
         flash("current game codes:")
+        codes = ""
         for game in Game.query.all():
-            flash(game.game_code)
+            codes += str(game.game_code) + ", "
+        flash(codes)
+        #--
         return render_template('menu.html')
     formType = request.form.get('button')
     games = Game.query.all()

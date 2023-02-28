@@ -1,77 +1,29 @@
-<!doctype html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <title>Monops</title>
-</head>
+{% block head %}
+<title>Menu</title>
+<meta name="description"
+    content="Some description of the lobby page.">
+<script type="text/javascript" src="/static/js/lobby.js"></script>
+<!-- <link rel="stylesheet" href="/static/css/lobby.css"> -->
+{% endblock %}
 
-<body class="text-center">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
-    <script src="/static/js/script.js"></script>
-    <script>
-    var socket;
-      //runs on refresh or load of lobby
-      $(document).ready(function(){
-          socket = io.connect('http://' + document.domain + ':' + location.port + '/lobby');
-          socket.on('game started', function(data) {
-              window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"
-          });
-          //gathers the player list
-          //adds the players to a table with a remove button 
-          socket.on('player list', function(data) {
-          table = document.getElementById("playersTable");
+{% block body %}
+<p id="aaa">Welcome to the lobby</p>
+<p>Code: {{game_code}}</p>
+<!--<p>HOST:</p>-->
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody id="playersTable"></tbody>
+</table>
 
-            table.innerHTML = `<tr><td>Player 1</td><td>${data.players[0]}</td></tr>`;
-            for(var i=1; i<data.players.length; i++){
-              var row = `<tr>
-                            <td>Player ${i+1}</td>
-                            <td>${data.players[i]}</td>
-                            <td><button type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td>
-                          </tr>`
-              table.innerHTML += row
-            }
-          });
-          
-          socket.emit('check pregame status');
-          socket.on('player not in game', function() {
-            window.location.href = "http://" + document.domain + ":" + location.port + "/menu"
-          });
-      });
-
-      function remove_player(name_of_player_to_remove){
-        socket.emit('remove', {username:name_of_player_to_remove})
-      }
-
-      //calls function every 2.5seconds
-      setInterval(function() {
-          socket.emit('check pregame status');
-      }, 2500); 
-
-
-
-
-    </script>
-
-    <p id="aaa">Welcome to the lobby</p>
-    <p>Code: {{game_code}}</p>
-    <!--<p>HOST:</p>-->
-    <table>
-      <thead>
-        <tr>
-          <th>Number</th>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody id="playersTable"></tbody>
-    </table>
-
-
-    <form action="/lobby" method="POST">  
-      <input type="submit" name="leaveButton" value="Leave Room"></input>
-      <input type="submit" name="startButton" value="Start Game"></input>
-    </form>
-
-</body>
-
-</html>
+<form action="/lobby" method="POST">  
+  <input class="button" type="submit" name="leaveButton" value="Leave Room"></input>
+  <input class="button" type="submit" name="startButton" value="Start Game"></input>
+</form>
+{% endblock %}

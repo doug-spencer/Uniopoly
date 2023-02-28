@@ -1,0 +1,52 @@
+/* BASIC CSS TEMPLATE */
+
+body {
+    background-image: url('/static/images/background.jpg'); /*https://www.vecteezy.com/vector-art/640206-purple-triangulated-background-texture-vector*/
+    background-size: cover;
+    text-align: center;
+    font-family: Arial;
+    font-size: 20px;
+}
+
+.button {
+    padding: 10px 15px;
+    background-image: radial-gradient(ellipse, #7B1FA2, #660099);
+    background-size: cover;
+    font-family: Arial;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.button:hover {
+    background-color: darkviolet;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.text-input {
+    width: 10rem;
+    height: 2.5rem;
+    border: none;
+    margin: 5px;
+    padding: 5px;
+    font-family: Arial;
+    font-size: 30px;
+    font-weight: bold;
+    background-color: white;
+    color: black;
+    text-align: center;
+}
+
+@media only screen {
+    body {
+        background-image: url('/static/images/background-mobile.jpg');
+        background-attachment: fixed;
+        background-size: cover;
+        overflow: hidden;
+    }
+}
