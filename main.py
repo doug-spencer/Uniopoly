@@ -627,7 +627,7 @@ def roll_dice():
         return False
     
     if player.turns_in_jail == 0:
-        roll_value = random.randint(29,29)
+        roll_value = random.randint(1,6)
         current_value = player.position
         new_value = roll_value + current_value
         
