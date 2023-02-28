@@ -23,11 +23,11 @@ $(document).ready(function(){
         };
     });
         //show or hide buy property button
-        socket.on('buy button change', function(data) {
+        socket.on('buy property button change', function(data) {
             if(data.operation == 'show'){
-                $('#buy-button').show();
+                $('#buy-property-button').show();
             } else {
-                $('#buy-button').hide();
+                $('#buy-property-button').hide();
             };
         });
     //show roll value of dice roll
@@ -45,6 +45,11 @@ $(document).ready(function(){
     $('#roll-dice').click(function(e) {
         $('#dice-button').hide();
         socket.emit('roll dice');
+    });
+    //when the roll dice box is pressed
+    $('#buy-property').click(function(e) {
+        $('#buy-property').hide();
+        socket.emit('buy-property');
     });
 });
 //if a player leaves the room (WIP)
