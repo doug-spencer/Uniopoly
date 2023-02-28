@@ -54,6 +54,8 @@ class Game(db.Model):
     game_code = Column(Integer, primary_key=True)
     index_of_turn = Column(Integer)
     game_started = Column(Boolean)
+    
+
     #host_id = db.relationship('Player', lazy='select', uselist=False)#use=Flase for one to one 
     players_connected = db.relationship('Player', backref='game', lazy='select')
     #action for specific index
@@ -104,6 +106,10 @@ class Bus_stop(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     position = Column(Integer)
+    rents = {'0': 0, '1': 25, '2': 50, '3': 100, '4': 200}
+    # owner = Column(String(100))
+    # morgage_value = Column(Integer)
+    # is_owned = Column(Boolean, default=False)
     #players = db.relationship('players', secondary=link_player_property, backref='bus_stop', lazy='select')
 
 class Student_union(db.Model):
@@ -119,6 +125,40 @@ class Email(db.Model):
     amount = Column(Integer)
     save_for_later = Column(Boolean)
     #players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
+
+# create community chest and chace card class
+# create card class
+class Card(db.Model):
+    id = Column(Integer, primary_key=True)
+    text = Column(String(500))
+    amount = Column(Integer)
+    save_for_later = Column(Boolean)
+    #players = db.relationship('players', secondary=link_player_property, backref='email', lazy='select')
+    instruction = Column(String(100))
+    #method to return the card face down to bottom of deck
+    card_bottom_deck = Column(Boolean, default=False)
+    #method to return the card face up to top of deck
+    card_top_deck = Column(Boolean, default=False)
+    #method to return the card to the player
+    card_to_player = Column(Boolean, default=False)
+    
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+
+
+
 
 
 #admin1 = Account(username='jacob')
@@ -150,7 +190,7 @@ def check_in_game(game_code, username): #verification fucntion
     return game, player
 
 def show_player_options(player, game, session):
-    return False #while db is empty
+    # return False #while db is empty
     pos = player.position
 
     all_properties = Property.query.all()
@@ -166,7 +206,7 @@ def show_player_options(player, game, session):
     all_bus_stops = Bus_stop.query.all()
     index_of_bus_stops = [i.postion for i in all_bus_stops]
     if pos in index_of_bus_stops:
-        return player_landed_on_utility(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
+        return player_landed_on_bus_stop(player, game, session, all_bus_stops[index_of_bus_stops.index(pos)])
     
     all_emails = Emails.query.all()
     index_of_emails = [i.postion for i in all_emails]
@@ -209,11 +249,98 @@ def player_landed_on_utility(player, game, session):
 def player_landed_on_property(player, game, session, property):
     emit('message', {'msg': player.username + ' landed on property '}, room=game.game_code)
 
-def player_landed_on_bus_stop(player, game, session):
-    emit('message', {'msg': player.username + ' landed on a bus stop '}, room=game.game_code)
+def player_landed_on_bus_stop(player, game, session, bus_stop):
 
-def player_landed_on_card(player, game, session):
-    emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game.game_code)
+    # Check if the player owns the bus stop
+
+    '''Player landed on Bus stop'''
+    # Check if the player owns the bus stop
+    if player == bus_stop.owner:
+    # If they do, do nothing   
+        emit('message', {'msg': player.username + ' landed on their own bus stop '}, room=game.game_code) 
+    # If they don't, check who owns the bus stop
+    else:
+        # If no one owns the bus stop, the player can buy it
+        if not bus_stop.owner:
+            emit('message', {'msg': player.username + ' landed on an unowned bus stop '}, room=game.game_code)
+            emit('message', {'msg': player.username + ' can buy the bus stop '}, room=game.game_code)
+            emit('message', {'msg': 'The bus stop costs ' + str(bus_stop.cost) + ' '}, room=game.game_code)
+            emit('message', {'msg': 'The player has ' + str(player.money) + ' '}, room=game.game_code)
+            if player.money >= bus_stop.cost:
+                emit('message', {'msg': player.username + ' has enough money to buy the bus stop '}, room=game.game_code)
+                emit('message', {'msg': player.username + ' buys the bus stop '}, room=game.game_code)
+                bus_stop.owner = player
+                player.money -= bus_stop.cost
+                emit('message', {'msg': 'The player now has ' + str(player.money) + ' '}, room=game.game_code)
+                emit('message', {'msg': 'The bus stop is now owned by ' + str(bus_stop.owner.username) + ' '}, room=game.game_code)
+            else:
+                emit('message', {'msg': player.username + ' does not have enough money to buy the bus stop '}, room=game.game_code)
+                emit('message', {'msg': player.username + ' does not buy the bus stop '}, room=game.game_code)
+        # If someone owns the bus stop, the player has to pay rent, for each bus they own they pay a different amount
+
+        else:
+            emit('message', {'msg': player.username + ' landed on a bus stop owned by ' + str(bus_stop.owner.username) + ' '}, room=game.game_code)
+            emit('message', {'msg': player.username + ' has to pay rent '}, room=game.game_code)
+            emit('message', {'msg': 'The player has ' + str(player.money) + ' '}, room=game.game_code)
+            emit('message', {'msg': 'The bus stop owner has ' + str(bus_stop.owner.money) + ' '}, room=game.game_code)
+            if player.money >= bus_stop.rent:
+                emit('message', {'msg': player.username + ' has enough money to pay the rent '}, room=game.game_code)
+                emit('message', {'msg': player.username + ' pays the rent '}, room=game.game_code)
+                player.money -= bus_stop.rent
+                bus_stop.owner.money += bus_stop.rent
+                emit('message', {'msg': 'The player now has ' + str(player.money) + ' '}, room=game.game_code)
+                emit('message', {'msg': 'The bus stop owner now has ' + str(bus_stop.owner.money) + ' '}, room=game.game_code)
+            else:
+                emit('message', {'msg': player.username + ' does not have enough money to pay the rent '}, room=game.game_code)
+                emit('message', {'msg': player.username + ' goes bankrupt '}, room=game.game_code)
+                emit('message', {'msg': 'The player now has ' + str(player.money) + ' '}, room=game.game_code)
+                emit('message', {'msg': 'The bus stop owner now has ' + str(bus_stop.owner.money) + ' '}, room=game.game_code)
+                player.money = 0
+                emit('message', {'msg': player.username + ' is removed from the game '}, room=game.game_code)
+                game.players.remove(player)
+                session.commit()
+
+        db.session.commit()
+
+ 
+def player_landed_on_card(player, game, session, card):
+
+    # if player lands on card emit message to client
+    
+    emit('message', {'msg': player.username + ' landed on a card '}, room=game.game_code)
+    emit('message', {'msg': 'The card is ' + str(card.type) + ' '}, room=game.game_code)
+    emit('message', {'msg': 'The card says ' + str(card.instructions) + ' '}, room=game.game_code)
+    #if card is chance then do chance card instrucitons and is instance of card class
+    if card.type == "Chance":
+        game.chance_cards.remove(card)
+        
+
+        # Do the chance card instructions
+        game.chance_cards.append(card)
+        
+    #if card is community chest then do community chest instructions
+    elif card.type == "Community Chest":
+        game.community_chest_cards.remove(card)
+        # Do the community chest card instructions
+        game.community_chest_cards.append(card)
+    
+        
+    
+
+  
+    
+    db.session.commit()
+
+ 
+   
+
+
+
+
+
+
+           
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -495,6 +622,72 @@ def update_turn():
     else:
         #emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
         emit('roll dice button change', {'operation': 'hide'}, session=session)
+
+
+def player_landed_on_bus(player, game, session, bus_stop):
+    print('player landed on bus')
+    # if player.money < 200:
+    #     emit('message', {'msg': 'You do not have enough money to buy this property'}, session=session)
+    #     return False
+    # player.money -= 200
+    # player.properties.append(Property.query.filter_by(name='bus').first())
+    # db.session.commit()
+    # emit('message', {'msg': player.username + ' has bought the bus for $200'}, room=game.game_code)
+    # show_player_options(player, game, session)
+
+    if player in bus_stop.players:
+        # If player does own the bus stop, do nothing
+        return 
+    else:
+        # Check who owns the bus stop
+        owner = None
+        for p in bus_stop.players:
+            # owner = p
+            if p == player:
+                owner = p
+                break
+        
+            if owner:
+                # If the bus stop is owned by another player, check how many bus stops they own
+                count = 0
+                for bs in Bus_stop.query.all():
+                    if owner in bs.players:
+                        count += 1
+                
+                # Calculate the rent based on the number of bus stops owned
+                rent = bus_stop.rents[count]
+                
+                # If the player doesn't have enough money, all of their money goes to the owner
+                if player.money < rent:
+                    owner.money += player.money
+                    player.money = 0
+                    
+                    # If the player goes bankrupt, remove them from the game and auction their cards
+                    game.players_connected.remove(player)
+                    flash('You went bankrupt and were removed from the game!')
+                    # Auction player's cards here
+                else:
+                    # If the player has enough money, deduct the rent and give it to the owner
+                    player.money -= rent
+                    owner.money += rent
+        else:
+            # If the bus stop is unowned, give the player the option to buy it
+            # Code to present buy option to player here
+            player_wants_to_buy = input("Do you want to buy this property? (y/n) ")
+            if player_wants_to_buy.upper == "Y":
+                player_wants_to_buy = True
+            else:
+                player_wants_to_buy = False
+                                        
+            if player_wants_to_buy:
+                # Add the property to the table and link it with the player
+                player.bus_stop.append(bus_stop)
+                bus_stop.players.append(player)
+                player.money -= bus_stop.price
+            else:
+                # Put the property up for sale to other players
+                # Code to handle property auction here
+    return
 
 '''
 def players_turn_to_roll(game_code):
