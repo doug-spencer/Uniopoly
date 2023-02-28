@@ -46,6 +46,14 @@ function leave_room() {
         window.location.href = "{{ url_for('index') }}";
     });
 }
+
+function buy_property() {
+    const property = document.getElementById('property').value;
+    socket.emit('buy property', {property: property});
+    
+
+    
+}
 //calls function every 2.5seconds
 setInterval(function() {
     socket.emit('update turn');
