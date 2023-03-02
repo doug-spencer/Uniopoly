@@ -2,7 +2,7 @@ from flask import flash, render_template, request, session
 from re import search
 from App.main import app
 from App.database.database_classes import Game
-from App.models.func import create_game, join_game
+from App.models.func.game import create_game, join_game
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
