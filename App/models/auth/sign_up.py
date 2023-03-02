@@ -1,6 +1,6 @@
 from flask import redirect, render_template, request, session, url_for
 from App.main import db
-from App.models.classes.main import Account
+from App.database.database_classes import Account
 from .account_check import check_account
 
 def signup():

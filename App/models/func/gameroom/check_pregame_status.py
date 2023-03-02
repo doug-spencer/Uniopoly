@@ -1,7 +1,7 @@
 from flask import session
 from flask_socketio import emit
 from App.main import socketio
-from App.models.classes.main import Game, Player
+from App.database.database_classes import Player, Game
 
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
 def check_pregame_status():

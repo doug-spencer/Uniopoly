@@ -23,10 +23,8 @@ engine = create_engine('sqlite:///database.db', echo=False)
 #     except Exception as e:
 #         print(e)
 
+db.session.commit()
+from App.routes import index, lobby, menu, help, gameroom
+from App.database import database_classes
 db.create_all()
 db.session.commit()
-
-
-
-from App.routes import index, lobby, menu, help, gameroom
-from App.models.func import *

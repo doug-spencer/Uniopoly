@@ -317,7 +317,7 @@ def show_player_options(player, game_code, session):
     all_emails = Email.query.all()
     index_of_emails = [i.postion for i in all_emails]
     if pos in index_of_emails:
-        return player_landed_on_card(player, game, session, all_emails[index_of_emails.index(pos)])
+        return player_landed_on_card(player, game_code, session, all_emails[index_of_emails.index(pos)])
     
     # all_student_unions = Student_union.query.all()
     # index_of_student_unions = [i.position for i in all_student_unions]

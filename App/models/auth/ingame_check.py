@@ -1,4 +1,4 @@
-from App.models.classes.main import Account, Game
+from App.database.database_classes import Account, Game
 
 def check_in_game(game_name, username): #verification fucntion
     game = Game.query.filter_by(game_code = game_name).first()

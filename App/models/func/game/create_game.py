@@ -1,7 +1,7 @@
 from flask import flash, redirect, session, url_for
 import random
 from App.main import db
-from App.models.classes.main import Account, Game, Player
+from App.database.database_classes import Game, Account, Player
 
 def create_game(username):
     new_id = ""

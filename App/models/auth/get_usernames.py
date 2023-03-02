@@ -1,4 +1,4 @@
-from App.models.classes.main import Account
+from App.database.database_classes import Account
 
 def get_account_usernames():
     accounts = Account.query.all()

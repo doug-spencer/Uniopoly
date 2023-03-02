@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, session, url_for
 from App.main import db
-from App.models.classes.main import Game, Player
 from App.models.auth import check_account
+from App.database.database_classes import Game, Player
 
 def join_game(code):
     game = Game.query.filter_by(game_code=code).first()
