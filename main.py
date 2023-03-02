@@ -340,13 +340,6 @@ def menu():
         return False
     
     if request.method == 'GET':
-        #-- temp code
-        flash("current game codes:")
-        codes = ""
-        for game in Game.query.all():
-            codes += str(game.game_code) + ", "
-        flash(codes)
-        #--
         return render_template('menu.html')
     formType = request.form.get('button')
     games = Game.query.all()

@@ -10,16 +10,17 @@
 
 {% block body %}
 <h2>Welcome to the lobby</h2>
-<h1>{{game_code}}</h1>
+<h1 id="code">{{game_code}}</h1>
 
-<table class="players-table">
+<table id="players-table">
   <thead>
-    <tr>
+    <tr class="table-header">
       <th>Number</th>
       <th>Name</th>
+      <th></th>
     </tr>
   </thead>
-  <tbody class="players-table-body"></tbody>
+  <tbody id="table-body"></tbody>
 </table>
 
 <form action="/lobby" method="POST">  

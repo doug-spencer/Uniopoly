@@ -1,26 +1,28 @@
-.players-table {
+#code {
+    font-family: 'Fredoka One', cursive;
+    margin: 0.5rem;
+    font-size: 75px;
+}
+
+#players-table {
     border-collapse: collapse;
     font-family: Arial, sans-serif;
 }
 
-.players-table th {
+.table-header th:not(:last-child) {
+    padding: 10px;
     background-image: radial-gradient(ellipse, #7B1FA2, #660099);
     border: 5px solid white;
     color: white;
-    padding: 10px;
 }
 
-.players-table td {
+.table-rows td:not(:last-child) {
+    padding: 10px;
     background-color: white;
     border: 5px solid white;
     color: black;
-    padding: 10px;
 }
 
-.players-table tr:nth-child(even) td {
+.table-rows:not(:last-child):nth-child(even) td {
     background-color: #f2f2f2;
-}
-
-.players-table tr:hover td {
-    background-color: #ddd;
 }
