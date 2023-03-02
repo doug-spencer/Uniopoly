@@ -1,7 +1,9 @@
 from flask import session
-from flask_socketio import emit
-from App.main import socketio
+from flask_socketio import emit, join_room, leave_room
 from App.database.database_classes import Player, Game
+from App.main import db, socketio
+from App.models.auth import check_in_game
+from random import randint
 
 @socketio.on('check pregame status', namespace='/lobby') #player updating lobby screen
 def check_pregame_status():
@@ -23,18 +25,11 @@ def check_pregame_status():
         print('usrs: ', usernames)
         emit('player list', {'players': usernames}, session=session)
 
-from flask import session
-from flask_socketio import emit, join_room
-from App.main import socketio
-
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
     game_code = session.get('game_code')
     join_room(game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
-
-from flask import session
-from App.main import socketio
 
 @socketio.on('leave lobby', namespace='/lobby') #player leaving lobby
 def leave_lobby():
@@ -44,10 +39,6 @@ def leave_lobby():
         return False
     #emit('status', {'msg':  session.get('username') + ' has entered the room.'}, session=session)
 
-from flask import session
-from flask_socketio import emit, leave_room
-from App.main import socketio
-
 @socketio.on('left', namespace='/gameroom') #leaving room
 def left(message):
     game_code = session.get('game_code')
@@ -55,9 +46,6 @@ def left(message):
     leave_room(game_code)
     session.clear()
     emit('status', {'msg': username + ' has left the room.'}, room = game_code)
-
-from flask import session
-from App.main import db, socketio
 
 @socketio.on('remove', namespace='/lobby')
 def remove(data):
@@ -71,12 +59,6 @@ def remove(data):
     db.session.commit()
     print(data['username'])
 
-from flask import session
-from flask_socketio import emit
-import random
-from App.main import db, socketio
-from App.models.auth import check_in_game
-
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
 def roll_dice():
     game_code = session.get('game_code')
@@ -84,7 +66,7 @@ def roll_dice():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
-    roll_value = random.randint(1,6)
+    roll_value = randint(1,6)
     current_value = player.position
     new_value = roll_value + current_value
     if new_value > 39:
@@ -100,19 +82,10 @@ def roll_dice():
     emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
-from flask import session
-from flask_socketio import emit
-from App.main import socketio
-
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):
     game_code = session.get('game_code')
     emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room = game_code)
-
-from flask import session
-from flask_socketio import emit
-from App.main import socketio
-from App.models.auth import check_in_game
 
 @socketio.on('update turn', namespace='/gameroom') #check if its players turn yet (if roll dice button should be shown)
 def update_turn():
