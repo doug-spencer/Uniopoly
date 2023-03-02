@@ -7,7 +7,7 @@ $(document).ready(function() {
     //gathers the player list
     //adds the players to a table with a remove button 
     socket.on('player list', function(data) {
-    table = document.getElementById("playersTable");
+    table = document.getElementById("players-table-body");
 
       table.innerHTML = `<tr><td>Player 1</td><td>${data.players[0]}</td></tr>`;
       for(var i=1; i<data.players.length; i++){

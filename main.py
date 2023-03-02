@@ -309,7 +309,7 @@ def menu():
         db.session.add(game)
         db.session.commit()
         session['game_code'] = new_id 
-        flash("Game created with code " + new_id)
+        # flash("Game created with code " + new_id)
         return redirect(url_for('lobby'))
         
     def join_game(game):

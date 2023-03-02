@@ -5,21 +5,21 @@
 <meta name="description"
     content="Some description of the lobby page.">
 <script type="text/javascript" src="/static/js/lobby.js"></script>
-<!-- <link rel="stylesheet" href="/static/css/lobby.css"> -->
+<link rel="stylesheet" href="/static/css/lobby.css">
 {% endblock %}
 
 {% block body %}
-<p id="aaa">Welcome to the lobby</p>
-<p>Code: {{game_code}}</p>
-<!--<p>HOST:</p>-->
-<table>
+<h2>Welcome to the lobby</h2>
+<h1>{{game_code}}</h1>
+
+<table class="players-table">
   <thead>
     <tr>
       <th>Number</th>
       <th>Name</th>
     </tr>
   </thead>
-  <tbody id="playersTable"></tbody>
+  <tbody class="players-table-body"></tbody>
 </table>
 
 <form action="/lobby" method="POST">  
