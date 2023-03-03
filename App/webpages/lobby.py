@@ -4,6 +4,7 @@ from App.database.tables import Game, Player
 
 @app.route('/lobby', methods=['GET', 'POST'])
 def lobby():
+    print('method:  ',request.method)
     try:
         username = session['username']
     except:
@@ -16,10 +17,10 @@ def lobby():
     game = Game.query.filter_by(game_code=game_code).first()
     player = Player.query.filter_by(username=username).first()
     #only runs if POST
-    if request.form.get('leaveButton') == 'leave room':
+    if request.form.get('leaveButton') == 'Leave Room':
         player.query.filter_by(username=username).delete()
         return redirect(url_for('menu'))
-    elif request.form.get('startButton') == 'start game':
+    elif request.form.get('startButton') == 'Start Game':
         if game.players_connected[0].username != username:
             #player isnt host
             return False

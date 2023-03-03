@@ -25,6 +25,7 @@ db.session.commit()
 
 from App.webpages import index, menu, lobby, gameroom, help
 from App.database import tables
+from App.socketio import gameroom, lobby
 
 db.create_all()
 db.session.commit()
