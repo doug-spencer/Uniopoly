@@ -23,7 +23,7 @@ engine = create_engine('sqlite:///database.db', echo=False)
 
 db.session.commit()
 
-from App.routes import *
+from App.webpages import index, menu, lobby, gameroom, help
 from App.database import tables
 
 db.create_all()
