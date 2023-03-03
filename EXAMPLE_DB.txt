@@ -1,0 +1,19 @@
+Property
+unsworth;brown;property.png;36;350;200;10,20,30,40,50,60,70
+name;colour;photos file name; postion; buy price; morgage amount; rents(regular rent, rent when you have every colour, 1 house, ..., 4 houses,1 hotel)
+
+Utilities
+chesters;if you own 1 utility u gets ........;utilites_chesters.png;15;200;100
+name;text;photos file name; postion; buy price; morgage amount
+
+Bus stop
+fallow;bus_stop_fallow.png;4;200;100
+name;photos file name; postion; buy price; morgage amount
+
+Student union
+birthday!;its your birthday u get 50;+50;False
+name;text; amount; save_for_later?
+
+Email
+big mistake;you miss a deadline and have to bribe your teacher you lose 100;-100;False
+text; amount; save_for_later?

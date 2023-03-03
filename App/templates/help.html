@@ -1,26 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
-    <script src="/static/js/script.js"></script>
-    <script>
-    var socket;
-      $(document).ready(function(){
-          socket = io.connect('http://' + document.domain + ':' + location.port + '/menu');
-          //add
-      });
-    </script>
-    <title>Help</title>
-</head>
-<body>
-    <H1>Help Page</H1>
-    <form method="POST">
-        <input type="submit" name="button" value="Menu Page">
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block head %}
+<title>Help</title>
+<meta name="description"
+    content="Some description of the help page.">
+<link rel="stylesheet" href="/static/css/help.css">
+{% endblock %}
+
+{% block body %}
+<h1>Help Page</h1>
+<button class="button" onclick="window.location.href = 'menu';">Menu Page</button>
+<div>        
+    <a href="#SaWTM">Spaces and What They Mean</a>
+    <br>
+    <a href="#rules">Rules</a>
+    <h2 class="card-head" id="SaWTM">Spaces and What They Mean</h2>
+    <h3 style="color: grey;">GO</h3>
+    <p>Each time a player lands on or passes over GO the bank pays them [AMOUNT] of [CURRENCY].</p>
+    <h3 style="color: grey;">UNOWNED PROPERTY</h3>
+    <p>When a player lands on an unowned property they have the option to buy the property from the bank at the shown price. <br> If you choose to buy the property you will receive the card for it. However if you choose not to buy the property, the bank sells it at an auction for all players to the highest bidder and they receive the card.</p>
+    <h3 style="color: grey;">OWNED PROPERTY</h3>
+    <p>When a player lands on a property that is owned by them they do nothing. If a player lands on a property that is <i>not</i> owned by them then they must pay rent to the owner in accordance with the price on the card. <br> </p>
+    <h2 class="card-head" id="rules">Rules</h2>
+    <h3 class="card-subhead" style="color: grey;">Before the game</h3>
+    <p>The aim of the game is to become the richest player, this can be done via buying, renting, and selling properties.</p>
+    <p>Each player starts with [AMOUNT] of [CURRENCY].</p>
+    <h3 class="card-subhead" style="color: grey;">The Game</h3>
+    <p>The chosen player throws the dice.</p>
+    <p>The space that you land on determines what you can do this round. (You may be: able to buy properties / made to pay rent/taxes / told to draw a card / forced to go to jail etc.)</p>
+</div>
+{% endblock %}

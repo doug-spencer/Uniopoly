@@ -1,39 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
-    <script src="/static/js/script.js"></script>
-    <script>
-    var socket;
-      $(document).ready(function(){
-          socket = io.connect('http://' + document.domain + ':' + location.port + '/menu');
-          //add
-      });
-    </script>
-</head>
-<body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+{% extends "base.html" %}
 
-    <form method="POST">
-        Code : <input name="code" type="text" placeholder="Enter Code">
-        <input type="submit" name="button" value="Join"><br>
-    </form>
-    <form method="POST">
-        <input type="submit" name="button" value="Create Game">
-    </form>
-    <form method="POST">
-        <input type="submit" name="button" value="Help Page">
-    </form>
-</body>
-</html>
+{% block head %}
+<title>Menu</title>
+<meta name="description"
+    content="Join or create a Uni-opoly game with this menu page. Enter the game code, generate a new game, or access the help page.">
+<script type="text/javascript" src="/static/js/menu.js"></script>
+<link rel="stylesheet" href="/static/css/menu.css">
+{% endblock %}
+
+{% block body %}
+<div id="outer-frame">
+    <div id="inner-frame">
+        <form id="join-form" method="POST">
+            <label id="code-label" for="text-input">Code:</label>
+            <input class="text-input" type="tel" name="code" autocomplete="off" maxlength="6">
+            <input class="button" type="submit" name="button" value="Join">
+        </form>
+        <form id="create-form" method="POST">
+            <input class="button" type="submit" name="button" value="Create Game">
+        </form>
+    </div>
+</div>
+<button class="button" id="help-button" onclick="window.location.href='help';">Help Page</button>
+{% endblock %}

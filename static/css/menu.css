@@ -1,0 +1,51 @@
+#outer-frame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50rem;
+    height: 20rem;
+}
+
+#inner-frame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 30px;
+    width: 30rem;
+    height: 10rem;
+}
+
+#join-form {
+    display: inline-block;
+    padding: 10px 20px 10px 10px;
+    border: 0.1px solid white;
+    border-radius: 2px;
+    background-image: radial-gradient(circle, #c9c9e6, #e6e6fa);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    font-size: 25px;
+}
+
+#create-form {
+    display: inline-block;
+    padding: 10px;
+    font-size: 25px;
+}
+
+#code-label {
+    display: inline-block;
+    width: 6rem;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 27px;
+    color: black;
+    text-align: right;
+    margin-right: 1rem;
+}
+
+#help-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}

@@ -1,0 +1,40 @@
+p1;brown;property.png;1;200;100;10,20,30,40,50,60,70
+p2;brown;property.png;2;200;100;10,20,30,40,50,60,70
+p3;brown;property.png;3;200;100;10,20,30,40,50,60,70
+p4;light blue;property.png;5;200;100;10,20,30,40,50,60,70
+p5;light blue;property.png;6;200;100;10,20,30,40,50,60,70
+p6;light blue;property.png;8;200;100;10,20,30,40,50,60,70
+p7;blue;property.png;10;200;100;10,20,30,40,50,60,70
+p8;blue;property.png;12;200;100;10,20,30,40,50,60,70
+p9;blue;property.png;13;200;100;10,20,30,40,50,60,70
+p10;orange;property.png;15;200;100;10,20,30,40,50,60,70
+p11;orange;property.png;17;200;100;10,20,30,40,50,60,70
+p12;orange;property.png;18;200;100;10,20,30,40,50,60,70
+p13;yellow;property.png;20;200;100;10,20,30,40,50,60,70
+p14;yellow;property.png;22;200;100;10,20,30,40,50,60,70
+p15;yellow;property.png;23;200;100;10,20,30,40,50,60,70
+p16;green;property.png;25;200;100;10,20,30,40,50,60,70
+p17;green;property.png;27;200;100;10,20,30,40,50,60,70
+p18;green;property.png;28;200;100;10,20,30,40,50,60,70
+p19;pink;property.png;30;200;100;10,20,30,40,50,60,70
+p20;pink;property.png;32;200;100;10,20,30,40,50,60,70
+p21;pink;property.png;33;200;100;10,20,30,40,50,60,70
+p22;dark blue;property.png;35;200;100;10,20,30,40,50,60,70
+p23;dark blue;property.png;38;200;100;10,20,30,40,50,60,70
+
+chesters;if you own 1 utility u gets ........;utilites_chesters.png;11;200;100
+new z wine;if you own 1 utility u gets ........;new_z_wine.png;37;200;100
+
+bs1;bus_stop_1.png;4;200;100
+bs2;bus_stop_2.png;14;200;100
+bs3;bus_stop_3.png;24;200;100
+bs4;bus_stop_4.png;34;200;100
+
+its your birthday u get 50;+50;False
+its your birthday u get 10;+10;False
+its your birthday u get 20;+20;False
+its your birthday u get 30;+30;False
+
+you miss a deadline and have to bribe your teacher you lose 100;-100;False
+you miss a deadline and have to bribe your teacher you lose 200;-200;False
+you miss a deadline and have to bribe your teacher you lose 300;-300;False
