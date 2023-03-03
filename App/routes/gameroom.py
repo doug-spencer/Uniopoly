@@ -1,6 +1,6 @@
 from flask import session, request, render_template, url_for, redirect
 from App.main import app, db
-from App.database.database_classes import Account, Game
+from App.database.tables import Account, Game
 
 @app.route('/gameroom', methods=['GET', 'POST'])
 def game_room():

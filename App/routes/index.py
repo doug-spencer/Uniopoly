@@ -1,6 +1,7 @@
-from flask import render_template, request
-from App.main import app
-from App.models.auth import login, signup
+from flask import render_template, request, session, redirect, url_for
+from App.main import db, app
+from App.database.tables import Account
+from App.misc.functions import check_account
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -14,3 +15,27 @@ def index():
             return signup()
         elif formSubmitted == "login":
             return login()
+        
+def login():
+    username = request.form.get("loginname")
+    account = check_account(username)
+    if account:
+        print("You can log in")
+        session['username'] = username
+        return redirect(url_for('menu'))
+    else:
+        print("Account doesn't exist")
+        return render_template('login.html')
+
+def signup():
+    username = request.form.get("signupname")
+    account = check_account(username)
+    if account:
+        print("Account taken")
+        return render_template('login.html')
+    else:
+        new_account = Account(username=username)
+        db.session.add(new_account)
+        db.session.commit()
+        session['username'] = username
+        return redirect(url_for('menu'))
