@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'secret'
@@ -23,7 +23,7 @@ engine = create_engine('sqlite:///database.db', echo=False)
 
 db.session.commit()
 
-from App.webpages import index, menu, lobby, gameroom, help
+from App.webpages import index, menu, lobby, gameroom, help, logout
 from App.database import tables
 from App.socketio import gameroom, lobby
 

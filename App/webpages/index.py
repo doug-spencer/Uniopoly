@@ -26,7 +26,12 @@ def index():
         return render_template("gameroom")
         '''
         print('tok')
-        return take_to_right_page()
+        page, game_code = take_to_right_page()
+        if page == 'login':
+            return render_template("login.html")
+        if game_code != None:
+            return redirect(url_for(page))
+        return redirect(url_for(page, game_code=game_code))
     elif(request.method=='POST'):
         formSubmitted = request.form.get("button")
         print(formSubmitted)

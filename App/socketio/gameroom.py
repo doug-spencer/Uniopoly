@@ -7,6 +7,8 @@ from random import randint
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
     game_code = session.get('game_code')
+    if game_code == None:
+        return False
     join_room(game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
 

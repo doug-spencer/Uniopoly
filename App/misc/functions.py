@@ -35,14 +35,19 @@ def take_to_right_page():
         username = session['username']
         player = Player.query.filter_by(username=username).first()
     except: #user isnt logged in
-        return redirect(url_for("game_room"))
-    if not player:
-        return redirect(url_for("game_room"))
+        print(1)
+        return "login", None
+    if player == None:
+        print(2)
+        return "menu", None
     print(player.game_code)
     game = Game.query.filter_by(game_code=player.game_code).first()
     if game == None:
         flash("your not in any games")
-        return render_template("menu")
+        print(3)
+        return "menu", None
     if game.game_started:
-        return redirect(url_for("game_room"))
-    return redirect(url_for("lobby", game_code=game.game_code))
+        print(4)
+        return "game_room", None
+    print(5)
+    return "lobby", game.game_code
