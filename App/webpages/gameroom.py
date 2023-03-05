@@ -31,5 +31,5 @@ def game_room():
         #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
     else:
-        return take_to_right_page()
+        #return take_to_right_page()
         return render_template('game_room.html', session = session)

@@ -2,16 +2,16 @@ from flask import flash, render_template, redirect, url_for, request, session
 from re import search
 from App.main import app, db
 from App.database.tables import Game, Player, Account
-from App.misc.functions import check_account
+from App.misc.functions import check_account, take_to_right_page
 from random import randint
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
-    try:
-        username = session['username']
-    except: #player isnt in session (hasnt logged in)
-        return False
-
+    page, game_code = take_to_right_page()
+    if page != 'menu':
+        if game_code != None:
+            return redirect(url_for(page))
+        return redirect(url_for(page, game_code=game_code))
     if request.method == 'GET':
         # temp code
         flash("current game codes:")
@@ -26,6 +26,7 @@ def menu():
         if search("^\d{6}$", code):
             return join_game(code)
     else:
+        username = session['username']
         return create_game(username)
     
 def create_game(username):
