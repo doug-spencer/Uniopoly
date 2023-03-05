@@ -2,14 +2,14 @@ from flask import flash, render_template, redirect, url_for, request, session
 from re import search
 from App.main import app, db
 from App.database.tables import Game, Player, Account
-from App.misc.functions import check_account, take_to_right_page
+from App.misc.functions import check_account, get_correct_location
 from random import randint
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
-    page, game_code = take_to_right_page()
+    page, game_code = get_correct_location()
     if page != 'menu':
-        if game_code != None:
+        if game_code == None:
             return redirect(url_for(page))
         return redirect(url_for(page, game_code=game_code))
     if request.method == 'GET':

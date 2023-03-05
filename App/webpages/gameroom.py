@@ -1,7 +1,7 @@
 from flask import session, request, render_template, url_for, redirect
 from App.main import app, db
 from App.database.tables import Account, Game
-from App.misc.functions import take_to_right_page
+from App.misc.functions import get_correct_location
 
 @app.route('/gameroom', methods=['GET', 'POST'])
 def game_room():
@@ -31,5 +31,5 @@ def game_room():
         #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
     else:
-        #return take_to_right_page()
+        #return get_correct_location()
         return render_template('game_room.html', session = session)

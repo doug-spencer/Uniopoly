@@ -30,7 +30,7 @@ def check_in_game(game_name, username): #verification fucntion
         return False, False
     return game, player
 
-def take_to_right_page():
+def get_correct_location():
     try:
         username = session['username']
         player = Player.query.filter_by(username=username).first()

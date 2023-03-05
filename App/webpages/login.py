@@ -1,10 +1,10 @@
 from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db, app
 from App.database.tables import Account, Game
-from App.misc.functions import check_account, take_to_right_page
+from App.misc.functions import check_account, get_correct_location
 
 @app.route('/', methods=['GET', 'POST'])
-def index():
+def login():
     if(request.method=='GET'):
         '''
         try:
@@ -25,11 +25,10 @@ def index():
             return render_template("menu")
         return render_template("gameroom")
         '''
-        print('tok')
-        page, game_code = take_to_right_page()
+        page, game_code = get_correct_location()
         if page == 'login':
             return render_template("login.html")
-        if game_code != None:
+        if game_code == None:
             return redirect(url_for(page))
         return redirect(url_for(page, game_code=game_code))
     elif(request.method=='POST'):
