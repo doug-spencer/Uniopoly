@@ -1,12 +1,32 @@
-from flask import render_template, request, session, redirect, url_for
+from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db, app
-from App.database.tables import Account
-from App.misc.functions import check_account
+from App.database.tables import Account, Game
+from App.misc.functions import check_account, take_to_right_page
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if(request.method=='GET'):
-        return render_template('login.html')
+        '''
+        try:
+            username = session['username']
+        except: #user isnt logged in
+            return render_template('login.html')
+        try:
+            gamename = session['game_name']
+        except: #user isnt in a game
+            return redirect(url_for('menu'))
+        game = Game.query.filter_by(gamename=gamename)
+        if game == None:
+            flash("game you were in has ended")
+            return render_template("menu")
+        print([i.username for i in game.players_connected])
+        if username not in [i.username for i in game.players_connected]:
+            flash("your not in the game anymore my friend")
+            return render_template("menu")
+        return render_template("gameroom")
+        '''
+        print('tok')
+        return take_to_right_page()
     elif(request.method=='POST'):
         formSubmitted = request.form.get("button")
         print(formSubmitted)

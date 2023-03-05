@@ -16,7 +16,8 @@ def menu():
         # temp code
         flash("current game codes:")
         for game in Game.query.all():
-            flash(game.game_code)
+            if not game.game_started:
+                flash(game.game_code)
         return render_template('menu.html')
     formType = request.form.get('button')
 
@@ -54,7 +55,9 @@ def join_game(code):
     if not game:
         flash("Code was not valid")
         return render_template('menu.html')
-
+    if game.game_started:
+        flash("Game has already started, please pick on the list!!")
+        return render_template('menu.html')
     account = check_account(session['username'])
     player = Player(position=0, index_in_game=len(game.players_connected), money=7)
     account.game_instances.append(player)

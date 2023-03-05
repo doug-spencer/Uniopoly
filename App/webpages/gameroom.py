@@ -30,11 +30,4 @@ def game_room():
         #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
     else: 
-        if(session.get('username') is not None): #player is already in a session
-            return render_template('game_room.html', session = session)
-        else: #if not logged in
-            games = Game.query.all()
-            game_names = []
-            for i in games:
-                game_names.append(i.game_name)
-            return redirect(url_for('index'), games = game_names)
+        return render_template('game_room.html', session = session)
