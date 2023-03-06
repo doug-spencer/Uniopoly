@@ -3,6 +3,7 @@ from flask_socketio import emit, join_room, leave_room
 from App.main import db, socketio
 from App.misc.functions import check_in_game
 from random import randint
+from App.gamelogic import gamelogic
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -37,8 +38,9 @@ def roll_dice():
     else:
         game.index_of_turn = game.index_of_turn + 1
     db.session.commit()
-    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at possiton ' + str(new_value)}, room = game_code)
+    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
     emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
+    gamelogic.show_player_options(player, game_code, session)
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
 @socketio.on('text', namespace='/gameroom') #sending text
