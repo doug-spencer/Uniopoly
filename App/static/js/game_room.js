@@ -56,16 +56,12 @@ $(document).ready(function(){
 function leave_room() {
     socket.emit('left', {}, function() {
         socket.disconnect();
-        window.location.href = "{{ url_for('index') }}";
+        window.location.href = "/menu";
     });
 }
-
 function buy_property() {
     const property = document.getElementById('property').value;
     socket.emit('buy property', {property: property});
-    
-
-    
 }
 //calls function every 2.5seconds
 setInterval(function() {

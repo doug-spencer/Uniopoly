@@ -9,6 +9,6 @@ def logout():
     try:
         username = session['username']
     except:
-        return redirect(url_for("index"))
+        return redirect(url_for("login"))
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("login"))

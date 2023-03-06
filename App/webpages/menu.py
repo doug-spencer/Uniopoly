@@ -59,12 +59,15 @@ def join_game(code):
     if game.game_started:
         flash("Game has already started, please pick on the list!!")
         return render_template('menu.html')
-    account = check_account(session['username'])
+    account = Account.query.filter_by(username=session['username']).first()
+    if account.username in [i.username for i in game.players_connected]:
+        flash("You are already in this game")
+        return render_template('menu.html')
     player = Player(position=0, index_in_game=len(game.players_connected), money=7)
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)
     db.session.commit()
     flash("Game joined!")
-    session['game_code'] = code 
+    session['game_code'] = code
     return redirect(url_for('lobby'))

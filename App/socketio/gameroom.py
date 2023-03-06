@@ -3,6 +3,7 @@ from flask_socketio import emit, join_room, leave_room
 from App.main import db, socketio
 from App.misc.functions import check_in_game
 from random import randint
+from App.database.tables import Player, Game
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -17,7 +18,12 @@ def left(message):
     game_code = session.get('game_code')
     username = session.get('username')
     leave_room(game_code)
-    session.clear()
+    player = Player.query.filter_by(username = username, game_code=game_code).first()
+    db.session.delete(player)
+    db.session.commit()
+    game= Game.query.filter_by(game_code=game_code).first()
+    for i in game.players_connected:
+        print(i.username)
     emit('status', {'msg': username + ' has left the room.'}, room = game_code)
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice

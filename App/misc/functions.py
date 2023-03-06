@@ -40,8 +40,11 @@ def get_correct_location():
     if player == None:
         print(2)
         return "menu", None
-    print(player.game_code)
-    game = Game.query.filter_by(game_code=player.game_code).first()
+    try:
+        game_code = session['game_code']
+    except:
+        return "menu", None
+    game = Game.query.filter_by(game_code=game_code).first()
     if game == None:
         flash("your not in any games")
         print(3)
