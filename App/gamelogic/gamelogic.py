@@ -68,12 +68,14 @@ def player_landed_on_free_parking(player, game_code, session):
     emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
 
 def player_on_jail(player, game_code, session):
+    print("hellooooo")
     if player.turns_in_jail == 0:
         emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
     elif player.turns_in_jail == 1:
         emit('message', {'msg': f'{player.username} must pay 50 or use a get out of jail free card'}, room=game_code)
         player.turns_in_jail == 0
     else:
+        print("arfadsadsf")
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
     player.turns_in_jail -= 1
     player.turns_in_jail == max(0, player.turns_in_jail-1)
@@ -84,28 +86,12 @@ def player_landed_on_go_to_jail(player, game_code, session):
     player.turns_in_jail += 3
     player.position = 9
     db.session.commit()
-    emit('message', {'msg': player.username + ' is sent to jail'}, room=game_code)
+    emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
 
 def player_landed_on_utility(player, game_code, session, utility):
     emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
 
 def player_landed_on_property(player, game_code, session, property):
-    @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
-    def buy_property():
-        game_code = session.get('game_code')
-        username = session.get('username')
-        game, player = check_in_game(game_code, username)
-        if not game and not player:
-            return False
-        
-        #Subtracts cost from money and adds new record of property ownership
-        player.money -= property.buy_price
-        insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
-        db.session.execute(insert_stmnt)
-        db.session.commit()
-
-        emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
-
     emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
     # Checks if property is already owned
     p_link_player = db.session.query(link_player_property).all()

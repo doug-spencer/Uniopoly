@@ -4,6 +4,7 @@ from App.main import db, socketio
 from App.misc.functions import check_in_game
 from random import randint
 from App.gamelogic import gamelogic
+from App.database.tables import link_player_property
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -24,24 +25,35 @@ def roll_dice():
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
-    if not game and not player:
+
+    if not game or not player:
         return False
+    
     roll_value = randint(1,6)
     current_value = player.position
     new_value = roll_value + current_value
+
     if new_value > 39:
         new_value -= 40
-    player.position = new_value
+
     turn = game.index_of_turn
+
     if turn == len(game.players_connected) - 1:
         game.index_of_turn = 0
     else:
         game.index_of_turn = game.index_of_turn + 1
+
+    #only emits roll message and updates position if player is not in jail
+    if player.turns_in_jail == 0:
+        player.position = new_value
+        emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
+        emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)   
     db.session.commit()
-    emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
-    emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
+    
+    #performs action associated with board position
     gamelogic.show_player_options(player, game_code, session)
-    #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
+    
+    #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])##dougs not sure what this is
 
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):
@@ -62,3 +74,19 @@ def update_turn():
     else:
         #emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
         emit('roll dice button change', {'operation': 'hide'}, session = session)
+
+@socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
+def buy_property():
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    
+    #Subtracts cost from money and adds new record of property ownership
+    player.money -= property.buy_price
+    insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
+    db.session.execute(insert_stmnt)
+    db.session.commit()
+
+    emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)

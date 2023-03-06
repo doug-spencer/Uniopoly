@@ -39,7 +39,7 @@ def create_game(username):
             unique = False
     account = Account.query.filter_by(username=username).first()
     game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
-    player = Player(position=0, index_in_game=len(game.players_connected), money=7)
+    player = Player(position=0, index_in_game=len(game.players_connected), money=7, turns_in_jail=0)
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)
