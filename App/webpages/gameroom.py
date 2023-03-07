@@ -1,9 +1,16 @@
 from flask import session, request, render_template, url_for, redirect
 from App.main import app, db
 from App.database.tables import Account, Game
+from App.misc.functions import get_correct_location
 
 @app.route('/gameroom', methods=['GET', 'POST'])
 def game_room():
+    page, game_code = get_correct_location()
+    if page != 'game_room':
+        if game_code == None:
+            return redirect(url_for(page))
+        print(page, game_code)
+        return redirect(url_for(page, game_code=game_code))
     if(request.method=='POST'): #player has made a game or is joining one
         username = request.form['username']
         choice = request.form['choice'] #if the made a game or the name of the game they joined
@@ -29,12 +36,6 @@ def game_room():
         session['game_name'] = game_name
         #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
-    else: 
-        if(session.get('username') is not None): #player is already in a session
-            return render_template('game_room.html', session = session)
-        else: #if not logged in
-            games = Game.query.all()
-            game_names = []
-            for i in games:
-                game_names.append(i.game_name)
-            return redirect(url_for('index'), games = game_names)
+    else:
+        #return get_correct_location()
+        return render_template('game_room.html', session = session)
