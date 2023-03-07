@@ -1,5 +1,6 @@
 from App.database.tables import Account, Game, Player
 from flask import render_template, request, session, redirect, url_for, flash
+from App.main import db
 
 def check_account(username):
     account = Account.query.filter_by(username=username).first()
@@ -54,3 +55,12 @@ def get_correct_location():
         return "game_room", None
     print(5)
     return "lobby", game.game_code
+
+def player1_owes_player2_money(player1, amount, player2=False):
+    if player1.money >= amount:
+        player1.money -= amount
+        if player2:
+            player2.money += amount
+        db.session.commit()
+        return True
+    return False
