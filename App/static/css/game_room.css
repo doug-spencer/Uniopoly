@@ -22,6 +22,7 @@
   }
   #center {
      grid-area: o;
+     background: purple;
   }
   .row {
      display: flex;
