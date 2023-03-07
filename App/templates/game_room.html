@@ -11,6 +11,99 @@
 {% block body %}
 <h2 >welcome to der game</h2>
 <h2>Game name : {{session['game_code']}}</h2><br>
+
+<div id="board">
+  <div id="center">emails</div>
+  <!--<div class="email">emails</div>-->
+  <!--Row 1-->
+  <div class="row" id="row-0">
+     <div class="tile">
+        <div class="tile-name">Go</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 1</div>
+        <div class="tile-price">Price 1</div>
+     </div>
+     <div class="tile">
+      <div class="tile-color"></div>
+      <div class="tile-name">Bus stop</div>
+      <div class="tile-price">200</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 2</div>
+        <div class="tile-price">Price 2</div>
+     </div>
+  </div>
+  
+  <!--Row 2-->
+  <div class="row" id="row-1">
+     <div class="tile">
+        <div class="tile-name">Just visiting</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 3</div>
+        <div class="tile-price">Price 3</div>
+     </div>
+     <div class="tile">
+      <div class="tile-color"></div>
+      <div class="tile-name">Bus stop</div>
+      <div class="tile-price">200</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 4</div>
+        <div class="tile-price">Price 4</div>
+     </div>
+  </div>
+  
+  <!--Row 3-->
+  <div class="row" id="row-2">
+     <div class="tile">
+        <div class="tile-name">Free Parking</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 4</div>
+        <div class="tile-price">Price 4</div>
+     </div>
+     <div class="tile">
+      <div class="tile-color"></div>
+      <div class="tile-name">Bus stop</div>
+      <div class="tile-price">200</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 5</div>
+        <div class="tile-price">Price 5</div>
+     </div>
+  </div>
+  
+  <!--Row 4-->
+  <div class="row" id="row-3">
+     <div class="tile">
+        <div class="tile-name">Jail</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 6</div>
+        <div class="tile-price">Price 6</div>
+     </div>
+     <div class="tile">
+      <div class="tile-color"></div>
+      <div class="tile-name">Bus stop</div>
+      <div class="tile-price">200</div>
+     </div>
+     <div class="tile">
+        <div class="tile-color"></div>
+        <div class="tile-name">Tile 7</div>
+        <div class="tile-price">Price 7</div>
+     </div>
+  </div>
+</div>
+
 <p id="dice">nobody has rolled the dice yet</p>
 <div name="dice-button" id="dice-button">
   <button class="button" type="button" id="roll-dice">roll dice</button><br>
