@@ -1,0 +1,98 @@
+*{
+    box-sizing: border-box;
+  }
+  #board {
+     display: grid;
+     /*first and last row and column are bigger than others*/
+     grid-template-columns: 100px repeat(8, 70px) 100px;
+     grid-template-rows: 100px repeat(8, 70px) 100px;
+     
+     /*a, b, c, d are 4 rows and o is center*/
+     grid-template-areas:
+        "c c c c c c c c c d"
+        "b o o o o o o o o d"
+        "b o o o o o o o o d"
+        "b o o o o o o o o d"
+        "b o o o o o o o o d"
+        "b o o o o o o o o d"
+        "b o o o o o o o o d"
+        "b o o o o o o o o d"
+        "b o o o o o o o o d"
+        "b a a a a a a a a a";
+  }
+  #center {
+     grid-area: o;
+  }
+  .row {
+     display: flex;
+  }
+  .tile {
+     display: flex;
+     flex-direction: column;
+     border: 1px solid;
+     height: 100%;
+     width: 100%;
+  }
+  .tile-color {
+     flex: 3;
+     background: red;
+     border: 1px solid;
+  }
+  .tile-name {
+     flex: 6;
+  }
+  .tile-price {
+     flex: 3;
+  }
+  
+  /*Flex directions are used to give the tiles correct order*/
+  #row-0 {
+     grid-area: a;
+     flex-direction: row-reverse;
+  }
+  #row-1 {
+     grid-area: b;
+     flex-direction: column-reverse;
+  }
+  #row-2 {
+     grid-area: c;
+     flex-direction: row;
+  }
+  #row-3 {
+     grid-area: d;
+     flex-direction: column;
+  }
+  
+  /*To make the corner tiles bigger and square*/
+  .row > .tile:nth-child(1){
+    flex: 0 0 100px;
+  }
+  
+  /*Turn tiles*/
+  #row-1 .tile{
+      writing-mode: vertical-rl;
+  }
+  #row-2 .tile{
+      transform: rotate(180deg);
+  }
+  #row-3 .tile{
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+  }
+  
+  /*Turn corners*/
+  .row > .tile:first-child{
+      text-align: center;
+  }
+  #row-0 > .tile:first-child .tile-name{
+      transform: rotate(-45deg) translateY(38px);
+  }
+  #row-1 > .tile:first-child .tile-name{
+      transform: rotate(-45deg) translateX(-38px);
+  }
+  #row-2 > .tile:first-child .tile-name{
+      transform: rotate(-45deg) translateY(38px);
+  }
+  #row-3 > .tile:first-child .tile-name{
+      transform: rotate(-45deg) translateX(-38px);
+  }
