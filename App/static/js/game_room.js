@@ -4,6 +4,8 @@ $(document).ready(function(){
     socket.on('connect', function() {
         socket.emit('join', {});
     });
+    $('#buy-property').hide();
+    $('#dice-button').hide();
     //for joining and leaving room
     socket.on('status', function(data) {
         $('#messages').val($('#messages').val() + data.msg + '\n');
@@ -25,9 +27,9 @@ $(document).ready(function(){
         //show or hide buy property button
         socket.on('buy property button change', function(data) {
             if(data.operation == 'show'){
-                $('#buy-property-button').show();
+                $('#buy-property').show();
             } else {
-                $('#buy-property-button').hide();
+                $('#buy-property').hide();
             };
         });
     //show roll value of dice roll
@@ -42,13 +44,14 @@ $(document).ready(function(){
         socket.emit('text', {msg: text});
     });
     //when the roll dice box is pressed
-    $('#roll-dice').click(function(e) {
+    $('#roll-dice').click(function(data) {
         $('#dice-button').hide();
         socket.emit('roll dice');
     });
     //when the roll dice box is pressed
     $('#buy-property').click(function(e) {
         $('#buy-property').hide();
+        //const property = document.getElementById('property').value;
         socket.emit('buy-property');
     });
 });

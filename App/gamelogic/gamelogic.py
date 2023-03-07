@@ -1,4 +1,4 @@
-from App.database.tables import Game, Account, Property, Utilities, Bus_stop, link_player_property
+from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property
 from flask_socketio import emit
 from App.main import db, socketio
 
@@ -102,11 +102,15 @@ def player_landed_on_property(player, game_code, session, property):
             owned_property = i
             break
     if p_owned: # If owned rent is payed
-        emit('message', {'msg':property.name + ' is owned by me'}, room=game_code)
+        emit('message', {'msg':property.name + ' is owned by ' + owned_property.username}, room=game_code)
         rent_list = property.rents.split(',')
         rent = rent_list[3]
-        emit('message', {'msg': player.username + ' owes me §' + rent}, room=game_code)
+        emit('message', {'msg': player.username + ' owes ' + owned_property.username + ' §' + rent}, room=game_code)
         player.money -= int(rent)
+        players = Player.query.all()
+        for x in players:
+            if x.username == owned_property.username:
+                x.money += int(rent)
         db.session.commit()
     else: # If not owned, the option to buy the property is given
         game_code = session.get('game_code')

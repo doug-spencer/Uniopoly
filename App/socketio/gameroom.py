@@ -4,7 +4,7 @@ from App.main import db, socketio
 from App.misc.functions import check_in_game
 from random import randint
 from App.gamelogic import gamelogic
-from App.database.tables import link_player_property, Player, Game
+from App.database.tables import link_player_property, Player, Game, Property
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -36,7 +36,9 @@ def roll_dice():
     if not game or not player:
         return False
     
-    roll_value = randint(1,6)
+    roll1 = randint(1,6)
+    roll2 = randint(1,6)
+    roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
 
@@ -89,8 +91,11 @@ def buy_property():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
-    
-    #Subtracts cost from money and adds new record of property ownership
+    pos = player.position
+    all_properties = Property.query.all()
+    index_of_properties = [i.position for i in all_properties]
+    property = all_properties[index_of_properties.index(pos)]
+    # Subtracts cost from money and adds new record of property ownership
     player.money -= property.buy_price
     insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
     db.session.execute(insert_stmnt)
