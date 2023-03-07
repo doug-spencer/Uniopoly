@@ -3,20 +3,20 @@ from flask_socketio import emit
 from App.main import db, socketio
 
 
-def check_in_game(game_code, username): #verification fucntion
-    game = Game.query.filter_by(game_code = game_code).first()
-    if not game:
-        return False, False
-    account = Account.query.filter_by(username=username).first()
-    if not account:
-        return False, False
-    player = False
-    for i in game.players_connected:
-        if i.username == username:
-            player = i
-    if not player:
-        return False, False
-    return game, player
+# def check_in_game(game_code, username): #verification fucntion
+#     game = Game.query.filter_by(game_code = game_code).first()
+#     if not game:
+#         return False, False
+#     account = Account.query.filter_by(username=username).first()
+#     if not account:
+#         return False, False
+#     player = False
+#     for i in game.players_connected:
+#         if i.username == username:
+#             player = i
+#     if not player:
+#         return False, False
+#     return game, player
 
 def show_player_options(player, game_code, session):
     #return False #while db is empty
