@@ -25,6 +25,9 @@ def menu():
         code = request.form.get('code')
         if search("^\d{6}$", code):
             return join_game(code)
+        else:
+            flash("Code was not valid")
+            return render_template('menu.html')
     else:
         username = session['username']
         return create_game(username)
