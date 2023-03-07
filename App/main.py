@@ -22,10 +22,10 @@ engine = create_engine('sqlite:///instance/database.db', echo=False)
 db.session.commit()
 
 from App.webpages import login, menu, lobby, gameroom, help, logout
-from App.database import tables
+from App.database import tables, load_static_files
 from App.socketio import gameroom, lobby
 
-if True:
+if False:
     from App.database.tables import Game, Player
     try:
         Game.__table__.drop(engine)
@@ -35,3 +35,6 @@ if True:
 
 db.create_all()
 db.session.commit()
+
+if False:
+    load_static_files.load_static_files()
