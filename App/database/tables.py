@@ -1,33 +1,36 @@
 from App.main import db
 
 link_player_property = db.Table('link_player_property',
-        db.Column('username', db.Integer, db.ForeignKey('player.username'), primary_key=True),
+        db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
         db.Column('property_id', db.Integer, db.ForeignKey('property.id'), primary_key=True),
-        db.Column('houses', db.Integer)
+        db.Column('houses', db.Integer),
+        db.Column('mortgaged', db.Boolean)
         )
 
 
 link_player_utilities = db.Table('link_player_utilities',
-        db.Column('username', db.Integer, db.ForeignKey('player.username'), primary_key=True),
-        db.Column('utilities_id', db.Integer, db.ForeignKey('utilities.id'), primary_key=True)
+        db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
+        db.Column('utilities_id', db.Integer, db.ForeignKey('utilities.id'), primary_key=True),
+        db.Column('mortgaged', db.Boolean)
         )
 
 
 link_player_student_union = db.Table('link_player_student_union',
-        db.Column('username', db.Integer, db.ForeignKey('player.username'), primary_key=True),
+        db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
         db.Column('student_union', db.Integer, db.ForeignKey('student_union.id'), primary_key=True)
         )
 
 
 link_player_email = db.Table('link_player_email',
-        db.Column('username', db.Integer, db.ForeignKey('player.username'), primary_key=True),
+        db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
         db.Column('email', db.Integer, db.ForeignKey('email.id'), primary_key=True)
         )
 
 
 link_player_bus_stop = db.Table('link_player_bus_stop',
-        db.Column('username', db.Integer, db.ForeignKey('player.username'), primary_key=True),
-        db.Column('bus_stop', db.Integer, db.ForeignKey('bus_stop.id'), primary_key=True)
+        db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
+        db.Column('bus_stop', db.Integer, db.ForeignKey('bus_stop.id'), primary_key=True),
+        db.Column('mortgaged', db.Boolean)
         )
         
 
