@@ -1,6 +1,6 @@
 from flask import session
 from flask_socketio import emit, join_room, leave_room
-from App.main import db, socketio
+from App.main import db, socketio, engine
 from App.misc.functions import check_in_game
 from random import randint
 from App.gamelogic import gamelogic
@@ -55,9 +55,9 @@ def roll_dice():
     
     #performs action associated with board position
     buy_choice_active = gamelogic.show_player_options(player, game_code, session)
-    
+    print("buy choice active",buy_choice_active)
     if not buy_choice_active:
-        emit('update index of turn')
+        update_index_of_turn()
 
     
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])##dougs not sure what this is
@@ -99,21 +99,27 @@ def update_turn():
 
 @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
 def buy_property():
-    # game_code = session.get('game_code')
-    # username = session.get('username')
-    # game, player = check_in_game(game_code, username)
-    # if not game and not player:
-    #     return False
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
     
-    # #Subtracts cost from money and adds new record of property ownership
+    a = Property.query.filter_by(position = player.position).first()
+
+    
+    #Subtracts cost from money and adds new record of property ownership
     # player.money -= property.buy_price
     # insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
     # db.session.execute(insert_stmnt)
     # db.session.commit()
 
     # emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
-    pass
+
+    update_index_of_turn()
 
 @socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
 def dont_buy_property():
-    pass
+    update_index_of_turn()
+    
+

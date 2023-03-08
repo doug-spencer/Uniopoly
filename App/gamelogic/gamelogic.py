@@ -69,14 +69,12 @@ def player_landed_on_free_parking(player, game_code, session):
     emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
 
 def player_on_jail(player, game_code, session):
-    print("hellooooo")
     if player.turns_in_jail == 0:
         emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
     elif player.turns_in_jail == 1:
         emit('message', {'msg': f'{player.username} must pay 50 or use a get out of jail free card'}, room=game_code)
         player.turns_in_jail == 0
     else:
-        print("arfadsadsf")
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
     player.turns_in_jail -= 1
     player.turns_in_jail = max(0, player.turns_in_jail-1)
@@ -120,6 +118,10 @@ def player_landed_on_utility(player, game_code, session, utility):
 #         emit('message', {'msg': 'Click Buy to buy the card for §' + str(property.buy_price)}, room=game.game_code)
 
 def player_landed_on_property(player, game_code, session, property):
+    def buy_property():
+        pass
+
+
     emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
 
     #selects the row in the table recording who owns what property with the id of the property that was landed on
@@ -128,17 +130,18 @@ def player_landed_on_property(player, game_code, session, property):
 
         query = link_player_property.select().where(link_player_property.c.property_id == property.id)
         property_row = conn.execute(query).fetchone()
-        print("asdfadsfadsf", property_row)
 
         if property_row == None:
+            print("none existesss")
             emit('buy property button change', {'operation':'show'}, session=session)
             return True
 
         elif property_row['player_id'] == player.id:
-            return
+            return False
     
         #someone owns it and it isn't you so pay rent
         pay_rent()
+        return False
 
 
 

@@ -52,11 +52,10 @@ $(document).ready(function(){
     $('#buy-property').click(function(e) {
         $('#buy-property-button').hide();
         $('#dont-buy-property-button').hide();
-        socket.emit('update index of turn');
-        //socket.emit('buy-property');
+        socket.emit('buy-property');
     });
     //when the dont buy button is pressed
-    $('#buy-property').click(function(e) {
+    $('#dont-buy-property').click(function(e) {
         $('#buy-property-button').hide();
         $('#dont-buy-property-button').hide();
         socket.emit('dont-buy-property');

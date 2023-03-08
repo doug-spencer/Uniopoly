@@ -37,5 +37,5 @@ if False:
 db.create_all()
 db.session.commit()
 
-if False:
+if True:
     load_static_files.load_static_files()
