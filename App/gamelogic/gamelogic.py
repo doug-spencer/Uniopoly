@@ -1,4 +1,4 @@
-from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property
+from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_utilities
 from flask_socketio import emit
 from App.main import db, socketio
 
@@ -90,6 +90,37 @@ def player_landed_on_go_to_jail(player, game_code, session):
 
 def player_landed_on_utility(player, game_code, session, utility):
     emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
+    # Checks if utility is already owned
+    u_link_player = db.session.query(link_player_utilities).all()
+    u_owned = False
+    for i in u_link_player:
+        if i.utilities_id == utility.id:
+            u_owned = True
+            owned_utility = i
+            break
+    if u_owned: # If owned rent is payed
+        emit('message', {'msg':utility.name + ' is owned by ' + owned_utility.username}, room=game_code)
+        players = Player.query.all()
+        for x in players:
+            if x.username == owned_utility.username:
+                landlord = x
+        count = 0
+        for i in u_link_player:
+            if i.username == landlord.username:
+                count += 1
+        emit('message', {'msg': player.username + ' owes ' + owned_utility.username + ' §' + count*100}, room=game_code)
+        player.money -= count*100
+        landlord.money += count*100
+        db.session.commit()
+    else: # If not owned, the option to buy the utility is given
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player = check_in_game(game_code, username)
+        if not game and not player:
+            return False
+        
+        emit('message', {'msg': 'Click Buy to buy the card for §' + str(utility.buy_price)}, room=game.game_code)
+        emit('buy utility button change', {'operation': 'show'}, session=session)
 
 def player_landed_on_property(player, game_code, session, property):
     emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)

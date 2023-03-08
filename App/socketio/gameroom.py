@@ -4,7 +4,7 @@ from App.main import db, socketio
 from App.misc.functions import check_in_game
 from random import randint
 from App.gamelogic import gamelogic
-from App.database.tables import link_player_property, Player, Game, Property
+from App.database.tables import link_player_property, link_player_utilities, Player, Game, Property, Utilities
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -36,8 +36,8 @@ def roll_dice():
     if not game or not player:
         return False
     
-    roll1 = randint(1,6)
-    roll2 = randint(1,6)
+    roll1 = randint(0,0)
+    roll2 = randint(11,11)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
@@ -91,6 +91,7 @@ def buy_property():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
+    # Finds property based off of player position
     pos = player.position
     all_properties = Property.query.all()
     index_of_properties = [i.position for i in all_properties]
@@ -101,4 +102,24 @@ def buy_property():
     db.session.execute(insert_stmnt)
     db.session.commit()
 
-    emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
+    emit('message', {'msg': property.name + ' has been purchased for §' + str(property.buy_price)}, room=game_code)
+
+@socketio.on('buy-utility', namespace='/gameroom') #When player presses buy utility button
+def buy_utility():
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    # Finds utility based off of player position
+    pos = player.position
+    all_utilities = Utilities.query.all()
+    index_of_utilities = [i.position for i in all_utilities]
+    utility = all_utilities[index_of_utilities.index(pos)]
+    # Subtracts cost from money and adds new record of utility ownership
+    player.money -= utility.buy_price
+    insert_stmnt = link_player_utilities.insert().values(username=player.username, utilities_id=utility.id)
+    db.session.execute(insert_stmnt)
+    db.session.commit()
+
+    emit('message', {'msg': utility.name + ' has been purchased for §' + str(utility.buy_price)}, room=game_code)
