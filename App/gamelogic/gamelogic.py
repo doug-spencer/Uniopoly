@@ -143,7 +143,6 @@ def show_buy_options(player, game_code, session, property):
     #show buttons
     emit('buy property button change', {'operation':'show'}, session=session)
     #wait till button is clicked
-    buy_property()
     pass
 
 def pay_rent():
