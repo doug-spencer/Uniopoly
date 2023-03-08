@@ -10,8 +10,8 @@ Fill in the board and add the player icons - Jacob
 Chance card display messages - Cally
 Chance card money changes - Abu
 Owe money function - Jacob
-Mortgage/Unmortgage cards button - Doug 
-Fix link tables with composite key - Jacob
+Mortgage/Unmortgage cards button - Doug
+
 
 ------------------
 DATABASE ADDITIONS
