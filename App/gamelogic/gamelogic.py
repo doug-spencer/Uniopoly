@@ -78,7 +78,7 @@ def player_on_jail(player, game_code, session):
         print("arfadsadsf")
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
     player.turns_in_jail -= 1
-    player.turns_in_jail == max(0, player.turns_in_jail-1)
+    player.turns_in_jail = max(0, player.turns_in_jail-1)
     db.session.commit()
 
 
