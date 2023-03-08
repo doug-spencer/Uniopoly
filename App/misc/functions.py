@@ -63,9 +63,14 @@ def player1_owes_player2_money(player1, amount, player2=False):
         player1.money -= amount
         if player2:
             player2.money += amount
-        db.session.commit()
-        return True
-    return False
+    elif True:
+        player1.money = 0
+    else:
+        pass
+        #sell houses
+        #mortgage utilities
+        #...
+    db.session.commit()
 
 def load_test_data(player):
     for i in range(3): #add all light blue
