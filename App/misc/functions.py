@@ -1,6 +1,8 @@
-from App.database.tables import Account, Game, Player, Property, Utilities, Bus_stop
+from App.database.tables import Account, Game, Player, Property, Utilities, Bus_stop, link_player_bus_stop, link_player_property, link_player_utilities
 from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db
+from App.database.link_table_updates import query_property, query_utilites, query_bus_stop
+
 
 def check_account(username):
     account = Account.query.filter_by(username=username).first()
@@ -70,12 +72,17 @@ def load_test_data(player):
         property = Property.query.filter_by(id=i+4).first()
         print(property.name)
         player.properties.append(property)
+        db.session.commit()
+        query_property(player.id,  property.id, False, 0)
     for i in range(2): #add all utilites
         utility = Utilities.query.filter_by(id=i+1).first()
         print(utility.name)
         player.utilities.append(utility)
+        db.session.commit()
+        query_utilites(player.id,  utility.id, 0)
     for i in range(2): #add the first 2 bus stops
         bus_stop = Bus_stop.query.filter_by(id=i+1).first()
         print(bus_stop.name)
         player.bus_stop.append(bus_stop)
-    db.session.commit()
+        db.session.commit()
+        query_bus_stop(player.id, bus_stop.id, 0)

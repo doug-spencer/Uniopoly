@@ -17,19 +17,19 @@ link_player_utilities = db.Table('link_player_utilities',
 
 link_player_student_union = db.Table('link_player_student_union',
         db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
-        db.Column('student_union', db.Integer, db.ForeignKey('student_union.id'), primary_key=True)
+        db.Column('student_union_id', db.Integer, db.ForeignKey('student_union.id'), primary_key=True)
         )
 
 
 link_player_email = db.Table('link_player_email',
         db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
-        db.Column('email', db.Integer, db.ForeignKey('email.id'), primary_key=True)
+        db.Column('email_id', db.Integer, db.ForeignKey('email.id'), primary_key=True)
         )
 
 
 link_player_bus_stop = db.Table('link_player_bus_stop',
         db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
-        db.Column('bus_stop', db.Integer, db.ForeignKey('bus_stop.id'), primary_key=True),
+        db.Column('bus_stop_id', db.Integer, db.ForeignKey('bus_stop.id'), primary_key=True),
         db.Column('mortgaged', db.Boolean)
         )
         
