@@ -25,6 +25,7 @@ from App.webpages import login, menu, lobby, gameroom, help, logout
 from App.database import tables, load_static_files
 from App.socketio import gameroom, lobby
 
+
 if False:
     from App.database.tables import Game, Player
     try:

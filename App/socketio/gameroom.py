@@ -4,7 +4,7 @@ from App.main import db, socketio
 from App.misc.functions import check_in_game
 from random import randint
 from App.gamelogic import gamelogic
-from App.database.tables import link_player_property, Player, Game
+from App.database.tables import link_player_property, Player, Game, Property
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -60,6 +60,7 @@ def roll_dice():
     #performs action associated with board position
     gamelogic.show_player_options(player, game_code, session)
     
+    
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])##dougs not sure what this is
 
 @socketio.on('text', namespace='/gameroom') #sending text
@@ -84,16 +85,21 @@ def update_turn():
 
 @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
 def buy_property():
-    game_code = session.get('game_code')
-    username = session.get('username')
-    game, player = check_in_game(game_code, username)
-    if not game and not player:
-        return False
+    # game_code = session.get('game_code')
+    # username = session.get('username')
+    # game, player = check_in_game(game_code, username)
+    # if not game and not player:
+    #     return False
     
-    #Subtracts cost from money and adds new record of property ownership
-    player.money -= property.buy_price
-    insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
-    db.session.execute(insert_stmnt)
-    db.session.commit()
+    # #Subtracts cost from money and adds new record of property ownership
+    # player.money -= property.buy_price
+    # insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
+    # db.session.execute(insert_stmnt)
+    # db.session.commit()
 
-    emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
+    # emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
+    pass
+
+@socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
+def dont_buy_property():
+    pass

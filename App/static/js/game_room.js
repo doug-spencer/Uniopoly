@@ -22,14 +22,16 @@ $(document).ready(function(){
             $('#dice-button').hide();
         };
     });
-        //show or hide buy property button
-        socket.on('buy property button change', function(data) {
-            if(data.operation == 'show'){
-                $('#buy-property-button').show();
-            } else {
-                $('#buy-property-button').hide();
-            };
-        });
+    //show or hide buy property button
+    socket.on('buy property buttons change', function(data) {
+        if(data.operation == 'show'){
+            $('#buy-property-button').show();
+            $('#dont-buy-property-button').show();
+        } else {
+            $('#buy-property-button').hide();
+            $('#dont-buy-property-button').hide();
+        };
+    });
     //show roll value of dice roll
     socket.on('dice_roll', function(data) {
         document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
@@ -46,10 +48,17 @@ $(document).ready(function(){
         $('#dice-button').hide();
         socket.emit('roll dice');
     });
-    //when the roll dice box is pressed
+    //when the buy button is pressed
     $('#buy-property').click(function(e) {
-        $('#buy-property').hide();
+        $('#buy-property-button').hide();
+        $('#dont-buy-property-button').hide();
         socket.emit('buy-property');
+    });
+    //when the dont buy button is pressed
+    $('#buy-property').click(function(e) {
+        $('#buy-property-button').hide();
+        $('#dont-buy-property-button').hide();
+        socket.emit('dont-buy-property');
     });
 });
 //if a player leaves the room (WIP)

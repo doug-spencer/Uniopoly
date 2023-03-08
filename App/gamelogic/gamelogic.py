@@ -1,6 +1,6 @@
 from App.database.tables import Game, Account, Property, Utilities, Bus_stop, link_player_property
 from flask_socketio import emit
-from App.main import db, socketio
+from App.main import db, socketio, engine
 
 
 # def check_in_game(game_code, username): #verification fucntion
@@ -121,16 +121,33 @@ def player_landed_on_utility(player, game_code, session, utility):
 def player_landed_on_property(player, game_code, session, property):
     emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
 
-    property_owned = link_player_property.select().where(link_player_property.c.property_id == property.id).fetchone()
-
-    if property_owned == None:
-        #offer buy property
-        return
-
-    elif property_owned['player_id'] == player.id:
-        return
+    #selects the row in the table recording who owns what property with the id of the property that was landed on
     
-    #pay rent method
+    with engine.connect() as conn:
+
+        query = link_player_property.select().where(link_player_property.c.property_id == property.id)
+        property_row = conn.execute(query).fetchone()
+        print("asdfadsfadsf", property_row)
+
+        if property_row == None:
+            show_buy_options(player, game_code, session, property)
+            return
+
+        elif property_row['player_id'] == player.id:
+            return
+    
+        #someone owns it and it isn't you so pay rent
+        pay_rent()
+
+def show_buy_options(player, game_code, session, property):
+    #show buttons
+    emit('buy property button change', {'operation':'show'}, session=session)
+    #wait till button is clicked
+    buy_property()
+    pass
+
+def pay_rent():
+    pass
 
 
 
