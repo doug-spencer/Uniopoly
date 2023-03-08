@@ -23,7 +23,7 @@ $(document).ready(function(){
         };
     });
     //show or hide buy property button
-    socket.on('buy property buttons change', function(data) {
+    socket.on('buy property button change', function(data) {
         if(data.operation == 'show'){
             $('#buy-property-button').show();
             $('#dont-buy-property-button').show();
@@ -52,7 +52,8 @@ $(document).ready(function(){
     $('#buy-property').click(function(e) {
         $('#buy-property-button').hide();
         $('#dont-buy-property-button').hide();
-        socket.emit('buy-property');
+        socket.emit('update index of turn');
+        //socket.emit('buy-property');
     });
     //when the dont buy button is pressed
     $('#buy-property').click(function(e) {

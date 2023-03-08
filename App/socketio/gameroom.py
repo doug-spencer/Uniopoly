@@ -13,6 +13,8 @@ def join(message):
         return False
     join_room(game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
+    emit('buy property button change', {'operation':'hide'}, session=session)
+
 
 @socketio.on('left', namespace='/gameroom') #leaving room
 def left(message):
@@ -43,12 +45,6 @@ def roll_dice():
     if new_value > 39:
         new_value -= 40
 
-    turn = game.index_of_turn
-
-    if turn == len(game.players_connected) - 1:
-        game.index_of_turn = 0
-    else:
-        game.index_of_turn = game.index_of_turn + 1
 
     #only emits roll message and updates position if player is not in jail
     if player.turns_in_jail == 0:
@@ -58,10 +54,28 @@ def roll_dice():
     db.session.commit()
     
     #performs action associated with board position
-    gamelogic.show_player_options(player, game_code, session)
+    buy_choice_active = gamelogic.show_player_options(player, game_code, session)
     
+    if not buy_choice_active:
+        emit('update index of turn')
+
     
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])##dougs not sure what this is
+
+@socketio.on('update index of turn', namespace='/gameroom') #sending text
+def update_index_of_turn():
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+
+    turn = game.index_of_turn
+
+    if turn == len(game.players_connected) - 1:
+        game.index_of_turn = 0
+    else:
+        game.index_of_turn = game.index_of_turn + 1
+    db.session.commit()
+
 
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):

@@ -26,8 +26,9 @@ def show_player_options(player, game_code, session):
     index_of_properties = [i.position for i in all_properties]
     print(index_of_properties)
     if pos in index_of_properties:
-        player_landed_on_property(player, game_code, session, all_properties[index_of_properties.index(pos)])
-    
+        buy_choice_active = player_landed_on_property(player, game_code, session, all_properties[index_of_properties.index(pos)])
+        return buy_choice_active
+
     all_utilities = Utilities.query.all()
     index_of_utilities = [i.position for i in all_utilities]
     if pos in index_of_utilities:
@@ -130,8 +131,8 @@ def player_landed_on_property(player, game_code, session, property):
         print("asdfadsfadsf", property_row)
 
         if property_row == None:
-            show_buy_options(player, game_code, session, property)
-            return
+            emit('buy property button change', {'operation':'show'}, session=session)
+            return True
 
         elif property_row['player_id'] == player.id:
             return
@@ -139,14 +140,11 @@ def player_landed_on_property(player, game_code, session, property):
         #someone owns it and it isn't you so pay rent
         pay_rent()
 
-def show_buy_options(player, game_code, session, property):
-    #show buttons
-    emit('buy property button change', {'operation':'show'}, session=session)
-    #wait till button is clicked
-    pass
+
 
 def pay_rent():
     pass
+
 
 
 
