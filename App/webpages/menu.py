@@ -50,6 +50,9 @@ def create_game(username):
     db.session.add(player)
     db.session.add(game)
     db.session.commit()
+    if True:
+        from App.misc.functions import load_test_data
+        load_test_data(player)
     session['game_code'] = new_id 
     flash("Game created with code " + new_id)
     return redirect(url_for('lobby'))
