@@ -18,10 +18,14 @@ def lobby():
         return render_template('lobby.html', game_code=game_code, session=session)
 
     game = Game.query.filter_by(game_code=game_code).first()
-    player = Player.query.filter_by(username=username).first()
+    player = Player.query.filter_by(username=username, game_code=game_code).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'Leave Room':
-        player.query.filter_by(username=username).delete()
+        game.players_connected.remove(player)
+        db.session.commit()
+        username = session['username']
+        session.clear()
+        session['username'] = username
         return redirect(url_for('menu'))
     elif request.form.get('startButton') == 'Start Game':
         if game.players_connected[0].username != username:

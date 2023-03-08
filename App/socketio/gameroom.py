@@ -12,6 +12,10 @@ def join(message):
     if game_code == None:
         return False
     join_room(game_code)
+    players = Game.query.filter_by(game_code=game_code).first().players_connected
+    player_usernames = [player.username for player in players]
+    player_money = [player.money for player in players]
+    emit('init leaderboard', {'username': player_usernames, 'money': player_money})
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
 
 @socketio.on('left', namespace='/gameroom') #leaving room

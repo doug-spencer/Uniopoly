@@ -1,6 +1,5 @@
 //runs on refresh or load of lobby
 $(document).ready(function() {
-    document.body.innerHTML += "{% print('lobby reload') %}"
     socket = io.connect('http://' + document.domain + ':' + location.port + '/lobby');
     socket.on('game started', function(data) {
         window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"

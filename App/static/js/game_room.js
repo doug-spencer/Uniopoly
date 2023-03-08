@@ -22,19 +22,26 @@ $(document).ready(function(){
             $('#dice-button').hide();
         };
     });
-        //show or hide buy property button
-        socket.on('buy property button change', function(data) {
-            if(data.operation == 'show'){
-                $('#buy-property-button').show();
-            } else {
-                $('#buy-property-button').hide();
-            };
-        });
+    //show or hide buy property button
+    socket.on('buy property button change', function(data) {
+        if(data.operation == 'show'){
+            $('#buy-property-button').show();
+        } else {
+            $('#buy-property-button').hide();
+        };
+    });
     //show roll value of dice roll
     socket.on('dice_roll', function(data) {
         document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
         //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
     });
+    socket.on('init leaderboard', function(data) {
+        let table = document.getElementById('table-body');
+        for (let i=0; i<data.username.length; i++) {
+            table.innerHTML += `<tr class="table-rows"><td>${data.username[i]}</td><td>${data.money[i]}</td><td></td></tr>`;
+        }
+    });
+
     //when the send message box is pressed
     $('#send').click(function(e) {
         text = $('#text').val();
@@ -51,6 +58,7 @@ $(document).ready(function(){
         $('#buy-property').hide();
         socket.emit('buy-property');
     });
+
 });
 //if a player leaves the room (WIP)
 function leave_room() {
@@ -63,6 +71,7 @@ function buy_property() {
     const property = document.getElementById('property').value;
     socket.emit('buy property', {property: property});
 }
+
 //calls function every 2.5seconds
 setInterval(function() {
     socket.emit('update turn');

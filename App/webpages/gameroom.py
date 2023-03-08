@@ -37,5 +37,4 @@ def game_room():
         #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
     else:
-        #return get_correct_location()
         return render_template('game_room.html', session = session)

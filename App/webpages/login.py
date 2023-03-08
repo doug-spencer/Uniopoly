@@ -33,8 +33,6 @@ def login():
         return redirect(url_for(page, game_code=game_code))
     elif(request.method=='POST'):
         formSubmitted = request.form.get("button")
-        print(formSubmitted)
-
         if formSubmitted == 'signup':
             return signup()
         elif formSubmitted == "login":
