@@ -13,8 +13,9 @@ def show_player_options(player, game_code, session):
     index_of_properties = [i.position for i in all_properties]
     index_of_utilities = [i.position for i in all_utilities]
     index_of_bus_stops = [i.position for i in all_bus_stops]
-
+    print(index_of_properties)
     if pos in index_of_properties:
+        print("here1.5")
         buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_properties.index(pos)], link_player_property)
         return buy_choice_active
 
@@ -87,9 +88,12 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
         card_row = conn.execute(query).fetchone()
 
         #nobody owns it
+        print("here2")
+
         if card_row == None:
-            emit('buy property button change', {'operation':'show'}, session=session)
+            print("here3")
             halt_player_turn(game_code)
+            emit('buy property button change', {'operation':'show'}, session=session)
             emit('roll dice button change', {'operation':'hide'}, session=session)
             return True #to stop the next player getting to roll the dice
 

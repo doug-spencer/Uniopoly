@@ -73,6 +73,7 @@ def player1_owes_player2_money(player1, amount, player2=False):
     db.session.commit()
 
 def load_test_data(player):
+    return
     for i in range(3): #add all light blue
         property = Property.query.filter_by(id=i+4).first()
         print(property.name)

@@ -4,7 +4,9 @@ $(document).ready(function(){
     socket.on('connect', function() {
         socket.emit('join', {});
     });
-    $('#buy-property').hide();
+    $('#buy-property-button').hide();
+    $('#dont-buy-property-button').hide();
+
     $('#dice-button').hide();
     //for joining and leaving room
     socket.on('status', function(data) {

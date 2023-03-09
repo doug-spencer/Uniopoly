@@ -61,7 +61,6 @@ def roll_dice():
     
     #performs action associated with board position
     buy_choice_active = gamelogic.show_player_options(player, game_code, session)
-    print("buy choice active",buy_choice_active)
     if not buy_choice_active:
         update_index_of_turn()
 
