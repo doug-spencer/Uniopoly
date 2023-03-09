@@ -118,9 +118,6 @@ def player_landed_on_utility(player, game_code, session, utility):
 #         emit('message', {'msg': 'Click Buy to buy the card for §' + str(property.buy_price)}, room=game.game_code)
 
 def player_landed_on_property(player, game_code, session, property):
-    def buy_property():
-        pass
-
 
     emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
 
@@ -132,8 +129,9 @@ def player_landed_on_property(player, game_code, session, property):
         property_row = conn.execute(query).fetchone()
 
         if property_row == None:
-            print("none existesss")
             emit('buy property button change', {'operation':'show'}, session=session)
+            halt_player_turn(game_code)
+            emit('roll dice button change', {'operation':'hide'}, session=session)
             return True
 
         elif property_row['player_id'] == player.id:
@@ -143,6 +141,15 @@ def player_landed_on_property(player, game_code, session, property):
         pay_rent()
         return False
 
+def halt_player_turn(game_code):
+    game= Game.query.filter_by(game_code=game_code).first()
+    game.index_of_turn = -1 * game.index_of_turn - 1
+    db.session.commit()
+
+def resume_player_turn(game_code):
+    game= Game.query.filter_by(game_code=game_code).first()
+    game.index_of_turn = (game.index_of_turn + 1) * -1
+    db.session.commit()
 
 
 def pay_rent():

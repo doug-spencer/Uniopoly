@@ -4,7 +4,7 @@ from App.main import db, socketio, engine
 from App.misc.functions import check_in_game
 from random import randint
 from App.gamelogic import gamelogic
-from App.database.tables import link_player_property, Player, Game, Property
+from App.database.tables import link_player_property, Player, Game, Property, Bus_stop, Utilities
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -105,17 +105,37 @@ def buy_property():
     if not game and not player:
         return False
     
-    a = Property.query.filter_by(position = player.position).first()
 
-    
-    #Subtracts cost from money and adds new record of property ownership
-    # player.money -= property.buy_price
-    # insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
-    # db.session.execute(insert_stmnt)
-    # db.session.commit()
 
-    # emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
 
+    property_indices = [i.position for i in Property.query.all()]
+    bus_stop_indices = [i.position for i in Bus_stop.query.all()]
+    utility_indices = [i.position for i in Utilities.query.all()]
+
+    if player.position in property_indices:
+        card = Property.query.filter_by(Property.position==player.position).fetchone()
+    if player.position in utility_indices:
+        card = Utilities.query.filter_by(Utilities.position==player.position).fetchone()
+    if player.position in bus_stop_indices:
+        card = Bus_stop.query.filter_by(Bus_stop.position==player.position).fetchone()
+    assert(card != None)
+
+    card_id = card.id
+    card_price = card.buy_price
+
+    if card_price > player.money:
+        emit('message', {'msg':"you too broke to buy this"})
+        return
+
+    insert_stmnt = link_player_property.insert().values(player_id=player.id, property_id=card_id, houses=0)
+    player.money -= card_price
+
+    db.session.execute(insert_stmnt)
+    db.session.commit()
+
+    ##emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
+
+    gamelogic.resume_player_turn(game_code)
     update_index_of_turn()
 
 @socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
