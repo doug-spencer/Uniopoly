@@ -71,7 +71,7 @@ def join_game(code):
     if account.username in usernames_in_game:
         flash("You are already in this game")
         return render_template('menu.html')
-    player = Player(position=0, index_in_game=len(game.players_connected), money=7)
+    player = Player(position=0, index_in_game=len(game.players_connected), money=1000, turns_in_jail=0)
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)
