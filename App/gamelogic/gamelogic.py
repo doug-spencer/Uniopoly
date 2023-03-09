@@ -118,7 +118,16 @@ def player_landed_on_property(player, game_code, session, property):
         emit('buy property button change', {'operation': 'show'}, session=session)
         emit('message', {'msg': 'Click Buy to buy the card for §' + str(property.buy_price)}, room=game.game_code)
 
-
+def update_position(game):
+    positions = [[i, None] for i in range(40)]
+    for i in game.players_connected:
+        if positions[i.position][1] == None:
+            positions[i.position][1] = i.username
+        else:
+            positions[i.position][1] = positions[i.position][1] + ',' + i.username
+    positions = [i for i in positions if i[1]!= None]
+    print(positions)
+    emit('player positions', {'positions': positions}, room=game.game_code)
 
 def player_landed_on_bus_stop(player, game_code, session, bus_stop):
     emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)

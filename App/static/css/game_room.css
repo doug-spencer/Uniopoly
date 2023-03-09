@@ -8,6 +8,7 @@
      grid-template-rows: 100px repeat(8, 70px) 100px;
      left:5%;
      width:90%;
+     align-items: centre;
      /*a, b, c, d are 4 rows and o is center*/
      grid-template-areas:
         "c c c c c c c c c d"
