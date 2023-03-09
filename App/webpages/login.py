@@ -1,7 +1,7 @@
 from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db, app
 from App.database.tables import Account, Game
-from App.misc.functions import check_account, get_correct_location
+from App.misc.functions import check_account, check_username, get_correct_location
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -40,24 +40,29 @@ def login():
         
 def login():
     username = request.form.get("loginname")
-    account = check_account(username)
-    if account:
-        print("You can log in")
-        session['username'] = username
-        return redirect(url_for('menu'))
-    else:
-        print("Account doesn't exist")
+    password = request.form.get("loginpassword")
+    if not check_username(username):
+        flash("Account doesn't exist")
         return render_template('login.html')
+
+    if not check_account(username, password):
+        flash("Incorrect password")
+        return render_template('login.html')
+
+    session['username'] = username
+    flash("You have successfully logged in")
+    return redirect(url_for('menu'))
 
 def signup():
     username = request.form.get("signupname")
-    account = check_account(username)
-    if account:
-        print("Account taken")
+    password = request.form.get("signuppassword")
+    if check_username(username):
+        flash("Username taken")
         return render_template('login.html')
-    else:
-        new_account = Account(username=username)
-        db.session.add(new_account)
-        db.session.commit()
-        session['username'] = username
-        return redirect(url_for('menu'))
+    
+    new_account = Account(username=username, password=password)
+    db.session.add(new_account)
+    db.session.commit()
+    session['username'] = username
+    flash("You have successfully signed up")
+    return redirect(url_for('menu'))

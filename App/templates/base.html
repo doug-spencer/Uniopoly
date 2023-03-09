@@ -16,8 +16,13 @@
             function log_out() {
                 window.location.href = "/logout"
             }
+            function return_to_menu() {
+                let username = session['username']
+                session.clear()
+                session['username'] = username
+                window.location.href = "/menu"
+            }
         </script>
-        <button class="button" onclick=log_out()>log out</button>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}

@@ -1,8 +1,17 @@
 div {
     position: absolute;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-color: #e7d1ff;
+}
+
+h1 {
+    font-weight: bold;
+    padding: 10px;
 }
 
 form {

@@ -69,7 +69,8 @@ $(document).ready(function(){
         }
     });
     //when the send message box is pressed
-    $('#send').click(function(e) {
+    $('form').submit(function(e) {
+        e.preventDefault();
         text = $('#text').val();
         $('#text').val('');
         socket.emit('text', {msg: text});

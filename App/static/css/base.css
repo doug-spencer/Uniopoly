@@ -17,6 +17,7 @@ body {
     font-size: 25px;
     font-weight: bold;
     color: white;
+    margin: 2px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -29,11 +30,18 @@ body {
     transform: scale(1.1);
 }
 
+#log-out, #menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
 .text-input {
     width: 10rem;
     height: 2.5rem;
     border: none;
-    margin: 5px;
+    border-radius: 5px;
+    margin: 2px;
     padding: 5px;
     font-family: Arial;
     font-size: 30px;
