@@ -57,6 +57,7 @@ def roll_dice():
         player.position = new_value
         emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
         emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)   
+        gamelogic.update_position(game)
     db.session.commit()
     
     #performs action associated with board position

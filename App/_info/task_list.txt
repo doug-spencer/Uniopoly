@@ -31,6 +31,7 @@ Chance card display messages - Cally
 Chance card money changes - Abu
 Owe money function - Jacob
 Mortgage/Unmortgage cards button - Doug 
+when player leaves game all the players with turns after the player need index_of_turn -= 1 - jacob
 
 ------------------
 DATABASE ADDITIONS

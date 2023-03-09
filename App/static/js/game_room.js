@@ -37,6 +37,14 @@ $(document).ready(function(){
         document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
         //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
     });
+    //players position update
+    socket.on('player positions', function(data) {
+        document.getElementById('test-box').innerHTML = 'players position: ' + data.positions;
+        for (i = 0; i < data.postions.length; i++) {
+            var position = toString(data.postions[i][0]);
+            document.getElementById('tile' + position).innerHTML = data.postions[i][1];
+        }
+    });
     //when the send message box is pressed
     $('#send').click(function(e) {
         text = $('#text').val();

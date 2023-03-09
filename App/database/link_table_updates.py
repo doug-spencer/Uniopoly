@@ -21,7 +21,6 @@ def query_property(player_id, secondary_id, mortgage, houses):
         )
         db.session.execute(stmt)
         db.session.commit()
-        player1.money = 0
     else:
         pass
         #sell houses
