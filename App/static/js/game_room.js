@@ -4,9 +4,7 @@ $(document).ready(function(){
     socket.on('connect', function() {
         socket.emit('join', {});
     });
-    //Hides the roll-dice and buy
     $('#buy-property').hide();
-    $('#buy-utility').hide();
     $('#dice-button').hide();
     //for joining and leaving room
     socket.on('status', function(data) {
@@ -26,22 +24,14 @@ $(document).ready(function(){
             $('#dice-button').hide();
         };
     });
-    //show or hide buy property button
-    socket.on('buy property button change', function(data) {
-        if(data.operation == 'show'){
-            $('#buy-property').show();
-        } else {
-            $('#buy-property').hide();
-        };
-    });
-    //show or hide buy utility button
-    socket.on('buy utility button change', function(data) {
-        if(data.operation == 'show'){
-            $('#buy-utility').show();
-        } else {
-            $('#buy-utility').hide();
-        };
-    });
+        //show or hide buy property button
+        socket.on('buy property button change', function(data) {
+            if(data.operation == 'show'){
+                $('#buy-property').show();
+            } else {
+                $('#buy-property').hide();
+            };
+        });
     //show roll value of dice roll
     socket.on('dice_roll', function(data) {
         document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
@@ -58,17 +48,11 @@ $(document).ready(function(){
         $('#dice-button').hide();
         socket.emit('roll dice');
     });
-    //when the buy property box is pressed
+    //when the roll dice box is pressed
     $('#buy-property').click(function(e) {
         $('#buy-property').hide();
         //const property = document.getElementById('property').value;
         socket.emit('buy-property');
-    });
-    //when the buy utility box is pressed
-    $('#buy-utility').click(function(e) {
-        $('#buy-utility').hide();
-        //const property = document.getElementById('property').value;
-        socket.emit('buy-utility');
     });
 });
 //if a player leaves the room (WIP)
