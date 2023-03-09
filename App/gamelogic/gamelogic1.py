@@ -14,20 +14,7 @@ def check_in_game(game_code, username):
         raise ValueError(f"Player {username} not found in game {game_code}")
     return game, player
 
-def check_in_game(game_code, username): #verification fucntion
-    game = Game.query.filter_by(game_code = game_code).first()
-    if not game:
-        return False, False
-    account = Account.query.filter_by(username=username).first()
-    if not account:
-        return False, False
-    player = False
-    for i in game.players_connected:
-        if i.username == username:
-            player = i
-    if not player:
-        return False, False
-    return game, player
+
 
 def show_player_options(player, game_code, session):
     #return False #while db is empty
@@ -71,6 +58,31 @@ def show_player_options(player, game_code, session):
         player_landed_on_start(player, game_code, session)
     if pos == pos_free_parking:
         player_landed_on_free_parking(player, game_code, session)
+
+def player_on_jail(player, game_code, session):
+    print("hellooooo")
+    if player.turns_in_jail == 0:
+        emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
+    elif player.turns_in_jail == 1:
+        emit('message', {'msg': f'{player.username} must pay 50 or use a get out of jail free card'}, room=game_code)
+        player.turns_in_jail = 0  # fixed assignment here
+    else:
+        print("arfadsadsf")
+        emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
+    player.turns_in_jail = max(0, player.turns_in_jail-1)  # fixed assignment here
+    db.session.commit()
+
+def player_landed_on_start(player, game_code, session):
+    emit('message', {'msg': player.username + ' passed go '}, room=game_code)
+
+def player_landed_on_free_parking(player, game_code, session):
+    emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
+
+def player_landed_on_go_to_jail(player, game_code, session):
+    player.turns_in_jail += 3
+    player.position = 9
+    db.session.commit()
+    emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
 
 def player_landed_on_property(player, game_code, session, property):
     emit('message', {'msg': f"{player.username} landed on the property: {property.name}"}, room=game_code)
@@ -146,6 +158,54 @@ def mortgage(player, property, game_code, session):
             player.money -= property.mortgage_price
             db.session.commit()
             emit('message', {'msg': f"{player.username} unmortgaged {property.name}"}, room=game_code)
+
+def player_landed_on_bus_stop(player, game_code, session, bus_stop):
+    
+    emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)
+    # Checks if bus stop is already owned
+    b_link_player = db.session.query(link_player_bus_stop).all()
+    b_owned = False
+    for i in b_link_player:
+        if i.bus_stop_id == bus_stop.id:
+            b_owned = True
+            owned_bus_stop = i
+            break
+    if b_owned: # If owned rent is paid and if cant pay players money is sent to other player and player_removed_from_game function called
+         
+        emit('message', {'msg': bus_stop.name + ' is owned by ' + owned_bus_stop.player.username}, room=game_code)
+        rent_list = bus_stop.rents.split(',')
+        rent = rent_list[owned_bus_stop.number_of_bus_stops_owned - 1]
+        if player.money >= rent:
+            emit('message', {'msg': player.username + ' owes ' + owned_bus_stop.player.username + ' §' + rent + ' as rent'}, room=game_code)
+            player.money -= int(rent)
+            owned_bus_stop.player.money += int(rent)
+            db.session.commit()
+        else:
+            # emit message to player that they dont have enough money to pay and they will be removed from the game
+            emit('message', {'msg': player.username + ' does not have enough money to pay rent and will be removed from the game'}, room=game_code)
+            # send all money to owner of bus stop
+            owned_bus_stop.player.money += player.money
+            # remove player from game
+            remove_player(player, owned_bus_stop, game_code, session)
+
+
+            
+        
+        
+
+    else: # If not owned, the option to buy the bus stop is given
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player = check_in_game(game_code, username)
+        if not game and not player:
+            return False
+        
+        emit('buy bus stop button change', {'operation': 'show'}, session=session)
+        emit('message', {'msg': 'Click Buy to buy the bus stop for §' + str(bus_stop.buy_price)}, room=game.game_code)
+
+# function that is called when a player has to be removed from the game because they have no money
+
+
 
 
 
