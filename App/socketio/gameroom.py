@@ -89,22 +89,3 @@ def update_turn():
         emit('roll dice button change', {'operation': 'hide'}, session = session)
     players = [[player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players}, room=game_code)
-
-@socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
-def buy_property():
-    game_code = session.get('game_code')
-    username = session.get('username')
-    game, player = check_in_game(game_code, username)
-    if not game and not player:
-        return False
-    pos = player.position
-    all_properties = Property.query.all()
-    index_of_properties = [i.position for i in all_properties]
-    property = all_properties[index_of_properties.index(pos)]
-    # Subtracts cost from money and adds new record of property ownership
-    player.money -= property.buy_price
-    insert_stmnt = link_player_property.insert().values(username=player.username, property_id=property.id, houses=0)
-    db.session.execute(insert_stmnt)
-    db.session.commit()
-
-    emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
