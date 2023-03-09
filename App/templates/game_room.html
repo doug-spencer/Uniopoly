@@ -105,6 +105,27 @@
   </div>
 </div>
 
+<button onclick=open_options()>open options</button>
+<div class="options-popup" id="options">
+   <div class="tab">
+      <button class="tablinks" onmouseover="change_tab(event, 'cards')">view cards</button>
+      <button class="tablinks" onmouseover="change_tab(event, 'houses')">buy sell houses</button>
+      <button class="tablinks" onmouseover="change_tab(event, 'mortgage')">mortagages</button>
+   </div>
+   <div class="tabcontent" id="cards" style="display:block;">
+      <p>your cards</p>
+      <button onclick=close_options()>close options</button>
+   </div>
+   <div class="tabcontent" id="houses">
+      <p>houses</p>
+      <button onclick=close_options()>close options</button>
+   </div>
+   <div class="tabcontent" id="mortgage">
+      <p>mortgage</p>
+      <button onclick=close_options()>close options</button>
+   </div>
+   
+</div>
 <p id="dice">nobody has rolled the dice yet</p>
 <div name="dice-button" id="dice-button">
   <button class="button" type="button" id="roll-dice">roll dice</button><br>
