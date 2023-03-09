@@ -21,6 +21,13 @@ def query_property(player_id, secondary_id, mortgage, houses):
         )
         db.session.execute(stmt)
         db.session.commit()
+        player1.money = 0
+    else:
+        pass
+        #sell houses
+        #mortgage utilities
+        #...
+    db.session.commit()
 
 def query_utilites(player_id, secondary_id, mortgaged):
     if str(mortgaged) !='None':

@@ -97,3 +97,8 @@
   #row-3 > .tile:first-child .tile-name{
       transform: rotate(-45deg) translateX(-38px);
   }
+  .grid > .player{
+   color: black;
+   grid-row: 2 / 10;
+   grid-column: 1 / 10;
+  }
