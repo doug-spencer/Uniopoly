@@ -4,7 +4,7 @@ from App.main import db, socketio, engine
 from App.misc.functions import check_in_game
 from random import randint
 from App.gamelogic import gamelogic
-from App.database.tables import link_player_property, Player, Game, Property, Bus_stop, Utilities
+from App.database.tables import link_player_property, link_player_bus_stop, link_player_utilities, Player, Game, Property, Bus_stop, Utilities
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
@@ -114,13 +114,16 @@ def buy_property():
     #finds the card the player has landed on
     if player.position in property_indices:
         card = Property.query.filter_by(position=player.position).first()
+        insert_stmnt = link_player_property.insert().values(player_id=player.id, card_id=card.id, houses=0)
+
     if player.position in utility_indices:
         card = Utilities.query.filter_by(position=player.position).first()
+        insert_stmnt = link_player_utilities.insert().values(player_id=player.id, card_id=card.id)
+
     if player.position in bus_stop_indices:
         card = Bus_stop.query.filter_by(position=player.position).first()
-    assert(card != None)
+        insert_stmnt = link_player_bus_stop.insert().values(player_id=player.id, card_id=card.id)
 
-    card_id = card.id
     card_price = card.buy_price
 
     #checks the player has enough money to buy the card
@@ -131,7 +134,6 @@ def buy_property():
         return
 
     #buys the card
-    insert_stmnt = link_player_property.insert().values(player_id=player.id, property_id=card_id, houses=0)
     player.money -= card_price
 
     db.session.execute(insert_stmnt)

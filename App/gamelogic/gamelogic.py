@@ -19,11 +19,11 @@ def show_player_options(player, game_code, session):
         return buy_choice_active
 
     elif pos in index_of_utilities:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_utilities.index(pos)], link_player_utilities)
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_utilities[index_of_utilities.index(pos)], link_player_utilities)
         return buy_choice_active   
 
     elif pos in index_of_bus_stops:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_bus_stops.index(pos)], link_player_bus_stop)
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop)
         return buy_choice_active    
     
     pos_go_to_jail = 29
@@ -77,24 +77,24 @@ def player_landed_on_go_to_jail(player, game_code, session):
     emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
 
 
-def player_landed_on_purchasable_card(player, game_code, session, property, link_table):
+def player_landed_on_purchasable_card(player, game_code, session, card, link_table):
 
-    emit('message', {'msg': player.username + ' landed on ' + property.name}, room=game_code)
+    emit('message', {'msg': player.username + ' landed on ' + card.name}, room=game_code)
 
     #selects the row in the table recording who owns what property with the id of the property that was landed on
     with engine.connect() as conn:
-        query = link_table.select().where(link_table.c.property_id == property.id)
-        property_row = conn.execute(query).fetchone()
+        query = link_table.select().where(link_table.c.card_id == card.id)##########ERROR
+        card_row = conn.execute(query).fetchone()
 
         #nobody owns it
-        if property_row == None:
+        if card_row == None:
             emit('buy property button change', {'operation':'show'}, session=session)
             halt_player_turn(game_code)
             emit('roll dice button change', {'operation':'hide'}, session=session)
             return True #to stop the next player getting to roll the dice
 
         #you own it
-        elif property_row.player_id == player.id:
+        elif card_row.player_id == player.id:
             return False
     
         #someone owns it and it isn't you so pay rent
