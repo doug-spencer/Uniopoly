@@ -1,44 +1,45 @@
-from App.database.tables import Game, Account, Property, Utilities, Bus_stop, link_player_property
+from App.database.tables import Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop, link_player_utilities
 from flask_socketio import emit
 from App.main import db, socketio, engine
 
 
-# def check_in_game(game_code, username): #verification fucntion
-#     game = Game.query.filter_by(game_code = game_code).first()
-#     if not game:
-#         return False, False
-#     account = Account.query.filter_by(username=username).first()
-#     if not account:
-#         return False, False
-#     player = False
-#     for i in game.players_connected:
-#         if i.username == username:
-#             player = i
-#     if not player:
-#         return False, False
-#     return game, player
-
 def show_player_options(player, game_code, session):
-    #return False #while db is empty
     pos = player.position
 
     all_properties = Property.query.all()
+    all_utilities = Utilities.query.all()
+    all_bus_stops = Bus_stop.query.all()
+    
     index_of_properties = [i.position for i in all_properties]
-    print(index_of_properties)
+    index_of_utilities = [i.position for i in all_utilities]
+    index_of_bus_stops = [i.position for i in all_bus_stops]
+
     if pos in index_of_properties:
-        buy_choice_active = player_landed_on_property(player, game_code, session, all_properties[index_of_properties.index(pos)])
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_properties.index(pos)], link_player_property)
         return buy_choice_active
 
-    all_utilities = Utilities.query.all()
-    index_of_utilities = [i.position for i in all_utilities]
-    if pos in index_of_utilities:
-        player_landed_on_utility(player, game_code, session, all_utilities[index_of_utilities.index(pos)])
+    elif pos in index_of_utilities:
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_utilities.index(pos)], link_player_utilities)
+        return buy_choice_active   
+
+    elif pos in index_of_bus_stops:
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_bus_stops.index(pos)], link_player_bus_stop)
+        return buy_choice_active    
     
-    all_bus_stops = Bus_stop.query.all()
-    index_of_bus_stops = [i.position for i in all_bus_stops]
-    if pos in index_of_bus_stops:
-        player_landed_on_bus_stop(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)])
-    
+    pos_go_to_jail = 29
+    pos_free_parking = 19
+    pos_jail = 9
+    pos_start = 0
+
+    if pos == pos_go_to_jail:
+        player_landed_on_go_to_jail(player, game_code, session)
+    if pos == pos_jail:
+        player_on_jail(player, game_code, session)
+    if pos == pos_start:
+        player_landed_on_start(player, game_code, session)
+    if pos == pos_free_parking:
+        player_landed_on_free_parking(player, game_code, session)
+
     # all_emails = Email.query.all()
     # index_of_emails = [i.position for i in all_emails]
     # if pos in index_of_emails:
@@ -48,19 +49,6 @@ def show_player_options(player, game_code, session):
     # index_of_student_unions = [i.position for i in all_student_unions]
     # if pos in index_of_student_unions:
     #     player_landed_on_card(player, game, session, all_student_unions[index_of_student_unions.index(pos)])
-    
-    pos_go_to_jail = 29
-    pos_free_parking = 19
-    pos_jail = 9
-    pos_start = 0
-    if pos == pos_go_to_jail:
-        player_landed_on_go_to_jail(player, game_code, session)
-    if pos == pos_jail:
-        player_on_jail(player, game_code, session)
-    if pos == pos_start:
-        player_landed_on_start(player, game_code, session)
-    if pos == pos_free_parking:
-        player_landed_on_free_parking(player, game_code, session)
 
 def player_landed_on_start(player, game_code, session):
     emit('message', {'msg': player.username + ' passed go '}, room=game_code)
@@ -76,6 +64,7 @@ def player_on_jail(player, game_code, session):
         player.turns_in_jail == 0
     else:
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
+    
     player.turns_in_jail -= 1
     player.turns_in_jail = max(0, player.turns_in_jail-1)
     db.session.commit()
@@ -87,84 +76,45 @@ def player_landed_on_go_to_jail(player, game_code, session):
     db.session.commit()
     emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
 
-def player_landed_on_utility(player, game_code, session, utility):
-    emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
 
-# def player_landed_on_property(player, game_code, session, property):
-#     emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
-#     # Checks if property is already owned
-#     p_link_player = db.session.query(link_player_property).all()
-#     p_owned = False
-#     for i in p_link_player:
-#         if i.property_id == property.id:
-#             p_owned = True
-#             owned_property = i
-#             break
-#     if p_owned: # If owned rent is payed
-#         emit('message', {'msg':property.name + ' is owned by me'}, room=game_code)
-#         rent_list = property.rents.split(',')
-#         rent = rent_list[3]
-#         emit('message', {'msg': player.username + ' owes me §' + rent}, room=game_code)
-#         player.money -= int(rent)
-#         db.session.commit()
-#     else: # If not owned, the option to buy the property is given
-#         game_code = session.get('game_code')
-#         username = session.get('username')
-#         game, player = check_in_game(game_code, username)
-#         if not game and not player:
-#             return False
-        
-#         emit('buy property button change', {'operation': 'show'}, session=session)
-#         emit('message', {'msg': 'Click Buy to buy the card for §' + str(property.buy_price)}, room=game.game_code)
+def player_landed_on_purchasable_card(player, game_code, session, property, link_table):
 
-def player_landed_on_property(player, game_code, session, property):
-
-    emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
+    emit('message', {'msg': player.username + ' landed on ' + property.name}, room=game_code)
 
     #selects the row in the table recording who owns what property with the id of the property that was landed on
-    
     with engine.connect() as conn:
-
-        query = link_player_property.select().where(link_player_property.c.property_id == property.id)
+        query = link_table.select().where(link_table.c.property_id == property.id)
         property_row = conn.execute(query).fetchone()
 
+        #nobody owns it
         if property_row == None:
             emit('buy property button change', {'operation':'show'}, session=session)
             halt_player_turn(game_code)
             emit('roll dice button change', {'operation':'hide'}, session=session)
-            return True
+            return True #to stop the next player getting to roll the dice
 
-        elif property_row['player_id'] == player.id:
+        #you own it
+        elif property_row.player_id == player.id:
             return False
     
         #someone owns it and it isn't you so pay rent
         pay_rent()
         return False
 
+#transforms the index of turn variable so that it applys to no player
 def halt_player_turn(game_code):
     game= Game.query.filter_by(game_code=game_code).first()
     game.index_of_turn = -1 * game.index_of_turn - 1
     db.session.commit()
 
+#returns the index of turn variable to its previous value
 def resume_player_turn(game_code):
     game= Game.query.filter_by(game_code=game_code).first()
     game.index_of_turn = (game.index_of_turn + 1) * -1
     db.session.commit()
 
-
 def pay_rent():
     pass
-
-
-
-
-    
-    
-
-
-
-def player_landed_on_bus_stop(player, game_code, session, bus_stop):
-    emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)
 
 def player_landed_on_card(player, game_code, session, card):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)

@@ -59,10 +59,10 @@ def roll_dice():
     if not buy_choice_active:
         update_index_of_turn()
 
-    
-    #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])##dougs not sure what this is
+    #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
-@socketio.on('update index of turn', namespace='/gameroom') #sending text
+#increments the index of turn counter in the db
+@socketio.on('update index of turn', namespace='/gameroom')
 def update_index_of_turn():
     game_code = session.get('game_code')
     username = session.get('username')
@@ -82,36 +82,36 @@ def text(message):
     game_code = session.get('game_code')
     emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room = game_code)
 
-@socketio.on('update turn', namespace='/gameroom') #check if its players turn yet (if roll dice button should be shown)
+#check if its players turn yet (if roll dice button should be shown)
+@socketio.on('update turn', namespace='/gameroom') 
 def update_turn():
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
+    
     if game.index_of_turn == player.index_in_game:
-        #emit('roll dice button change', {'operation': 'show'}, session=session_id[player.id])
         emit('roll dice button change', {'operation': 'show'}, session = session)
         emit('message', {'msg': 'It is ' + player.username + ' turn to roll the dice'}, room = game.game_code)
     else:
-        #emit('roll dice button change', {'operation': 'hide'}, session=session_id[player.id])
         emit('roll dice button change', {'operation': 'hide'}, session = session)
 
 @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
 def buy_property():
+    
+    #Validation
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
     
-
-
-
     property_indices = [i.position for i in Property.query.all()]
     bus_stop_indices = [i.position for i in Bus_stop.query.all()]
     utility_indices = [i.position for i in Utilities.query.all()]
 
+    #finds the card the player has landed on
     if player.position in property_indices:
         card = Property.query.filter_by(position=player.position).first()
     if player.position in utility_indices:
@@ -123,23 +123,36 @@ def buy_property():
     card_id = card.id
     card_price = card.buy_price
 
+    #checks the player has enough money to buy the card
     if card_price > player.money:
         emit('message', {'msg':"you too broke to buy this"})
+        gamelogic.resume_player_turn(game_code)
+        update_index_of_turn()
         return
 
+    #buys the card
     insert_stmnt = link_player_property.insert().values(player_id=player.id, property_id=card_id, houses=0)
     player.money -= card_price
 
     db.session.execute(insert_stmnt)
     db.session.commit()
 
-    emit('message', {'msg': card.name + ' has been purchased for ' + str(card_price)}, room=game_code)
+    emit('message', {'msg': player.username + ' has bought ' + card.name + ' for ' + str(card_price)}, room=game_code)
+
+    #shows the roll dice button and updates the turn
+    gamelogic.resume_player_turn(game_code)
+    update_index_of_turn()
+
+
+@socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
+def dont_buy_property():
+    #shows the roll dice button and updates the turn    
+    game_code = session.get('game_code')
+
+    emit('message', {'msg': 'card not bought'}, room=game_code)
 
     gamelogic.resume_player_turn(game_code)
     update_index_of_turn()
 
-@socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
-def dont_buy_property():
-    update_index_of_turn()
     
 
