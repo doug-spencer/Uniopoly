@@ -37,32 +37,35 @@ $(document).ready(function(){
         document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
         //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
     });
-    socket.on('init leaderboard', function(data) {
-        let table = document.getElementById('table-body');
-        for (let i=0; i<data.username.length; i++) {
-            table.innerHTML += `<tr class="table-rows"><td>${data.username[i]}</td><td>${data.money[i]}</td><td></td></tr>`;
+    //update the leaderboard
+    socket.on('update leaderboard', function(data) {
+        for (let i=0; i<data.players.length-1; i++) {
+            for (let j=0; j<data.players.length-1-i; j++) {
+                if (data.players[j][1] < data.players[j+1][1]) {
+                    let temp = data.players[j];
+                    data.players[j] = data.players[j+1];
+                    data.players[j+1] = temp;
+                }
+            }
         }
+        let body = "";
+        for (let i=0; i<data.players.length; i++) {
+            body += `<tr class="table-rows">
+                        <td>${data.players[i][0]}</td>
+                        <td>${data.players[i][1]}</td>
+                    </tr>`;
+        }
+        $('#table-body').html(body);
     });
 
     //players position update
     socket.on('update player positions', function(data) {
-        //for (i = 0; i < 40; i++) {
-        //    $('#tile'+i).html("");
-        //}
-        for (i = 0; i < data.positions.length; i++) {
-            console.log(data.positions[i]);
-            var position = data.positions[i][0];
-            $('#tile'+position).html(data.positions[i][1]);
-        }
+        console.log("positions updated");
         for (let i=0; i<40; i++) {
-            let text = "";
-            for (let j=data.positions.length-1; j>=0; i--) {
-                if (data.positions[j][0] == i) {
-                    text += data.positions[j][1];
-
-                }
-            }
-            $('#tile' + i).html(text);
+            $('#tile' + i).html("");
+        }
+        for (let i=0; i<data.positions.length; i++) {
+            $('#tile' + data.positions[i][0]).append("<b>" + data.positions[i][1] + "</b>");
         }
     });
     //when the send message box is pressed

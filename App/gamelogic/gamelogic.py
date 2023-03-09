@@ -132,7 +132,6 @@ def update_position(game, game_code):
     positions = [i for i in positions if i[1]!= None]
     print(positions, game.game_code)
     emit('update player positions', {'positions': positions}, room=game_code) 
-    print("after emit")
 
 def player_landed_on_bus_stop(player, game_code, session, bus_stop):
     emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)
