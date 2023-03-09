@@ -45,11 +45,24 @@ $(document).ready(function(){
     });
 
     //players position update
-    socket.on('player positions', function(data) {
-        document.getElementById('test-box').innerHTML = 'players position: ' + data.positions;
-        for (i = 0; i < data.postions.length; i++) {
-            var position = toString(data.postions[i][0]);
-            document.getElementById('tile' + position).innerHTML = data.postions[i][1];
+    socket.on('update player positions', function(data) {
+        //for (i = 0; i < 40; i++) {
+        //    $('#tile'+i).html("");
+        //}
+        for (i = 0; i < data.positions.length; i++) {
+            console.log(data.positions[i]);
+            var position = data.positions[i][0];
+            $('#tile'+position).html(data.positions[i][1]);
+        }
+        for (let i=0; i<40; i++) {
+            let text = "";
+            for (let j=data.positions.length-1; j>=0; i--) {
+                if (data.positions[j][0] == i) {
+                    text += data.positions[j][1];
+
+                }
+            }
+            $('#tile' + i).html(text);
         }
     });
     //when the send message box is pressed
