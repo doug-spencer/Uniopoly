@@ -1,0 +1,53 @@
+.grid {
+    border: 5px solid rgb(111,41,97);
+    display: grid;
+    grid-template-areas:
+    "c c c c c c c c c d"
+    "b o o o o o o o o d"
+    "b o o o o o o o o d"
+    "b o o o o o o o o d"
+    "b o o o o o o o o d"
+    "b o o o o o o o o d"
+    "b o o o o o o o o d"
+    "b o o o o o o o o d"
+    "b o o o o o o o o d"
+    "b a a a a a a a a a";
+    gap: 10px;
+    grid-template-columns: 13% repeat(8, 7%) 13%;
+    grid-template-rows: 13% repeat(8, 7%) 13%;
+}
+.center {
+    grid-area: o;
+    background: purple;
+}
+.row {
+    display: flex;
+}
+.row-0 {
+    grid-area: a;
+    flex-direction: row-reverse;
+}
+.row-1 {
+    grid-area: b;
+    flex-direction: column-reverse;
+}
+.row-2 {
+    grid-area: c;
+    flex-direction: row;
+}
+.row-3 {
+    grid-area: d;
+    flex-direction: column;
+}
+.tile {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    height: 100%;
+    width: 100%;
+}
+.grid > .player{
+    color: black;
+    grid-row: 2 / 10;
+    grid-column: 1 / 10;
+}

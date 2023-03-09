@@ -11,10 +11,8 @@ Chance card display messages - Cally
 Chance card money changes - Abu
 Owe money function - Jacob
 Mortgage/Unmortgage cards button - Doug 
-Fix link tables with composite key - Jacob
 
 ------------------
 DATABASE ADDITIONS
 ------------------
-Card Mortgaged?
 
