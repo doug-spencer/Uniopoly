@@ -113,11 +113,11 @@ def buy_property():
     utility_indices = [i.position for i in Utilities.query.all()]
 
     if player.position in property_indices:
-        card = Property.query.filter_by(Property.position==player.position).fetchone()
+        card = Property.query.filter_by(position=player.position).first()
     if player.position in utility_indices:
-        card = Utilities.query.filter_by(Utilities.position==player.position).fetchone()
+        card = Utilities.query.filter_by(position=player.position).first()
     if player.position in bus_stop_indices:
-        card = Bus_stop.query.filter_by(Bus_stop.position==player.position).fetchone()
+        card = Bus_stop.query.filter_by(position=player.position).first()
     assert(card != None)
 
     card_id = card.id
@@ -133,7 +133,7 @@ def buy_property():
     db.session.execute(insert_stmnt)
     db.session.commit()
 
-    ##emit('message', {'msg': property.name + ' has been purchased for ' + str(property.buy_price)}, room=game_code)
+    emit('message', {'msg': card.name + ' has been purchased for ' + str(card_price)}, room=game_code)
 
     gamelogic.resume_player_turn(game_code)
     update_index_of_turn()
