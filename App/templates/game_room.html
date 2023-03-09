@@ -11,6 +11,16 @@
 {% block body %}
 <h2 >welcome to der game</h2>
 <h2>Game name : {{session['game_code']}}</h2><br>
+
+<table id="money-table">
+   <thead>
+     <tr class="table-header">
+       <th>Name</th>
+       <th>Money</th>
+     </tr>
+   </thead>
+   <tbody id="table-body"></tbody>
+</table>
 <h1 id="test-box">bish</h1>
 <div id="board">
   <div id="center">emails</div>

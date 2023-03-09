@@ -150,6 +150,7 @@
    background-color: #ccc;
  }
  
+
  /* Style the tab content */
  .tabcontent {
    float: left;
@@ -164,3 +165,26 @@
    top:5px;
    right:5px;
  }
+
+#money-table {
+   border-collapse: collapse;
+   font-family: Arial, sans-serif;
+}
+
+.table-header th {
+   padding: 10px;
+   background-image: radial-gradient(ellipse, #7B1FA2, #660099);
+   border: 5px solid white;
+   color: white;
+}
+
+.table-rows td:not(:last-child) {
+   padding: 10px;
+   background-color: white;
+   border: 5px solid white;
+   color: black;
+}
+
+.table-rows:nth-child(even) td {
+   background-color: #f2f2f2;
+}
