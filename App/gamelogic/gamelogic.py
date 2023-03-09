@@ -1,6 +1,11 @@
-from App.database.tables import Game, Account, Property, Utilities, Bus_stop, link_player_property
+from App.database.tables import Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop
 from flask_socketio import emit
 from App.main import db, socketio
+from sqlalchemy.orm import query, sessionmaker
+from sqlalchemy import create_engine, select 
+
+
+
 
 
 def check_in_game(game_code, username): #verification fucntion
@@ -92,36 +97,103 @@ def player_landed_on_utility(player, game_code, session, utility):
     emit('message', {'msg': player.username + ' landed on ' + utility.name}, room=game_code)
 
 def player_landed_on_property(player, game_code, session, property):
-    emit('message', {'msg': player.username + ' landed on  the property: ' + property.name}, room=game_code)
-    # Checks if property is already owned
-    p_link_player = db.session.query(link_player_property).all()
+    emit('message', {'msg': f"{player.username} landed on the property: {property.name}"}, room=game_code)
+
+    # Check if property is already owned by the player
+    
+    # link = session.query(link_player_property).filter_by(property_id=property.id, player_id=player.id).first()
+    p_link_player = db.session.query(link_player_property)
     p_owned = False
     for i in p_link_player:
         if i.property_id == property.id:
             p_owned = True
             owned_property = i
             break
-    if p_owned: # If owned rent is payed
-        emit('message', {'msg':property.name + ' is owned by me'}, room=game_code)
-        rent_list = property.rents.split(',')
-        rent = rent_list[3]
-        emit('message', {'msg': player.username + ' owes me §' + rent}, room=game_code)
+    
+    if p_owned:
+        pay_rent(player,  property, game_code, session)
+    else:
+        buy_property(player, property, session, game_code)
+        
+
+def pay_rent(player, link, property, game_code, session):
+    emit('message', {'msg': f"{property.name} is owned by {link.player.username}"}, room=game_code)
+    rent_list = property.rents.split(',')
+    rent = rent_list[3]
+    emit('message', {'msg': f"{player.username} owes {link.player.username} §{rent}"}, room=game_code)
+    if player.money >= int(rent):
         player.money -= int(rent)
+        link.player.money += int(rent)
         db.session.commit()
-    else: # If not owned, the option to buy the property is given
+    else:
+        remove_player(player, link, game_code, session)
+
+def buy_property(player, property,  session, game_code):
+    emit('buy property button change', {'operation': 'show'}, session=session)
+    emit('message', {'msg': f"Click Buy to buy the card for §{property.buy_price}"}, room=game_code)
+    
+
+def remove_player(player, link, game_code, session):
+    link.player.money += player.money
+    player.money = 0
+    db.session.commit()
+    player_removed_from_game(player, game_code, session)
+
+
+
+def player_landed_on_bus_stop(player, game_code, session, bus_stop):
+    
+    emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)
+    # Checks if bus stop is already owned
+    b_link_player = db.session.query(link_player_bus_stop).all()
+    b_owned = False
+    for i in b_link_player:
+        if i.bus_stop_id == bus_stop.id:
+            b_owned = True
+            owned_bus_stop = i
+            break
+    if b_owned: # If owned rent is paid and if cant pay players money is sent to other player and player_removed_from_game function called
+         
+        emit('message', {'msg': bus_stop.name + ' is owned by ' + owned_bus_stop.player.username}, room=game_code)
+        rent_list = bus_stop.rents.split(',')
+        rent = rent_list[owned_bus_stop.number_of_bus_stops_owned - 1]
+        if player.money >= rent:
+            emit('message', {'msg': player.username + ' owes ' + owned_bus_stop.player.username + ' §' + rent + ' as rent'}, room=game_code)
+            player.money -= int(rent)
+            owned_bus_stop.player.money += int(rent)
+            db.session.commit()
+        else:
+            # emit message to player that they dont have enough money to pay and they will be removed from the game
+            emit('message', {'msg': player.username + ' does not have enough money to pay rent and will be removed from the game'}, room=game_code)
+            # send all money to owner of bus stop
+            owned_bus_stop.player.money += player.money
+            # remove player from game
+            player_removed_from_game(player, game_code, session)
+            
+        
+        
+
+    else: # If not owned, the option to buy the bus stop is given
         game_code = session.get('game_code')
         username = session.get('username')
         game, player = check_in_game(game_code, username)
         if not game and not player:
             return False
         
-        emit('buy property button change', {'operation': 'show'}, session=session)
-        emit('message', {'msg': 'Click Buy to buy the card for §' + str(property.buy_price)}, room=game.game_code)
+        emit('buy bus stop button change', {'operation': 'show'}, session=session)
+        emit('message', {'msg': 'Click Buy to buy the bus stop for §' + str(bus_stop.buy_price)}, room=game.game_code)
+
+# function that is called when a player has to be removed from the game because they have no money
+def player_removed_from_game(player, game_code, session):
+    emit('message', {'msg': player.username + ' has been removed from the game because they have no money'}, room=game_code)
+    player.in_game = False
+    db.session.commit()
+    emit('player removed from game', {'username': player.username}, room=game_code)
 
 
 
-def player_landed_on_bus_stop(player, game_code, session, bus_stop):
-    emit('message', {'msg': player.username + ' landed on ' + bus_stop.name}, room=game_code)
+
+    
 
 def player_landed_on_card(player, game_code, session, card):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)
