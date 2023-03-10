@@ -194,3 +194,7 @@
    text-align: left;
    font-weight: normal;
 }
+
+footer {
+   position: static;
+}

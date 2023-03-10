@@ -8,7 +8,7 @@
 {% endblock %} 
 
 {% block body %}
-<div>
+<div class="login-div">
     <form method="POST">  
         <h1 id="login-header">Log In</h1>
         <input class="text-input" type="text" id="username" name="loginname" placeholder="Username" required autofocus autocomplete="off"><br>
@@ -16,6 +16,7 @@
         <button class="button" id="submit" name="button" value="login">Log In</button>
     </form>
     <br>
+    <p id="switch-p">Don't have an account?</p>
     <button id="switch">Sign Up</button>
 </div>
 {% endblock %}

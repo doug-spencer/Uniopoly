@@ -1,20 +1,43 @@
-div {
+.login-div {
     position: absolute;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #e7d1ff;
 }
 
 h1 {
-    font-weight: bold;
+    margin: 1rem;
     padding: 10px;
+    font-weight: bold;
+    font-size: 5rem;
 }
 
 form {
     width: 20rem;
     /* border: 1px solid black; */
+}
+
+#switch {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#switch-p, #switch {
+    display: inline-block;
+    margin: 0px;
+    font-size: 0.8rem;
+}
+
+#username, #password {
+    margin: 15px 2px;
+}
+
+#submit {
+    margin: 10px 2px;
 }

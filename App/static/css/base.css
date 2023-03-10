@@ -51,6 +51,35 @@ body {
     text-align: center;
 }
 
+footer {
+    /* background-color: #333; */
+    background-color: transparent;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 14px;
+}
+  
+.footer-legal a, .footer-legal p {
+    margin: 5px 5px;
+    font-size: 10px;
+    color: #000;
+    text-decoration: none;
+}
+    
+.footer-links a:hover, .footer-legal a:hover {
+    text-decoration: underline;
+}
+
 @media only screen {
     body {
         background-image: url('/static/images/background-mobile.jpg');

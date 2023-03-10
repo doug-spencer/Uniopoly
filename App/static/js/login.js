@@ -8,12 +8,14 @@ $(document).ready(function() {
             $('#submit').html("Sign Up");
             $('#submit').val("signup");
             $('#switch').html("Log In");
+            $('#switch-p').html("Already have an account?");
         } else {
             document.title = "Log In";
             $('#login-header').html("Log In");
             $('#submit').html("Log In");
             $('#submit').val("login");
             $('#switch').html("Sign Up");
+            $('#switch-p').html("Don't have an account?");
         }
     });
 });
