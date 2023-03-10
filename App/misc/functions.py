@@ -1,7 +1,7 @@
 from App.database.tables import Account, Game, Player, Property, Utilities, Bus_stop, link_player_bus_stop, link_player_property, link_player_utilities
 from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db
-from App.database.link_table_updates import query_property, query_utilites, query_bus_stop
+from App.database.link_table_updates import update_link_table
 
 
 def check_account(username):

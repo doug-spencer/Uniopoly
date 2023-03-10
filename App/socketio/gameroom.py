@@ -25,11 +25,15 @@ def left(message):
     username = session.get('username')
     leave_room(game_code)
     player = Player.query.filter_by(username = username, game_code=game_code).first()
+    game= Game.query.filter_by(game_code=game_code).first()
+    index_of_player = [i.id for i in game.players_connected].index(player.id)
+    index = 0
+    for i in game.players_connected:
+        if index > index_of_player:
+            game.players_connected[index] = index - 1
+        index += 1
     db.session.delete(player)
     db.session.commit()
-    game= Game.query.filter_by(game_code=game_code).first()
-    for i in game.players_connected:
-        print(i.username)
     emit('status', {'msg': username + ' has left the room.'}, room = game_code)
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice

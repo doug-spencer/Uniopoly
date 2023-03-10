@@ -1,44 +1,26 @@
 from sqlalchemy import update
 from App.main import db
-from App.database.tables import link_player_bus_stop, link_player_property, link_player_utilities, link_player_student_union, link_player_email
+from App.database.tables import link_player_student_union, link_player_email
 
-def query_property(player_id, secondary_id, mortgage, houses):
-    if str(houses) !='None':
+def update_link_table(player_id, card_id, table, mortgaged, houses=None):
+    if str(houses) != 'None':
         stmt = (
-            update(link_player_property).
-            where(link_player_property.c.player_id == player_id).
-            where(link_player_property.c.property_id == secondary_id).
+            update(table).
+            where(table.c.player_id == player_id).
+            where(table.c.card_id == card_id).
             values(houses=houses)
         )
-        db.session.execute(stmt)
-        db.session.commit()
-    if str(mortgage) != 'None':
-        stmt = (
-            update(link_player_property).
-            where(link_player_property.c.player_id == player_id).
-            where(link_player_property.c.property_id == secondary_id).
-            values(mortgaged=mortgage)
-        )
-        db.session.execute(stmt)
-        db.session.commit()
     else:
-        pass
-        #sell houses
-        #mortgage utilities
-        #...
-    db.session.commit()
-
-def query_utilites(player_id, secondary_id, mortgaged):
-    if str(mortgaged) !='None':
         stmt = (
-            update(link_player_utilities).
-            where(link_player_utilities.c.player_id == player_id).
-            where(link_player_utilities.c.utilities_id == secondary_id).
+            update(table).
+            where(table.c.player_id == player_id).
+            where(table.c.card_id == card_id).
             values(mortgaged=mortgaged)
         )
-        db.session.execute(stmt)
-        db.session.commit()
+    db.session.execute(stmt)
+    db.session.commit()
 
+'''
 def query_student_union(player_id, secondary_id, mortgaged):
     if str(mortgaged) !='None':
         stmt = (
@@ -66,8 +48,56 @@ def query_bus_stop(player_id, secondary_id, mortgaged):
         stmt = (
             update(link_player_bus_stop).
             where(link_player_bus_stop.c.player_id == player_id).
-            where(link_player_bus_stop.c.bus_stop_id == secondary_id).
+            where(link_player_bus_stop.c.card_id == secondary_id).
             values(mortgaged=mortgaged)
         )
         db.session.execute(stmt)
         db.session.commit()
+
+        def query_property(player_id, secondary_id, mortgage, houses):
+    if str(houses) !='None':
+        stmt = (
+            update(link_player_property).
+            where(link_player_property.c.player_id == player_id).
+            where(link_player_property.c.property_id == secondary_id).
+            values(houses=houses)
+        )
+        db.session.execute(stmt)
+        db.session.commit()
+    if str(mortgage) != 'None':
+        stmt = (
+            update(link_player_property).
+            where(link_player_property.c.player_id == player_id).
+            where(link_player_property.c.card_id == secondary_id).
+            values(mortgaged=mortgage)
+        )
+        db.session.execute(stmt)
+        db.session.commit()
+    else:
+        pass
+        #sell houses
+        #mortgage utilities
+        #...
+    db.session.commit()
+
+def query_utilites(player_id, secondary_id, mortgaged):
+    if str(mortgaged) !='None':
+        stmt = (
+            update(link_player_utilities).
+            where(link_player_utilities.c.player_id == player_id).
+            where(link_player_utilities.c.card_id == secondary_id).
+            values(mortgaged=mortgaged)
+        )
+        db.session.execute(stmt)
+        db.session.commit()
+'''
+
+def query_link_table(player_id, card_id, table, houses=False):
+    if not houses:
+        result = table.query.filter_by(player_id=player_id, card_id=card_id).first()
+        if result:
+            return result.mortgaged
+    else:
+        result = table.query.filter_by(player_id=player_id, card_id=card_id).first()
+        if result:
+            return result.houses
