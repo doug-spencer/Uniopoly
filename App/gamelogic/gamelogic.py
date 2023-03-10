@@ -131,5 +131,13 @@ def update_position(game, game_code):
 def pay_rent():
     pass
 
+def get_cards(player):
+    cards = []
+    tables = [link_player_property, link_player_utilities, link_player_bus_stop]
+    for i in tables:
+        results = i.query.filter_by(player_id=player.player_id).all()
+        cards = cards + [j.card_id.name for j in results]
+    return cards
+
 def player_landed_on_card(player, game_code, session, card):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)
