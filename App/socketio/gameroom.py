@@ -45,10 +45,9 @@ def roll_dice():
     if not game or not player:
         return False
     
-    #roll1 = randint(1,6)
-    #roll2 = randint(1,6)
-    #roll_value = roll1 + roll2
-    roll_value = 1
+    roll1 = randint(1,6)
+    roll2 = randint(1,6)
+    roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
 
