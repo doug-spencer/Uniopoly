@@ -1,6 +1,7 @@
 from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop, link_player_utilities
 from flask_socketio import emit
 from App.main import db, socketio, engine
+from . import functions
 
 def show_player_options(player, game_code, session):
     pos = player.position
@@ -83,7 +84,7 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 
     #selects the row in the table recording who owns what property with the id of the property that was landed on
     with engine.connect() as conn:
-        query = link_table.select().where(link_table.c.card_id == card.id)##########ERROR
+        query = link_table.select().where(link_table.c.card_id == card.id)
         card_row = conn.execute(query).fetchone()
 
         #nobody owns it
@@ -98,6 +99,10 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
             return False
     
         #someone owns it and it isn't you so pay rent
+        rent_amount, player_owed = get_rent_amount(player, game_code, session, card, link_table)
+        print("rent_amount", rent_amount)
+        print("player_owed", player_owed)
+        functions.player1_owes_player2_money(player, rent_amount, player_owed)
         return False
 
 #transforms the index of turn variable so that it applys to no player
@@ -123,7 +128,7 @@ def update_position(game, game_code):
     print(positions, game.game_code)
     emit('update player positions', {'positions': positions}, room=game_code) 
 
-def pay_rent(player, game_code, session, card, link_table):
+def get_rent_amount(player, game_code, session, card, link_table):
     ##get the rent required by the owner
     ##check the player has enough total money and property value
         ##if not make them lose
@@ -135,7 +140,31 @@ def pay_rent(player, game_code, session, card, link_table):
         ##give them the money
     ##else
         ##wait until they have mortgaged their stuff
-    return
+    with engine.connect() as conn:
+
+        card_colour = Property.query.filter_by(id=card.id).first().colour
+        cards_with_colour = Property.query.filter_by(colour=card_colour).all()
+        card_ids_with_colour = [i.id for i in cards_with_colour]
+        
+        renter_id_query = link_table.select().where(link_table.c.card_id == card.id)
+        card_row = conn.execute(renter_id_query).fetchone()
+        renter_id = card_row.player_id
+        no_of_houses = card_row.houses
+
+        number_of_colour_owned = 0
+        for card_id_with_colour in card_ids_with_colour:
+            number_of_colour_owned_query = link_table.select().where(link_table.c.card_id==card_id_with_colour, link_table.c.player_id==renter_id)
+            if conn.execute(number_of_colour_owned_query).fetchone() != None:
+                number_of_colour_owned += 1
+
+        player_owed = Player.query.filter_by(id=renter_id).first()
+
+        if number_of_colour_owned < len(card_ids_with_colour):
+            return int(card.rents.split(',')[0]), player_owed
+        
+        elif number_of_colour_owned == len(card_ids_with_colour):
+            return int(card.rents.split(',')[1+no_of_houses]), player_owed
+        
 
 def get_cards(player):
     cards = []
