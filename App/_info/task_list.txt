@@ -1,16 +1,13 @@
 -----------------
 TASKS
 -----------------
-bus stop functions - Shiv
-Re add buy button and make it functional - Cally
 Display owned cards on the game page - Doug
-Display money - Ben
 Remove players when they lose
-Fill in the board and add the player icons - Jacob 
 Chance card display messages - Cally
 Chance card money changes - Abu
 Owe money function - Jacob
 Mortgage/Unmortgage cards button - Doug 
+Generate board in python - Ben
 
 ------------------
 DATABASE ADDITIONS
