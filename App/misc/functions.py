@@ -4,11 +4,17 @@ from App.main import db
 from App.database.link_table_updates import update_link_table
 
 
-def check_account(username):
-    account = Account.query.filter_by(username=username).first()
+def check_account(username, password):
+    account = Account.query.filter_by(username=username, password=password).first()
     if not account:
         return False
     return account
+
+def check_username(username):
+    account = Account.query.filter_by(username=username).first()
+    if not account:
+        return False
+    return True
 
 def get_account_usernames():
     accounts = Account.query.all()

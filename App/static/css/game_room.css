@@ -191,4 +191,10 @@
 
 #text {
    width: 40rem;
+   text-align: left;
+   font-weight: normal;
+}
+
+footer {
+   position: static;
 }

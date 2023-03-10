@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block body %}
-<h2 >welcome to der game</h2>
-<h2>Game name : {{session['game_code']}}</h2><br>
+<button class="button" id="menu" onclick=return_to_menu()>Menu</button>
+
+<h2>Game Code : {{ session['game_code'] }}</h2><br>
 
 <table id="money-table">
    <thead>
@@ -297,21 +298,25 @@
    </div>
    
 </div>
-<p id="dice">nobody has rolled the dice yet</p>
+   <p id="dice">nobody has rolled the dice yet</p>
 <div name="dice-button" id="dice-button">
   <button class="button" type="button" id="roll-dice">roll dice</button><br>
 </div>
 
 <div name="buy-property-button" id="buy-property-button">
    <button class="button" type="button" id="buy-property">buy</button><br>
- </div>
+</div>
 
  <div name="dont-buy-property-button" id="dont-buy-property-button">
    <button class="button" type="button" id="dont-buy-property">dont buy</button><br>
  </div>
  
-<textarea id="messages" cols="70" rows="10" placeholder="No messages yet. Start one..."></textarea><br/><br/>
+<textarea id="messages" cols="70" rows="10" placeholder="No messages yet. Start one..."></textarea>
+<br/><br/>
+   <form>
    <input class="text-input" type="text" id="text" size="60" placeholder="Enter your message here" />
-<button class="button" type="button" id="send">SEND</button><br/><br/>
+   <button class="button" name="button" value="send" id="send">Send</button>
+</form>
+<br/><br/>
 <button class="button" type="button" onclick=leave_room()>leave der game</button>
 {% endblock %}

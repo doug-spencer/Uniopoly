@@ -2,7 +2,7 @@ from flask import flash, render_template, redirect, url_for, request, session
 from re import search
 from App.main import app, db
 from App.database.tables import Game, Player, Account
-from App.misc.functions import check_account, get_correct_location
+from App.misc.functions import get_correct_location
 from random import randint
 
 @app.route('/menu', methods=['GET', 'POST'])
@@ -12,15 +12,11 @@ def menu():
         if game_code == None:
             return redirect(url_for(page))
         return redirect(url_for(page, game_code=game_code))
+    
     if request.method == 'GET':
-        # temp code
-        flash("current game codes:")
-        for game in Game.query.all():
-            if not game.game_started:
-                flash(game.game_code)
         return render_template('menu.html')
+    
     formType = request.form.get('button')
-
     if formType == "Join":
         code = request.form.get('code')
         if search("^\d{6}$", code):
@@ -50,11 +46,10 @@ def create_game(username):
     db.session.add(player)
     db.session.add(game)
     db.session.commit()
-    if True:
+    if False:
         from App.misc.functions import load_test_data
         load_test_data(player)
-    session['game_code'] = new_id 
-    flash("Game created with code " + new_id)
+    session['game_code'] = new_id
     return redirect(url_for('lobby'))
 
 def join_game(code):
@@ -67,7 +62,6 @@ def join_game(code):
         return render_template('menu.html')
     account = Account.query.filter_by(username=session['username']).first()
     usernames_in_game = [i.username for i in game.players_connected]
-    print(usernames_in_game)
     if account.username in usernames_in_game:
         flash("You are already in this game")
         return render_template('menu.html')
@@ -76,6 +70,6 @@ def join_game(code):
     game.players_connected.append(player)
     db.session.add(player)
     db.session.commit()
-    flash("Game joined!")
     session['game_code'] = code
+    flash("Game joined!")
     return redirect(url_for('lobby'))
