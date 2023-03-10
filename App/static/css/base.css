@@ -54,7 +54,7 @@ body {
 footer {
     /* background-color: #333; */
     background-color: transparent;
-    color: #fff;
+    color: #000;
     padding: 10px;
     text-align: center;
     position: fixed;
@@ -64,14 +64,13 @@ footer {
 }
 
 .footer-links a {
-    color: #fff;
     text-decoration: none;
     margin-right: 14px;
 }
   
 .footer-legal a, .footer-legal p {
     margin: 5px 5px;
-    font-size: 10px;
+    font-size: 12px;
     color: #000;
     text-decoration: none;
 }
