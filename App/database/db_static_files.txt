@@ -1,40 +1,56 @@
-p3;brown;property.png;1;200;100;10,20,30,40,50,60,70
-p2;brown;property.png;2;200;100;10,20,30,40,50,60,70
-p3;brown;property.png;3;200;100;10,20,30,40,50,60,70
-p2;light blue;property.png;5;200;100;10,20,30,40,50,60,70
-p5;light blue;property.png;6;200;100;10,20,30,40,50,60,70
-p6;light blue;property.png;8;200;100;10,20,30,40,50,60,70
-p7;blue;property.png;10;200;100;10,20,30,40,50,60,70
-p8;blue;property.png;12;200;100;10,20,30,40,50,60,70
-p9;blue;property.png;13;200;100;10,20,30,40,50,60,70
-p30;orange;property.png;15;200;100;10,20,30,40,50,60,70
-p31;orange;property.png;17;200;100;10,20,30,40,50,60,70
-p32;orange;property.png;18;200;100;10,20,30,40,50,60,70
-p33;yellow;property.png;20;200;100;10,20,30,40,50,60,70
-p34;yellow;property.png;22;200;100;10,20,30,40,50,60,70
-p35;yellow;property.png;23;200;100;10,20,30,40,50,60,70
-p36;green;property.png;25;200;100;10,20,30,40,50,60,70
-p37;green;property.png;27;200;100;10,20,30,40,50,60,70
-p38;green;property.png;28;200;100;10,20,30,40,50,60,70
-p39;pink;property.png;30;200;100;10,20,30,40,50,60,70
-p20;pink;property.png;32;200;100;10,20,30,40,50,60,70
-p21;pink;property.png;33;200;100;10,20,30,40,50,60,70
-p22;dark blue;property.png;35;200;100;10,20,30,40,50,60,70
-p23;dark blue;property.png;38;200;100;10,20,30,40,50,60,70
+Kilburn;brown;property.png;1;60;30;3,10,30,90,160,250
+Unsworth;brown;property.png;2;60;30;4,20,60,180,320,450
+Stopford;light blue;property.png;3;100;50;6,30,90,270,400,550
+New Zealand Wines;light blue;property.png;5;100;50;6,30,90,270,400,550
+Ashburn Hall;light blue;property.png;6;120;60;8,40,100,300,450,600
+Chemistry Building;pink;property.png;8;140;70;10,50,150,450,625,750
+Alans Chicken Shop;pink;property.png;10;140;70;10,50,150,450,625,750
+Simon Building;pink;property.png;12;160;80;12,60,180,500,700,900
+Alan Turing Building;orange;property.png;13;180;90;14,70,200,550,750,950
+Uni Place;orange;property.png;15;180;90;14,70,200,550,750,950
+Manchester Academy;orange;property.png;17;200;100;16,80,220,600,800,1000
+Roscoe Building;red;property.png;18;220;110;18,90,250,700,875,1050
+IT Building;red;property.png;20;220;110;18,90,250,700,875,1050
+James Chadwick Building;red;property.png;22;240;120;20,100,300,750,925,1100
+Oddfellows Hall;yellow;property.png;23;260;130;22,110,330,800,975,1150
+Whitworth Park;yellow;property.png;25;260;130;22,110,330,800,975,1150
+Sam Alex Building;yellow;property.png;27;280;140;22,120,360,850,1025,1200
+Alliance Business School;green;property.png;28;300;150;26,130,390,900,1100,1275
+Uttley House;green;property.png;30;300;150;26,130,390,900,1100,1275
+Sugden;green;property.png;32;320;160;28,150,450,1000,1200,1400
+Engineering Building;dark blue;property.png;33;350;175;35,175,500,1100,1300,1500
+Students Union;dark blue;property.png;35;400;200;50,200,600,1400,1700,2000
+Extra Property?;dark blue;property.png;36;400;200;50,200,600,1400,1700,2000
 
 chesters;if you own 1 utility u gets ........;utilites_chesters.png;11;200;100
 new z wine;if you own 1 utility u gets ........;new_z_wine.png;37;200;100
 
-bs1;bus_stop_1.png;4;200;100
-bs2;bus_stop_2.png;14;200;100
-bs3;bus_stop_3.png;24;200;100
-bs4;bus_stop_4.png;34;200;100
+142 Bus;bus_stop_1.png;4;200;100
+143 Bus;bus_stop_2.png;14;200;100
+42 Bus;bus_stop_3.png;24;200;100
+43 Bus;bus_stop_4.png;34;200;100
 
-its your birthday u get 50;+50;False
-its your birthday u get 10;+10;False
-its your birthday u get 20;+20;False
-its your birthday u get 30;+30;False
+Its your birthday u get 50;+50;False
+Its your birthday u get 10;+10;False
+Its your birthday u get 20;+20;False
+Its your birthday u get 30;+30;False
+You joined the rent strike and the uni won for each house lose 25;-25;False
+Theres no queue for jacket potatos. Collect 50;50;False
 
-you miss a deadline and have to bribe your teacher you lose 100;-100;False
-you miss a deadline and have to bribe your teacher you lose 200;-200;False
-you miss a deadline and have to bribe your teacher you lose 300;-300;False
+You miss a deadline and have to bribe your teacher you lose 100;-100;False
+You miss a deadline and have to bribe your teacher you lose 200;-200;False
+You miss a deadline and have to bribe your teacher you lose 300;-300;False
+You get a first on an exam collect 100;100;False
+You slept through your alarm lose 15;-15;False
+You find second year housemates. Receive 150;150;False
+Start a new semester, receive 200;-200;False
+Its time for your student load installment receive 200;200;False
+Your laptop dies in a lecture. Lose 50;-50;False
+You find a free study room in engineering. Receive 100;100;False
+You actually remember to check into a lecture. Receive 20;20;False
+Your lecturer doesn't just read the notes. Receive 100;100;False
+You get lost inside of Kilburn lose 100;-100;False
+You didnt tag your git lab submission correctly lose 50;-50;False
+Your timetable has no 9ams collect 25;25;False
+You fail first year and have to repeat next year. Lose 200;-200;False
+You used chat GPT for an essay and got away with it receive 100;100;False
