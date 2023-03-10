@@ -85,6 +85,15 @@ def update_index_of_turn():
         game.index_of_turn = game.index_of_turn + 1
     db.session.commit()
 
+@socketio.on('get cards', namespace='/gameroom')
+def get_cards():
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    cards = gamelogic.get_cards(player)
+    emit('cards', {'cards': cards}, session=session)
 
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):

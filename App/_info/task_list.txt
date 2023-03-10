@@ -9,6 +9,7 @@ Owe money function - Jacob
 Mortgage/Unmortgage cards button - Doug 
 Generate board in python - Ben
 
+
 ------------------
 DATABASE ADDITIONS
 ------------------
