@@ -1,4 +1,5 @@
 from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop, link_player_utilities
+from App.database.link_table_updates import query_link_table_with_one_id
 from flask_socketio import emit
 from App.main import db, socketio, engine
 
@@ -132,13 +133,42 @@ def pay_rent():
     pass
 
 def get_cards(player):
-    cards = []
-    tables = [link_player_property, link_player_utilities, link_player_bus_stop]
-    for i in tables:
-        results = i.query.filter_by(player_id=player.player_id).all()
-        cards = cards + [j.card_id.name for j in results]
-    #temp
-    return cards
+    unmortgaged_cards = []
+    mortgaged_cards = []
+    tables = [[link_player_property, Property], [link_player_utilities, Utilities], [link_player_bus_stop, Bus_stop]]
+    with engine.connect() as conn:
+        for i in tables:
+            query = i[0].select().where(i[0].c.player_id == player.id, i[0].c.mortgaged == False)
+            card_row = conn.execute(query).fetchall()
+            for card in card_row:
+                print(card_row)
+                card = i[1].query.filter_by(id=card[1]).first()
+                unmortgaged_cards.append(card.photo)
+            query = i[0].select().where(i[0].c.player_id == player.id, i[0].c.mortgaged == True)
+            card_row = conn.execute(query).fetchall()
+            for card in card_row:
+                print(card_row)
+                card = i[1].query.filter_by(id=card[1]).first()
+                mortgaged_cards.append(card.photo)
+    return unmortgaged_cards, mortgaged_cards
+
+def get_houses(player):
+    property = []
+    colour_sets = []
+    colour_count = {}
+    with engine.connect() as conn:
+        query = link_player_property.select().where(link_player_property.c.player_id == player.id)
+        card_row = conn.execute(query).fetchall()
+    for card in card_row:
+        card = Property.query.filter_by(id=card[1]).first()
+        if card.colour not in colour_sets:
+            colour_sets.append(card.colour)
+            colour_count[card.colour] = 1
+        property.append([card.name, card.colour])
+    for key in colour_count:
+        if colour_count[key] >= 3:
+            pass
+
 
 def player_landed_on_card(player, game_code, session, card):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)

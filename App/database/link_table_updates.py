@@ -1,6 +1,6 @@
-from sqlalchemy import update
+from sqlalchemy import update, and_, select
 from App.main import db
-from App.database.tables import link_player_student_union, link_player_email
+#from App.database.tables import link_player_student_union, link_player_email
 
 def update_link_table(player_id, card_id, table, mortgaged, houses=None):
     if str(houses) != 'None':
@@ -92,6 +92,7 @@ def query_utilites(player_id, secondary_id, mortgaged):
         db.session.commit()
 '''
 
+'''
 def query_link_table(player_id, card_id, table, houses=False):
     if not houses:
         result = table.query.filter_by(player_id=player_id, card_id=card_id).first()
@@ -101,3 +102,45 @@ def query_link_table(player_id, card_id, table, houses=False):
         result = table.query.filter_by(player_id=player_id, card_id=card_id).first()
         if result:
             return result.houses
+'''
+def query_link_table_with_two_id(player_id, card_id, table, houses=None):
+    if str(houses) != 'None':
+        stmt = select([
+            table.columns.houses
+        ]).where(and_(
+            table.columns.player_id == player_id,
+            table.columns.card_id == card_id
+        ))
+    else:
+        stmt = select([
+            table.columns.mortgaged
+        ]).where(and_(
+            table.columns.player_id == player_id,
+            table.columns.card_id == card_id
+        ))
+    results = db.session.execute(stmt).fetchall()
+    for i in results:
+        print(i)
+    return ''
+
+def query_link_table_with_one_id(player_id, card_id, table, houses=None):
+    if str(houses) != 'None':
+        stmt = select((
+            table.columns.player_id,
+            table.columns.card_id,
+            table.columns.houses
+        )).where(and_(
+    table.columns.player_id == player_id if player_id else table.columns.card_id == card_id
+        ))
+    else:
+        stmt = select((
+            table.columns.player_id,
+            table.columns.card_id,
+            table.columns.mortgaged
+        )).where(and_(
+    table.columns.player_id == player_id if player_id else table.columns.card_id == card_id
+        ))
+    results = db.session.execute(stmt).fetchall()
+    for i in results:
+        print(i)
+    return ''
