@@ -2,6 +2,8 @@ from App.database.tables import Account, Game, Player, Property, Utilities, Bus_
 from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db
 from App.database.link_table_updates import update_link_table
+from flask_socketio import emit
+
 
 
 def check_account(username, password):
@@ -69,6 +71,7 @@ def player1_owes_player2_money(player1, amount, player2=False):
         player1.money -= amount
         if player2:
             player2.money += amount
+            emit('message', {'msg': player1.username + " payed " + player2.username + " " + str(amount)}, session=session)
     elif True:
         player1.money = 0
     else:
