@@ -137,6 +137,8 @@ def get_cards(player):
     for i in tables:
         results = i.query.filter_by(player_id=player.player_id).all()
         cards = cards + [j.card_id.name for j in results]
+    #temp
+    cards = ["Duck.webp"]*9
     return cards
 
 def player_landed_on_card(player, game_code, session, card):
