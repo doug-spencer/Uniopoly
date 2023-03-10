@@ -154,20 +154,23 @@ def get_cards(player):
 
 def get_houses(player):
     property = []
-    colour_sets = []
+    colours = []
     colour_count = {}
     with engine.connect() as conn:
         query = link_player_property.select().where(link_player_property.c.player_id == player.id)
         card_row = conn.execute(query).fetchall()
     for card in card_row:
-        card = Property.query.filter_by(id=card[1]).first()
-        if card.colour not in colour_sets:
-            colour_sets.append(card.colour)
-            colour_count[card.colour] = 1
-        property.append([card.name, card.colour])
+        property_card = Property.query.filter_by(id=card[1]).first()
+        if property_card.colour not in colour_count:
+            colour_count[property_card.colour] = 1
+        else:
+            colour_count[property_card.colour] += 1
+        property.append([property_card.name, property_card.colour, card[2]])
     for key in colour_count:
-        if colour_count[key] >= 3:
-            pass
+        if colour_count[key] == 3:
+            colours.append(key)
+    property = [i for i in property if i[0] in colours]
+    return property
 
 
 def player_landed_on_card(player, game_code, session, card):
