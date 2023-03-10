@@ -2,7 +2,6 @@ from App.database.tables import Player, Game, Account, Property, Utilities, Bus_
 from flask_socketio import emit
 from App.main import db, socketio, engine
 
-
 def show_player_options(player, game_code, session):
     pos = player.position
 
@@ -88,10 +87,7 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
         card_row = conn.execute(query).fetchone()
 
         #nobody owns it
-        print("here2")
-
         if card_row == None:
-            print("here3")
             halt_player_turn(game_code)
             emit('buy property button change', {'operation':'show'}, session=session)
             emit('roll dice button change', {'operation':'hide'}, session=session)
@@ -102,7 +98,6 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
             return False
     
         #someone owns it and it isn't you so pay rent
-        pay_rent()
         return False
 
 #transforms the index of turn variable so that it applys to no player
@@ -128,8 +123,19 @@ def update_position(game, game_code):
     print(positions, game.game_code)
     emit('update player positions', {'positions': positions}, room=game_code) 
 
-def pay_rent():
-    pass
+def pay_rent(player, game_code, session, card, link_table):
+    ##get the rent required by the owner
+    ##check the player has enough total money and property value
+        ##if not make them lose
+        ##return their properties to the game
+        ##give the money they have and the morgage value of the properties to the renter
+
+    ##get the money held by the player
+    ##if enough to pay
+        ##give them the money
+    ##else
+        ##wait until they have mortgaged their stuff
+    return
 
 def get_cards(player):
     cards = []

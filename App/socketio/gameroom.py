@@ -3,7 +3,7 @@ from flask_socketio import emit, join_room, leave_room
 from App.main import db, socketio, engine
 from App.misc.functions import check_in_game
 from random import randint
-from App.gamelogic import gamelogic
+from App.misc import gamelogic
 from App.database.tables import link_player_property, link_player_bus_stop, link_player_utilities, Player, Game, Property, Bus_stop, Utilities
 
 @socketio.on('join', namespace='/gameroom') #player joining room
