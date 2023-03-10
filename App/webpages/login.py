@@ -54,8 +54,8 @@ def login():
     return redirect(url_for('menu'))
 
 def signup():
-    username = request.form.get("signupname")
-    password = request.form.get("signuppassword")
+    username = request.form.get("loginname")
+    password = request.form.get("loginpassword")
     if check_username(username):
         flash("Username taken")
         return render_template('login.html')

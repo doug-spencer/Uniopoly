@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Login</title>
+<title>Log In</title>
 <meta name="description" content="Some description of the login/sign up page.">
 <script type="text/javascript" src="/static/js/login.js"></script>
 <link rel="stylesheet" href="/static/css/login.css">
@@ -10,17 +10,12 @@
 {% block body %}
 <div>
     <form method="POST">  
-        <h1>Log In</h1>
+        <h1 id="login-header">Log In</h1>
         <input class="text-input" type="text" id="username" name="loginname" placeholder="Username" required autofocus autocomplete="off"><br>
         <input class="text-input" type="password" id="password" name="loginpassword" placeholder="Password" required autofocus><br>
-        <button class="button" name="button" value="login">Log In</button>
+        <button class="button" id="submit" name="button" value="login">Log In</button>
     </form>
     <br>
-    <form method="POST">
-        <h1>Sign Up</h1>
-        <input class="text-input" type="text" id="username" name="signupname" placeholder="Username" required autofocus autocomplete="off"><br>
-        <input class="text-input" type="password" id="password" name="signuppassword" placeholder="Password" required autofocus><br>
-        <button class="button" name="button" value="signup">Sign Up</button>
-    </form>
+    <button id="switch">Sign Up</button>
 </div>
 {% endblock %}
