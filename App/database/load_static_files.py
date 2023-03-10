@@ -92,3 +92,38 @@ def load_static_files():
                 current_line = '\n'
             print(index,current_line)
     db.session.commit()
+
+def load_game_board():
+    def generate_board():
+        body = '    <div id="center">emails</div>\n'
+        for j in range(4):
+            body += f'    <!--Row {j}-->\n'
+            body += f'    <div class="row" id="row-{j}">\n'
+            for i in range(10):
+                id = j * 10 + i
+                body += f'        <div class="tile">\n'
+                if i > 0:
+                    body += f'            <div class="tile-color"></div>\n'
+                    body += f'            <div class="tile-name">Tile {id}</div>\n'
+                    body += f'            <div class="tile-price">Price {id}</div>\n'
+                else:
+                    body += f'            <div class="tile-name">Tile {id}</div>\n'
+                body += f'            <div class="player" id="tile{id}"></div>\n'
+                body += f'        </div>\n'
+            body += '    </div>\n\n'
+        return body
+
+    body = ""
+    with open('App/templates/game_room.html') as file:
+        generating = False
+        for line in file:
+            if not generating:
+                body += line
+            if line == '<div id="board">\n':
+                generating = True
+            elif line == '</div><!--END-->\n':
+                generating = False
+                body += generate_board() + '</div><!--END-->\n'
+    
+    with open('App/templates/game_room.html', 'w') as file:
+        file.write(body)
