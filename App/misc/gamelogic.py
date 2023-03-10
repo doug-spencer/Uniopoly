@@ -1,6 +1,7 @@
-from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop, link_player_utilities
+from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, Email, Student_union, link_player_property, link_player_bus_stop, link_player_utilities, link_player_email, link_player_student_union
 from flask_socketio import emit
 from App.main import db, socketio, engine
+import random
 
 def show_player_options(player, game_code, session):
     pos = player.position
@@ -8,6 +9,8 @@ def show_player_options(player, game_code, session):
     all_properties = Property.query.all()
     all_utilities = Utilities.query.all()
     all_bus_stops = Bus_stop.query.all()
+    all_emails = Email.query.all()
+    all_student_unions = Student_union.query.all()
     
     index_of_properties = [i.position for i in all_properties]
     index_of_utilities = [i.position for i in all_utilities]
@@ -30,6 +33,8 @@ def show_player_options(player, game_code, session):
     pos_free_parking = 19
     pos_jail = 9
     pos_start = 0
+    pos_emails = [7, 21]
+    pos_student_unions = [16, 26]
 
     if pos == pos_go_to_jail:
         player_landed_on_go_to_jail(player, game_code, session)
@@ -39,7 +44,10 @@ def show_player_options(player, game_code, session):
         player_landed_on_start(player, game_code, session)
     if pos == pos_free_parking:
         player_landed_on_free_parking(player, game_code, session)
-
+    if pos in pos_emails:
+        player_landed_on_card(player, game_code, session, all_emails, link_player_email, True)
+    if pos in pos_student_unions:
+        player_landed_on_card(player, game_code, session, all_student_unions, link_player_student_union, False)
     # all_emails = Email.query.all()
     # index_of_emails = [i.position for i in all_emails]
     # if pos in index_of_emails:
@@ -147,5 +155,14 @@ def get_cards(player):
     cards = ["Duck.webp"]*9
     return cards
 
-def player_landed_on_card(player, game_code, session, card):
+def player_landed_on_card(player, game_code, session, all_cards, link_player_card, is_email):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)
+    card = random.choice(all_cards)
+    if card.save_for_later:
+        if True:
+            insert_stmnt = link_player_card.insert().values(player_id=player.id, email_id=card.id)
+        else:
+            insert_stmnt = link_player_card.insert().values(player_id=player.id, student_union_id=card.id)
+        db.session.execute(insert_stmnt)
+        db.session.commit()
+    emit('display card', {'text': card.text}, room=game_code)

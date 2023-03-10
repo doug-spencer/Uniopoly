@@ -8,6 +8,8 @@ $(document).ready(function(){
     $('#dont-buy-property-button').hide();
 
     $('#dice-button').hide();
+
+    $('#card-box').hide();
     //for joining and leaving room
     socket.on('status', function(data) {
         $('#messages').val($('#messages').val() + data.msg + '\n');
@@ -17,6 +19,10 @@ $(document).ready(function(){
     socket.on('message', function(data) {
         $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
+    });
+    socket.on('display card', function(data) {
+        $('#card-box').show();
+        document.getElementById("card-text").innerHTML = data.text;
     });
     //show or hide roll dice button
     socket.on('roll dice button change', function(data) {
@@ -35,6 +41,7 @@ $(document).ready(function(){
             $('#buy-property-button').hide();
             $('#dont-buy-property-button').hide();
         };
+        
     });
     //show roll value of dice roll
     socket.on('dice_roll', function(data) {
@@ -95,6 +102,10 @@ $(document).ready(function(){
         $('#buy-property-button').hide();
         $('#dont-buy-property-button').hide();
         socket.emit('dont-buy-property');
+    });
+    //when the card display button is pressed
+    $('#card-button').click(function(e) {
+        $('#card-box').hide();
     });
 });
 //if a player leaves the room (WIP)
