@@ -136,39 +136,34 @@ def update_position(game, game_code):
     emit('update player positions', {'positions': positions}, room=game_code) 
 
 def get_rent_amount(player, game_code, session, card, link_table):
-    ##get the rent required by the owner
-    ##check the player has enough total money and property value
-        ##if not make them lose
-        ##return their properties to the game
-        ##give the money they have and the morgage value of the properties to the renter
-
-    ##get the money held by the player
-    ##if enough to pay
-        ##give them the money
-    ##else
-        ##wait until they have mortgaged their stuff
     with engine.connect() as conn:
 
+        ##finds the ids of the cards that are the same colour as the card that was landed on
         card_colour = Property.query.filter_by(id=card.id).first().colour
         cards_with_colour = Property.query.filter_by(colour=card_colour).all()
         card_ids_with_colour = [i.id for i in cards_with_colour]
         
+        ##finds the renter id and the number of houses on the card that was landed on
         renter_id_query = link_table.select().where(link_table.c.card_id == card.id)
         card_row = conn.execute(renter_id_query).fetchone()
         renter_id = card_row.player_id
         no_of_houses = card_row.houses
 
+        ##finds the number of the houses of the select colour that the renter owns
         number_of_colour_owned = 0
         for card_id_with_colour in card_ids_with_colour:
             number_of_colour_owned_query = link_table.select().where(link_table.c.card_id==card_id_with_colour, link_table.c.player_id==renter_id)
             if conn.execute(number_of_colour_owned_query).fetchone() != None:
                 number_of_colour_owned += 1
 
+        ##finds the player that is owed
         player_owed = Player.query.filter_by(id=renter_id).first()
 
+        ##returns the first rent amount if the renter does not own the set 
         if number_of_colour_owned < len(card_ids_with_colour):
             return int(card.rents.split(',')[0]), player_owed
         
+        ##returns the rent amount associated with the set and the number of houses owned by the renter
         elif number_of_colour_owned == len(card_ids_with_colour):
             return int(card.rents.split(',')[1+no_of_houses]), player_owed
         
