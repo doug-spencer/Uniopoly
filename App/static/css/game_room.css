@@ -149,7 +149,7 @@
  .tab button.active {
    background-color: #ccc;
  }
- 
+
 
  /* Style the tab content */
  .tabcontent {
@@ -206,3 +206,17 @@
 footer {
    position: static;
 }
+.image-grid-container {
+   overflow: auto;
+}
+.image-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   grid-gap: 10px;
+   padding: 10px;
+} 
+/*.image-grid img {
+   max-width: 100%;
+   height: auto;
+}
+*/

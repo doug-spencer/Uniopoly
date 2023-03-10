@@ -68,7 +68,18 @@ $(document).ready(function(){
         }
         $('#table-body').html(body);
     });
-
+    socket.on('cards', function(data) {
+        var html = "";
+        console.log("in soceked on cards");
+        //$('#image-grid-container').html("<h3>Owned Property</h3>");
+        for (let i=0; i<data.unmortgaged_cards.length; i++) {
+            console.log('/App/static/images/' + data.unmortgaged_cards[i])
+            html += `<p>${i}</p>`;
+            html += `<img src="/App/static/images/${ data.unmortgaged_cards[i]}">`;
+        }
+        $('#image-grid').html(html);
+        //$('#image-grid-container').html("<h3>Mortgaged Property</h3>");
+    });
     //players position update
     socket.on('update player positions', function(data) {
         console.log("positions updated");
@@ -144,6 +155,11 @@ function change_tab(evt, tab_name) {
     // Show the current tab, and add an "active" class to the link that opened the tab
     document.getElementById(tab_name).style.display = "block";
     evt.currentTarget.className += " active";
+
+    if(tab_name == "cards"){
+        console.log("clicked on card")
+        socket.emit('get cards');
+    }
   }
 //calls function every 2.5seconds
 setInterval(function() {

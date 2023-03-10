@@ -1,16 +1,14 @@
-from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, Email, Student_union, link_player_property, link_player_bus_stop, link_player_utilities, link_player_email, link_player_student_union
+from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop, link_player_utilities
 from flask_socketio import emit
 from App.main import db, socketio, engine
-from . import functions
-import random
+
+
 def show_player_options(player, game_code, session):
     pos = player.position
 
     all_properties = Property.query.all()
     all_utilities = Utilities.query.all()
     all_bus_stops = Bus_stop.query.all()
-    all_emails = Email.query.all()
-    all_student_unions = Student_union.query.all()
     
     index_of_properties = [i.position for i in all_properties]
     index_of_utilities = [i.position for i in all_utilities]
@@ -33,8 +31,6 @@ def show_player_options(player, game_code, session):
     pos_free_parking = 19
     pos_jail = 9
     pos_start = 0
-    pos_emails = [7, 21]
-    pos_student_unions = [16, 26]
 
     if pos == pos_go_to_jail:
         player_landed_on_go_to_jail(player, game_code, session)
@@ -44,10 +40,7 @@ def show_player_options(player, game_code, session):
         player_landed_on_start(player, game_code, session)
     if pos == pos_free_parking:
         player_landed_on_free_parking(player, game_code, session)
-    if pos in pos_emails:
-        player_landed_on_card(player, game_code, session, all_emails, link_player_email, True)
-    if pos in pos_student_unions:
-        player_landed_on_card(player, game_code, session, all_student_unions, link_player_student_union, False)
+
     # all_emails = Email.query.all()
     # index_of_emails = [i.position for i in all_emails]
     # if pos in index_of_emails:
@@ -91,11 +84,14 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 
     #selects the row in the table recording who owns what property with the id of the property that was landed on
     with engine.connect() as conn:
-        query = link_table.select().where(link_table.c.card_id == card.id)
+        query = link_table.select().where(link_table.c.card_id == card.id)##########ERROR
         card_row = conn.execute(query).fetchone()
 
         #nobody owns it
+        print("here2")
+
         if card_row == None:
+            print("here3")
             halt_player_turn(game_code)
             emit('buy property button change', {'operation':'show'}, session=session)
             emit('roll dice button change', {'operation':'hide'}, session=session)
@@ -106,10 +102,7 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
             return False
     
         #someone owns it and it isn't you so pay rent
-        rent_amount, player_owed = get_rent_amount(player, game_code, session, card, link_table)
-        print("rent_amount", rent_amount)
-        print("player_owed", player_owed)
-        functions.player1_owes_player2_money(player, rent_amount, player_owed)
+        pay_rent()
         return False
 
 #transforms the index of turn variable so that it applys to no player
@@ -135,57 +128,49 @@ def update_position(game, game_code):
     print(positions, game.game_code)
     emit('update player positions', {'positions': positions}, room=game_code) 
 
-def get_rent_amount(player, game_code, session, card, link_table):
-    with engine.connect() as conn:
-
-        ##finds the ids of the cards that are the same colour as the card that was landed on
-        card_colour = Property.query.filter_by(id=card.id).first().colour
-        cards_with_colour = Property.query.filter_by(colour=card_colour).all()
-        card_ids_with_colour = [i.id for i in cards_with_colour]
-        
-        ##finds the renter id and the number of houses on the card that was landed on
-        renter_id_query = link_table.select().where(link_table.c.card_id == card.id)
-        card_row = conn.execute(renter_id_query).fetchone()
-        renter_id = card_row.player_id
-        no_of_houses = card_row.houses
-
-        ##finds the number of the houses of the select colour that the renter owns
-        number_of_colour_owned = 0
-        for card_id_with_colour in card_ids_with_colour:
-            number_of_colour_owned_query = link_table.select().where(link_table.c.card_id==card_id_with_colour, link_table.c.player_id==renter_id)
-            if conn.execute(number_of_colour_owned_query).fetchone() != None:
-                number_of_colour_owned += 1
-
-        ##finds the player that is owed
-        player_owed = Player.query.filter_by(id=renter_id).first()
-
-        ##returns the first rent amount if the renter does not own the set 
-        if number_of_colour_owned < len(card_ids_with_colour):
-            return int(card.rents.split(',')[0]), player_owed
-        
-        ##returns the rent amount associated with the set and the number of houses owned by the renter
-        elif number_of_colour_owned == len(card_ids_with_colour):
-            return int(card.rents.split(',')[1+no_of_houses]), player_owed
-        
+def pay_rent():
+    pass
 
 def get_cards(player):
-    cards = []
-    tables = [link_player_property, link_player_utilities, link_player_bus_stop]
-    for i in tables:
-        results = i.query.filter_by(player_id=player.player_id).all()
-        cards = cards + [j.card_id.name for j in results]
-    #temp
-    cards = ["Duck.webp"]*9
-    return cards
+    unmortgaged_cards = []
+    mortgaged_cards = []
+    tables = [[link_player_property, Property], [link_player_utilities, Utilities], [link_player_bus_stop, Bus_stop]]
+    with engine.connect() as conn:
+        for i in tables:
+            query = i[0].select().where(i[0].c.player_id == player.id, i[0].c.mortgaged == False)
+            card_row = conn.execute(query).fetchall()
+            for card in card_row:
+                print(card_row)
+                card = i[1].query.filter_by(id=card[1]).first()
+                unmortgaged_cards.append(card.photo)
+            query = i[0].select().where(i[0].c.player_id == player.id, i[0].c.mortgaged == True)
+            card_row = conn.execute(query).fetchall()
+            for card in card_row:
+                print(card_row)
+                card = i[1].query.filter_by(id=card[1]).first()
+                mortgaged_cards.append(card.photo)
+    return unmortgaged_cards, mortgaged_cards
 
-def player_landed_on_card(player, game_code, session, all_cards, link_player_card, is_email):
-    emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)
-    card = random.choice(all_cards)
-    if card.save_for_later:
-        if True:
-            insert_stmnt = link_player_card.insert().values(player_id=player.id, email_id=card.id)
+def get_houses(player):
+    property = []
+    colours = []
+    colour_count = {}
+    with engine.connect() as conn:
+        query = link_player_property.select().where(link_player_property.c.player_id == player.id)
+        card_row = conn.execute(query).fetchall()
+    for card in card_row:
+        property_card = Property.query.filter_by(id=card[1]).first()
+        if property_card.colour not in colour_count:
+            colour_count[property_card.colour] = 1
         else:
-            insert_stmnt = link_player_card.insert().values(player_id=player.id, student_union_id=card.id)
-        db.session.execute(insert_stmnt)
-        db.session.commit()
-    emit('display card', {'text': card.text}, room=game_code)
+            colour_count[property_card.colour] += 1
+        property.append([property_card.name, property_card.colour, card[2]])
+    for key in colour_count:
+        if colour_count[key] == 3:
+            colours.append(key)
+    property = [i for i in property if i[0] in colours]
+    return property
+
+
+def player_landed_on_card(player, game_code, session, card):
+    emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)

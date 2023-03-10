@@ -92,8 +92,18 @@ def get_cards():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
-    cards = gamelogic.get_cards(player)
-    emit('cards', {'cards': cards}, session=session)
+    unmortgaged_cards, mortgaged_cards = gamelogic.get_cards(player)
+    emit('cards', {'unmortgaged_cards': unmortgaged_cards, 'mortgaged_cards':mortgaged_cards}, session=session)
+
+@socketio.on('get houses', namespace='/gameroom')
+def get_houses():
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    houses = gamelogic.get_houses(player)
+    emit('houses', {'hosues': houses}, session=session)
 
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):

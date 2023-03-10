@@ -46,7 +46,7 @@ def create_game(username):
     db.session.add(player)
     db.session.add(game)
     db.session.commit()
-    if False:
+    if True:
         from App.misc.functions import load_test_data
         load_test_data(player)
     session['game_code'] = new_id
