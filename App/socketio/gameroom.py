@@ -189,5 +189,24 @@ def dont_buy_property():
     gamelogic.resume_player_turn(game_code)
     update_index_of_turn()
 
+@socketio.on('sell house', namespace='/gameroom') 
+def sell_house():
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    
+@socketio.on('buy house', namespace='/gameroom') 
+def sell_house():
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    
+
+
+
     
 

@@ -170,7 +170,7 @@ def get_houses(player):
             colours.append(key)
     split_property_by_colour = []
     for colour in colours:
-        split_property_by_colour.append([property for i in property if i[1] == colour])
+        split_property_by_colour.append([i for i in property if i[1] == colour])
     return split_property_by_colour
 
 

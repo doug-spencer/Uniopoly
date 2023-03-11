@@ -107,10 +107,12 @@ $(document).ready(function(){
         for (let i=0; i<data.houses.length; i++) {
             html += `<div class="row-houses">`
             for (let j=0; j<data.houses[i].length; j++) {
+                console.log(data.houses[i][j][0]+data.houses[i][j][2]);
                 html += `<div class="house">`
                 html += `<button onclick=sell(${data.houses[i][j][0]})>-</button>`;
+                html += `<p>${data.houses[i][j][0]}</p>`;
                 html += `<p>${data.houses[i][j][2]}</p>`;
-                html += `<button onclick=buy(${data.houses[i][j]})>+</button>`;
+                html += `<button onclick=buy(${data.houses[i][j][0]})>+</button>`;
                 html += `</div>`;  
             }
             html += `</div>`;
@@ -177,7 +179,13 @@ function close_options() {
   }
 function open_options() {
     document.getElementById("options").style.display = "block";
-  }
+}
+function sell_house(name){
+    socket.emit('sell house', {house: name});
+}
+function buy_house(name){
+    socket.emit('buy house', {house: name});
+}
 function change_tab(evt, tab_name) {
     // Declare all variables
     var i, tabcontent, tablinks;
