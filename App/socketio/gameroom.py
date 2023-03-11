@@ -103,7 +103,8 @@ def get_houses():
     if not game and not player:
         return False
     houses = gamelogic.get_houses(player)
-    emit('houses', {'hosues': houses}, session=session)
+    print(houses)
+    emit('houses', {'houses': houses}, session=session)
 
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):

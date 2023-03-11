@@ -71,14 +71,56 @@ $(document).ready(function(){
     socket.on('cards', function(data) {
         var html = "";
         console.log("in soceked on cards");
+        
+        const imageUrl = 'https://' + document.domain + ':' + location.port + '/images/property.webpg';
+        console.log(imageUrl);
+        // Fetch the image using the fetch() function
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            // Create a new <img> element and set its source to the fetched image
+            const imageElement = document.createElement('img');
+            imageElement.src = URL.createObjectURL(blob);
+  
+            // Append the <img> element to the HTML block with the ID "image-container"
+            const imageContainer = document.getElementById('image-grid');
+            imageContainer.appendChild(imageElement);
+          })
+          .catch(error => console.error(error));
+
+
         //$('#image-grid-container').html("<h3>Owned Property</h3>");
         for (let i=0; i<data.unmortgaged_cards.length; i++) {
             console.log('/App/static/images/' + data.unmortgaged_cards[i])
             html += `<p>${i}</p>`;
-            html += `<img src="/App/static/images/${ data.unmortgaged_cards[i]}">`;
+            var route = Flask.url_for('/App/static/images/property.webp', {});
+            html += `<img src="${route}">`;
         }
         $('#image-grid').html(html);
         //$('#image-grid-container').html("<h3>Mortgaged Property</h3>");
+    });
+    socket.on('houses', function(data) {
+    console.log(data.houses);
+    if (data.houses !== undefined) {
+        html = "";
+        console.log("in loop on houses");
+        for (let i=0; i<data.houses.length; i++) {
+            html += `<div class="row-houses">`
+            for (let j=0; j<data.houses[i].length; j++) {
+                html += `<div class="house">`
+                html += `<button onclick=sell(${data.houses[i][j][0]})>-</button>`;
+                html += `<p>${data.houses[i][j][2]}</p>`;
+                html += `<button onclick=buy(${data.houses[i][j]})>+</button>`;
+                html += `</div>`;  
+            }
+            html += `</div>`;
+        console.log(html)
+        }
+    }
+    else  {
+        html = `<p>"You don't have any colour sets so you can't buy a house"</p>`
+    }
+    document.getElementById("row-houses").innerHTML = html;
     });
     //players position update
     socket.on('update player positions', function(data) {
@@ -159,6 +201,10 @@ function change_tab(evt, tab_name) {
     if(tab_name == "cards"){
         console.log("clicked on card")
         socket.emit('get cards');
+    }
+    if(tab_name == "houses"){
+        console.log("didn click on card")
+        socket.emit('get houses');
     }
   }
 //calls function every 2.5seconds

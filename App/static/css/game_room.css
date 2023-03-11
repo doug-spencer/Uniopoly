@@ -215,8 +215,18 @@ footer {
    grid-gap: 10px;
    padding: 10px;
 } 
-/*.image-grid img {
+.image-grid img {
    max-width: 100%;
    height: auto;
 }
-*/
+.row-houses {
+   display: grid;
+}
+.house {
+   display: flex;
+   flex-wrap: wrap;
+ }
+.house button {
+   font-weight: bold;
+   font-size: x-large;
+}

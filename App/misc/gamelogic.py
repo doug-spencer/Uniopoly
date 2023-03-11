@@ -168,8 +168,10 @@ def get_houses(player):
     for key in colour_count:
         if colour_count[key] == 3:
             colours.append(key)
-    property = [i for i in property if i[0] in colours]
-    return property
+    split_property_by_colour = []
+    for colour in colours:
+        split_property_by_colour.append([property for i in property if i[1] == colour])
+    return split_property_by_colour
 
 
 def player_landed_on_card(player, game_code, session, card):
