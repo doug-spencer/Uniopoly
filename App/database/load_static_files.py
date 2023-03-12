@@ -1,5 +1,5 @@
-from App.database.tables import Property, Utilities, Bus_stop, Email, Student_union
-from App.main import db
+# from App.database.tables import Property, Utilities, Bus_stop, Email, Student_union
+# from App.main import db
 
 def load_static_files():
     with open('App/database/db_static_files.txt') as file:
@@ -124,18 +124,28 @@ def load_game_board():
             for i in range(10):
                 id = j * 10 + i
                 body += f'        <div class="tile">\n'
-                if i == 0: #corner
+                if i == 0: 
+                    #corner
                     body += f'            <div class="tile-name">{corners[j]}</div>\n'
-                elif i == 5: #bus stop
+                elif i == 5: 
+                    #bus stop
                     body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
                     body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
-                elif id in [2, 7, 17, 22, 33, 36]: #chance
+                elif id in [2, 7, 17, 22, 33, 36]: 
+                    #chance
                     body += f'            <div class="tile-name">SU/Email</div>\n'
-                else: #property/utility
+                else: 
+                    #property/utility
                     col = data[id]["colour"]
                     if col != None:
+                        #property
                         body += f'            <div class="tile-color {col}"></div>\n'
-                    body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                        body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                    else:
+                        #utility
+                        body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                        body += f'            <div class="utility-image"></div>\n'
+                        # body += f'            <img class="utility-image" src="/App/static/images/Duck.webp"/>\n'
                     body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
                 body += f'            <div class="player" id="tile{id}"></div>\n'
                 body += f'        </div>\n'
@@ -156,3 +166,5 @@ def load_game_board():
     
     with open('App/templates/game_room.html', 'w') as file:
         file.write(body)
+
+load_game_board()
