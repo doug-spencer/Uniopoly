@@ -94,20 +94,49 @@ def load_static_files():
     db.session.commit()
 
 def load_game_board():
+    def get_database():
+        data = {}
+        with open('App/database/db_static_files.txt') as file:
+            lines = file.readlines()
+            breaks = 0
+            for i in range(len(lines)):
+                if lines[i] == '\n':
+                    breaks += 1
+                    continue
+                if breaks == 3:
+                    break
+                line = lines[i].split(';')
+                if breaks == 0:
+                    data[int(line[3])] = {'name': line[0], 'price': line[4], 'colour': line[1]}
+                elif breaks == 1:
+                    data[int(line[3])] = {'name': line[0], 'price': line[4], 'colour': None}
+                else:
+                    data[int(line[2])] = {'name': line[0], 'price': line[3], 'colour': None}
+        return data
+
     def generate_board():
-        body = '    <div id="center">emails</div>\n'
+        data = get_database()
+        corners = {0: 'Go', 1: 'Jail', 2: 'Free Parking', 3: 'Go to Jail'}
+        body = '    <div id="center"></div>\n'
         for j in range(4):
             body += f'    <!--Row {j}-->\n'
             body += f'    <div class="row" id="row-{j}">\n'
             for i in range(10):
                 id = j * 10 + i
                 body += f'        <div class="tile">\n'
-                if i > 0:
-                    body += f'            <div class="tile-color"></div>\n'
-                    body += f'            <div class="tile-name">Tile {id}</div>\n'
-                    body += f'            <div class="tile-price">Price {id}</div>\n'
-                else:
-                    body += f'            <div class="tile-name">Tile {id}</div>\n'
+                if i == 0: #corner
+                    body += f'            <div class="tile-name">{corners[j]}</div>\n'
+                elif i == 5: #bus stop
+                    body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                    body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
+                elif id in [2, 7, 17, 22, 33, 36]: #chance
+                    body += f'            <div class="tile-name">SU/Email</div>\n'
+                else: #property/utility
+                    col = data[id]["colour"]
+                    if col != None:
+                        body += f'            <div class="tile-color {col}"></div>\n'
+                    body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                    body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
                 body += f'            <div class="player" id="tile{id}"></div>\n'
                 body += f'        </div>\n'
             body += '    </div>\n\n'
