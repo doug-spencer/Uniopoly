@@ -1,7 +1,7 @@
 from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop, link_player_utilities
 from flask_socketio import emit
 from App.main import db, socketio, engine
-
+import App.database.link_table_updates
 
 def show_player_options(player, game_code, session):
     pos = player.position
@@ -173,6 +173,15 @@ def get_houses(player):
         split_property_by_colour.append([i for i in property if i[1] == colour])
     return split_property_by_colour
 
+def get_house_price(name,colour):
+    if colour in ['brown', 'light blue']:
+        return 50
+    if colour in ['pink', 'orange']:
+        return 100
+    if colour in ['yellow', 'red']:
+        return 150
+    if colour in ['dark blue', 'green']:
+        return 200
 
 def player_landed_on_card(player, game_code, session, card):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)

@@ -143,4 +143,4 @@ def query_link_table_with_one_id(player_id, card_id, table, houses=None):
     results = db.session.execute(stmt).fetchall()
     for i in results:
         print(i)
-    return ''
+    return results
