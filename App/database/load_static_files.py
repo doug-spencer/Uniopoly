@@ -130,6 +130,8 @@ def load_game_board():
                 elif i == 5: 
                     #bus stop
                     body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                    o = 'h' if j % 2 == 0 else 'v'
+                    body += f'            <div class="bus-stop-image {o}-image"></div>\n'
                     body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
                 elif id in [2, 7, 17, 22, 33, 36]: 
                     #chance
@@ -140,12 +142,7 @@ def load_game_board():
                     if col != None:
                         #property
                         body += f'            <div class="tile-color {col}"></div>\n'
-                        body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
-                    else:
-                        #utility
-                        body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
-                        body += f'            <div class="utility-image"></div>\n'
-                        # body += f'            <img class="utility-image" src="/App/static/images/Duck.webp"/>\n'
+                    body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
                     body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
                 body += f'            <div class="player" id="tile{id}"></div>\n'
                 body += f'        </div>\n'
