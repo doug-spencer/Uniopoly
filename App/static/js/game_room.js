@@ -107,12 +107,15 @@ $(document).ready(function(){
         for (let i=0; i<data.houses.length; i++) {
             html += `<div class="row-houses">`
             for (let j=0; j<data.houses[i].length; j++) {
-                console.log(data.houses[i][j][0]+data.houses[i][j][2]);
+                var name = data.houses[i][j][0];
+                console.log(name);
+                console.log(name+data.houses[i][j][2]);
+
                 html += `<div class="house">`
-                html += `<button onclick=sell(${data.houses[i][j][0]})>-</button>`;
-                html += `<p>${data.houses[i][j][0]}</p>`;
+                html += `<button onclick=sell_house(${name})>-</button>`;
+                html += `<p>${name}</p>`;
                 html += `<p>${data.houses[i][j][2]}</p>`;
-                html += `<button onclick=buy(${data.houses[i][j][0]})>+</button>`;
+                html += `<button onclick=buy_house(${name})>+</button>`;
                 html += `</div>`;  
             }
             html += `</div>`;

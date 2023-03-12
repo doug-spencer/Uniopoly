@@ -173,7 +173,7 @@ def get_houses(player):
         split_property_by_colour.append([i for i in property if i[1] == colour])
     return split_property_by_colour
 
-def get_house_price(name,colour):
+def get_house_price(colour):
     if colour in ['brown', 'light blue']:
         return 50
     if colour in ['pink', 'orange']:

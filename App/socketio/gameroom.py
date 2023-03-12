@@ -19,7 +19,6 @@ def join(message):
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
     emit('buy property button change', {'operation':'hide'}, session=session)
 
-
 @socketio.on('left', namespace='/gameroom') #leaving room
 def left(message):
     game_code = session.get('game_code')
@@ -126,14 +125,13 @@ def update_turn():
         emit('message', {'msg': 'It is ' + player.username + ' turn to roll the dice'}, room = game.game_code)
     else:
         emit('roll dice button change', {'operation': 'hide'}, session = session)
-    
+
     players = [[player.username, player.money] for player in game.players_connected]
 
     emit('update leaderboard', {'players': players}, room=game_code)
 
 @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
 def buy_property():
-    
     #Validation
     game_code = session.get('game_code')
     username = session.get('username')
@@ -192,6 +190,7 @@ def dont_buy_property():
 
 @socketio.on('sell house', namespace='/gameroom') 
 def sell_house(data):
+    print('sell house')
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
@@ -199,13 +198,16 @@ def sell_house(data):
         return False
     player = Player.query.filter_by(username = username, game_code=game_code).first()
     property = Property.query.filter_by(name=data['house']).first()
-    houses = query_link_table.query_link_table_with_one_id(player.id, property.id, True)[2]
+    houses = link_table_updates.query_link_table.query_link_table_with_one_id(player.id, property.id, link_player_property, True)[2]
     if houses == 0:
         emit('message', {'msg':"you don't have any houses on that property"}, session=session)
         return False
     amount = gamelogic.get_house_price(property.colour)
     if amount:
         player = Player.query.filter_by(username = username, game_code=game_code).first()
+        update_stmt = link_player_property.update().where(player_id=player.id, card_id=property.id).values(houses=houses - 1)
+        db.session.execute(update_stmt)
+        db.session.commit()
         player.money += amount
         db.session.commit()
     else:
@@ -213,6 +215,7 @@ def sell_house(data):
 
 @socketio.on('buy house', namespace='/gameroom') 
 def sell_house(data):
+    print('buy house')
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
@@ -220,12 +223,15 @@ def sell_house(data):
         return False
     player = Player.query.filter_by(username = username, game_code=game_code).first()
     property = Property.query.filter_by(name=data['house']).first()
-    houses = query_link_table.query_link_table_with_one_id(player.id, property.id, True)[2]
+    houses = link_table_updates.query_link_table.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[2]
     if houses == 5:
         emit('message', {'msg':"you already have a hotel on that property"}, session=session)
         return False
     amount = gamelogic.get_house_price(property.colour)
     if player.money >= amount:
+        update_stmt = link_player_property.update().where(player_id=player.id, card_id=property.id).values(houses=houses + 1)
+        db.session.execute(update_stmt)
+        db.session.commit()
         player1_owes_player2_money(player, amount)
     else:
         emit('message', {'msg':"you don't have enough money to buy the house"}, session=session)
