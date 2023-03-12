@@ -5,7 +5,7 @@ from App.misc.functions import check_in_game, player1_owes_player2_money
 from random import randint
 from App.misc import gamelogic
 from App.database.tables import link_player_property, link_player_bus_stop, link_player_utilities, Player, Game, Property, Bus_stop, Utilities
-from App.database import query_link_table
+from App.database import link_table_updates
 
 @socketio.on('join', namespace='/gameroom') #player joining room
 def join(message):
