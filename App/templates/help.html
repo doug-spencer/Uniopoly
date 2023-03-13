@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block body %}
-<button class="button" id="menu" onclick=return_to_menu()>Menu</button>
 <h1>Help Page</h1>
+<button class="button" onclick="window.location.href = 'menu';">Menu Page</button>
 <div>        
     <a href="#SaWTM">Spaces and What They Mean</a>
     <br>
@@ -19,7 +19,7 @@
     <h2 class="card-head" id="SaWTM">Spaces and What They Mean</h2>
     
     <h3 class="card-subhead">GO</h3>
-    <p>Each time a player lands on or passes over GO the bank pays them [AMOUNT] of [CURRENCY].</p>
+    <p>Each time a player lands on or passes over GO the bank pays them £200.</p>
     
     <h3 class="card-subhead">UNOWNED PROPERTY</h3>
     <p>When a player lands on an unowned property they have the option to buy the property from the bank at the shown price. <br> If you choose to buy the property you will receive the card for it. However if you choose not to buy the property, the bank sells it at an auction for all players to the highest bidder and they receive the card.</p>
@@ -34,7 +34,7 @@
     <p>When a player lands here they must pay 10% of their total worth to the bank. The total worth is all the cash on hand, prices of properties, and cost of all buildings you own.</p>
     
     <h3 class="card-subhead">JAIL</h3>
-    <p>A player lands in jail when either 1. their token lands of the space "Go to Jail" or 2. they draw a card marked "Go to Jail". <br> When the player goes to jail they do not collect anything for going past GO. <br> You can get out of jail by 1. using the "Get out of Jail Free" card, 2. Purchasing the "Get out of Jail Free" card from another player, 3. pay a fine of 50 before you roll the dice on the next turn. <br> Even when a player is in jail they can still collect rent and buy/sell houses in exchanges.</p>
+    <p>A player lands in jail when either 1. their token lands of the space "Go to Jail" or 2. they draw a card marked "Go to Jail". <br> When the player goes to jail they do not collect anything for going past GO. <br> You can get out of jail by 1. using the "Get out of Jail Free" card, 2. Purchasing the "Get out of Jail Free" card from another player, 3. pay a fine of £50 before you roll the dice on the next turn. <br> Even when a player is in jail they can still collect rent and buy/sell houses in exchanges.</p>
     
     <h3 class="card-subhead">FREE PARKING</h3>
     <p>The player landing on this space does not have to do anything, it is purely a free place to rest.</p>
@@ -53,7 +53,7 @@
     
     <h3 class="card-subhead">Before the game</h3>
     <p>The aim of the game is to become the richest player, this can be done via buying, renting, and selling properties.</p>
-    <p>Each player starts with [AMOUNT] of [CURRENCY].</p>
+    <p>Each player starts with £1500.</p>
     
     <h3 class="card-subhead">The Game</h3>
     <p>The chosen player throws the dice.</p>
@@ -64,5 +64,9 @@
     <p>If the debt is to another player: The bankrupt player must give the whole of their ownings (properties/cash) to the player they owe: Houses and hotels are sold back to the bank and the money given alongside the ownings. </p>
     <p>If the debt is to the bank: The bankrupt player must turn over all their assets to the bank. Then the properties are back on the market.</p>
     <p>A bankrupt player is removed from the game, they can still communicate in the chat. The last player left wins.</p>
+
+    <h3 class="card-subhead">Trading</h3>
+    <p></p>
+
 </div>
 {% endblock %}
