@@ -41,7 +41,7 @@ def login():
         
 def login():
     username = request.form.get("loginname")
-    password = hash(request.form.get("loginpassword"))
+    password = hashlib.sha256(request.form.get("loginpassword").encode()).hexdigest()
     if not check_username(username):
         flash("Account doesn't exist")
         return render_template('login.html')
@@ -56,7 +56,7 @@ def login():
 
 def signup():
     username = request.form.get("loginname")
-    password = hash(request.form.get("loginpassword"))
+    password = hashlib.sha256(request.form.get("loginpassword").encode()).hexdigest()
     if check_username(username):
         flash("Username taken")
         return render_template('login.html')
