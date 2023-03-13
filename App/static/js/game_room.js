@@ -112,11 +112,11 @@ $(document).ready(function(){
                 console.log(name+data.houses[i][j][2]);
 
                 html += `<div class="house">`
-                html += `<button onclick=sell_house(${name})>-</button>`;
+                html += `<button onclick="sell_house('${name}')">-</button>`;
                 html += `<p>${name}</p>`;
                 html += `<p>${data.houses[i][j][2]}</p>`;
-                html += `<button onclick=buy_house(${name})>+</button>`;
-                html += `</div>`;  
+                html += `<button onclick="buy_house('${name}')">+</button>`;
+                html += `</div>`;
             }
             html += `</div>`;
         console.log(html)
@@ -125,7 +125,7 @@ $(document).ready(function(){
     else  {
         html = `<p>"You don't have any colour sets so you can't buy a house"</p>`
     }
-    document.getElementById("row-houses").innerHTML = html;
+    $('#houses').html(html);
     });
     //players position update
     socket.on('update player positions', function(data) {
@@ -184,9 +184,11 @@ function open_options() {
     document.getElementById("options").style.display = "block";
 }
 function sell_house(name){
+    console.log("selling house");
     socket.emit('sell house', {house: name});
 }
 function buy_house(name){
+    console.log("buying house");
     socket.emit('buy house', {house: name});
 }
 function change_tab(evt, tab_name) {

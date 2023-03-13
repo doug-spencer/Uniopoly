@@ -3,6 +3,7 @@ from flask_socketio import emit, join_room, leave_room
 from App.main import db, socketio, engine
 from App.misc.functions import check_in_game, player1_owes_player2_money
 from random import randint
+from sqlalchemy import update
 from App.misc import gamelogic
 from App.database.tables import link_player_property, link_player_bus_stop, link_player_utilities, Player, Game, Property, Bus_stop, Utilities
 from App.database import link_table_updates
@@ -198,23 +199,21 @@ def sell_house(data):
         return False
     player = Player.query.filter_by(username = username, game_code=game_code).first()
     property = Property.query.filter_by(name=data['house']).first()
-    houses = link_table_updates.query_link_table.query_link_table_with_one_id(player.id, property.id, link_player_property, True)[2]
+    houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][2]
     if houses == 0:
         emit('message', {'msg':"you don't have any houses on that property"}, session=session)
         return False
     amount = gamelogic.get_house_price(property.colour)
     if amount:
+        link_table_updates.update_link_table(player.id, property.id, link_player_property, False, houses - 1)
         player = Player.query.filter_by(username = username, game_code=game_code).first()
-        update_stmt = link_player_property.update().where(player_id=player.id, card_id=property.id).values(houses=houses - 1)
-        db.session.execute(update_stmt)
-        db.session.commit()
         player.money += amount
         db.session.commit()
     else:
         emit('message', {'msg':"you don't have any houses on that property"}, session=session)
 
 @socketio.on('buy house', namespace='/gameroom') 
-def sell_house(data):
+def buy_house(data):
     print('buy house')
     game_code = session.get('game_code')
     username = session.get('username')
@@ -223,15 +222,13 @@ def sell_house(data):
         return False
     player = Player.query.filter_by(username = username, game_code=game_code).first()
     property = Property.query.filter_by(name=data['house']).first()
-    houses = link_table_updates.query_link_table.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[2]
+    houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][2]
     if houses == 5:
         emit('message', {'msg':"you already have a hotel on that property"}, session=session)
         return False
     amount = gamelogic.get_house_price(property.colour)
     if player.money >= amount:
-        update_stmt = link_player_property.update().where(player_id=player.id, card_id=property.id).values(houses=houses + 1)
-        db.session.execute(update_stmt)
-        db.session.commit()
+        link_table_updates.update_link_table(player.id, property.id, link_player_property, False, houses + 1)
         player1_owes_player2_money(player, amount)
     else:
         emit('message', {'msg':"you don't have enough money to buy the house"}, session=session)

@@ -2,13 +2,11 @@
 TASKS
 -----------------
 Display owned cards on the game page - Doug
-Remove players when they lose
+Remove players when they lose - Jacob
 Chance card display messages - Cally
 Chance card money changes - Abu
-Owe money function - Jacob
-Mortgage/Unmortgage cards button - Doug 
-Generate board in python - Ben
-
+validation that you own all colours - Jacob
+Mortgage/Unmortgage cards button - Doug
 
 ------------------
 DATABASE ADDITIONS

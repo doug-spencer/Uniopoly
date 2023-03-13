@@ -1,5 +1,5 @@
-from sqlalchemy import update, and_, select
-from App.main import db
+from sqlalchemy import update, and_, select, Column, Integer
+from App.main import db, engine
 #from App.database.tables import link_player_student_union, link_player_email
 
 def update_link_table(player_id, card_id, table, mortgaged, houses=None):
@@ -104,40 +104,30 @@ def query_link_table(player_id, card_id, table, houses=False):
             return result.houses
 '''
 def query_link_table_with_two_id(player_id, card_id, table, houses=None):
-    if str(houses) != 'None':
-        stmt = select([
-            table.columns.houses
-        ]).where(and_(
-            table.columns.player_id == player_id,
-            table.columns.card_id == card_id
-        ))
-    else:
-        stmt = select([
-            table.columns.mortgaged
-        ]).where(and_(
-            table.columns.player_id == player_id,
-            table.columns.card_id == card_id
-        ))
-    results = db.session.execute(stmt).fetchall()
+    with engine.connect() as conn:
+        if str(houses) != 'None':
+            stmt = select(table).where(and_(
+                table.c.player_id == player_id,
+                table.c.card_id == card_id
+            ))
+        else:
+            stmt = select().where(and_(
+                table.c.player_id == player_id,
+                table.c.card_id == card_id
+            ))
+        results = conn.execute(stmt).fetchall()
+    print('query 2 ids')
     for i in results:
         print(i)
-    return ''
+    return results
 
 def query_link_table_with_one_id(player_id, card_id, table, houses=None):
     if str(houses) != 'None':
-        stmt = select((
-            table.columns.player_id,
-            table.columns.card_id,
-            table.columns.houses
-        )).where(and_(
+        stmt = select(table).where(and_(
     table.columns.player_id == player_id if player_id else table.columns.card_id == card_id
         ))
     else:
-        stmt = select((
-            table.columns.player_id,
-            table.columns.card_id,
-            table.columns.mortgaged
-        )).where(and_(
+        stmt = select(table).where(and_(
     table.columns.player_id == player_id if player_id else table.columns.card_id == card_id
         ))
     results = db.session.execute(stmt).fetchall()
