@@ -54,6 +54,8 @@ def roll_dice():
 
     if new_value > 39:
         new_value -= 40
+        player.money += 200
+        emit('message', {'msg': player.username + ' passed go and collected 200'}, room=game_code)
 
 
     #only emits roll message and updates position if player is not in jail
