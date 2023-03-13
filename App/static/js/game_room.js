@@ -186,10 +186,16 @@ function open_options() {
 function sell_house(name){
     console.log("selling house");
     socket.emit('sell house', {house: name});
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + 1000){ /* Do nothing */ }
+    socket.emit('get houses')
 }
 function buy_house(name){
     console.log("buying house");
     socket.emit('buy house', {house: name});
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + 1000){ /* Do nothing */ }
+    socket.emit('get houses')
 }
 function change_tab(evt, tab_name) {
     // Declare all variables
