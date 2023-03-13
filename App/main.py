@@ -21,7 +21,7 @@ engine = create_engine('sqlite:///instance/database.db', echo=False)
 
 db.session.commit()
 
-from App.webpages import images, login, menu, lobby, gameroom, images, help, logout
+from App.webpages import images, login, menu, lobby, gameroom, help, logout
 from App.database import tables, load_static_files
 from App.socketio import gameroom, lobby
 

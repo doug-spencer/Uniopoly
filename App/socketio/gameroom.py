@@ -73,7 +73,6 @@ def roll_dice():
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
 #increments the index of turn counter in the db
-@socketio.on('update index of turn', namespace='/gameroom')
 def update_index_of_turn():
     game_code = session.get('game_code')
     username = session.get('username')
@@ -95,6 +94,7 @@ def get_cards():
     if not game and not player:
         return False
     unmortgaged_cards, mortgaged_cards = gamelogic.get_cards(player)
+    print('cards:', unmortgaged_cards, mortgaged_cards)
     emit('cards', {'unmortgaged_cards': unmortgaged_cards, 'mortgaged_cards':mortgaged_cards}, session=session)
 
 @socketio.on('get houses', namespace='/gameroom')
@@ -200,7 +200,7 @@ def sell_house(data):
         return False
     player = Player.query.filter_by(username = username, game_code=game_code).first()
     property = Property.query.filter_by(name=data['house']).first()
-    houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][2]
+    houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][3]
     if houses == 0:
         emit('message', {'msg':"you don't have any houses on that property"}, session=session)
         return False
@@ -223,7 +223,7 @@ def buy_house(data):
         return False
     player = Player.query.filter_by(username = username, game_code=game_code).first()
     property = Property.query.filter_by(name=data['house']).first()
-    houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][2]
+    houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][3]
     if houses == 5:
         emit('message', {'msg':"you already have a hotel on that property"}, session=session)
         return False

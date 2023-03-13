@@ -76,24 +76,25 @@ $(document).ready(function(){
     socket.on('cards', function(data) {
         var html = "";
         console.log("in soceked on cards");
+        for (let i=0; i<data.unmortgaged_cards.length; i++) {
+            var name = data.unmortgaged_cards[i];
+            var name = 'property.webp'
+            fetch(`/images/${name}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    console.log('yes')
+                    const url = URL.createObjectURL(blob);
+                    html += `<img scr="${url}" alt="${name}"/>`
+                    //document.getElementById('image-grid').src = url;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
+        console.log(html);
+        $("#image-grid-unmortgaged").html(html);
         
-        const imageUrl = 'https://' + document.domain + ':' + location.port + '/images/property.webpg';
-        console.log(imageUrl);
-        // Fetch the image using the fetch() function
-        fetch(imageUrl)
-          .then(response => response.blob())
-          .then(blob => {
-            // Create a new <img> element and set its source to the fetched image
-            const imageElement = document.createElement('img');
-            imageElement.src = URL.createObjectURL(blob);
-  
-            // Append the <img> element to the HTML block with the ID "image-container"
-            const imageContainer = document.getElementById('image-grid');
-            imageContainer.appendChild(imageElement);
-          })
-          .catch(error => console.error(error));
-
-
+        /*
         //$('#image-grid-container').html("<h3>Owned Property</h3>");
         for (let i=0; i<data.unmortgaged_cards.length; i++) {
             console.log('/App/static/images/' + data.unmortgaged_cards[i])
@@ -103,6 +104,7 @@ $(document).ready(function(){
         }
         $('#image-grid').html(html);
         //$('#image-grid-container').html("<h3>Mortgaged Property</h3>");
+        */
     });
     socket.on('houses', function(data) {
     console.log(data.houses);
@@ -113,9 +115,8 @@ $(document).ready(function(){
             html += `<div class="row-houses">`
             for (let j=0; j<data.houses[i].length; j++) {
                 var name = data.houses[i][j][0];
-                console.log(name);
+                console.log(data.houses);
                 console.log(name+data.houses[i][j][2]);
-
                 html += `<div class="house">`
                 html += `<button onclick="sell_house('${name}')">-</button>`;
                 html += `<p>${name}</p>`;

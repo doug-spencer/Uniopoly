@@ -1,7 +1,7 @@
 from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, link_player_property, link_player_bus_stop, link_player_utilities
 from flask_socketio import emit
 from App.main import db, socketio, engine
-import App.database.link_table_updates
+from App.database import link_table_updates
 
 def show_player_options(player, game_code, session):
     pos = player.position
@@ -164,7 +164,7 @@ def get_houses(player):
             colour_count[property_card.colour] = 1
         else:
             colour_count[property_card.colour] += 1
-        property.append([property_card.name, property_card.colour, card[2]])
+        property.append([property_card.name, property_card.colour, card[3]])
     for key in colour_count:
         if colour_count[key] == 3:
             colours.append(key)
@@ -185,3 +185,15 @@ def get_house_price(colour):
 
 def player_landed_on_card(player, game_code, session, card):
     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)
+
+def eliminate_players(game):
+    for player in game.players_connected:
+        if player.money  <= 0:
+            tables = [link_player_property, link_player_utilities, link_player_bus_stop]
+            broke = True
+            for table in tables:
+                results = link_table_updates.query_link_table_with_one_id(player.id, False, table)
+                for result in results:
+                    if result[2] == False:#hasnt been mortgaged
+                        broke = False
+                        break

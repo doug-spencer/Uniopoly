@@ -3,8 +3,8 @@ from App.main import db
 link_player_property = db.Table('link_player_property',
         db.Column('player_id', db.Integer, db.ForeignKey('player.id'), primary_key=True),
         db.Column('card_id', db.Integer, db.ForeignKey('property.id'), primary_key=True),
-        db.Column('houses', db.Integer),
-        db.Column('mortgaged', db.Boolean)
+        db.Column('mortgaged', db.Boolean),
+        db.Column('houses', db.Integer)
         )
 
 
