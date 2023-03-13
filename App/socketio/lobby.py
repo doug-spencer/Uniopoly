@@ -21,7 +21,8 @@ def check_pregame_status():
         if usernames == '':
             usernames = []
         print('usrs: ', usernames)
-        emit('player list', {'players': usernames}, session=session)
+        # emit('get username', {'username': username}, session=session)
+        emit('player list', {'players': usernames, 'username': username}, session=session)
 
 @socketio.on('remove', namespace='/lobby')
 def remove(data):
