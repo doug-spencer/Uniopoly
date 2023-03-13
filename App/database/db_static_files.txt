@@ -22,9 +22,7 @@ Engineering Building;col8;property.png;37;350;175;35,175,500,1100,1300,1500
 Students Union;col8;property.png;39;400;200;50,200,600,1400,1700,2000
 
 Chesters;if you own 1 utility u gets ........;utilites_chesters.png;4;200;100
-Chesters;if you own 1 utility u gets ........;utilites_chesters.png;28;200;100
-New z wine;if you own 1 utility u gets ........;new_z_wine.png;12;200;100
-New z wine;if you own 1 utility u gets ........;new_z_wine.png;38;200;100
+NZ Wine;if you own 1 utility u gets ........;new_z_wine.png;38;200;100
 
 142 Bus;bus_stop_1.png;5;200;100
 143 Bus;bus_stop_2.png;15;200;100

@@ -107,10 +107,13 @@ def load_game_board():
                     break
                 line = lines[i].split(';')
                 if breaks == 0:
+                    #property
                     data[int(line[3])] = {'name': line[0], 'price': line[4], 'colour': line[1]}
                 elif breaks == 1:
+                    #utility
                     data[int(line[3])] = {'name': line[0], 'price': line[4], 'colour': None}
                 else:
+                    #bus stop
                     data[int(line[2])] = {'name': line[0], 'price': line[3], 'colour': None}
         return data
 
@@ -129,20 +132,30 @@ def load_game_board():
                     body += f'            <div class="tile-name">{corners[j]}</div>\n'
                 elif i == 5: 
                     #bus stop
-                    body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
                     o = 'h' if j % 2 == 0 else 'v'
+                    body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
                     body += f'            <div class="bus-stop-image {o}-image"></div>\n'
                     body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
-                elif id in [2, 7, 17, 22, 33, 36]: 
-                    #chance
-                    body += f'            <div class="tile-name">SU/Email</div>\n'
+                elif id in [2, 12, 22, 33]: 
+                    #su
+                    body += f'            <div class="tile-name">SU</div>\n'
+                elif id in [7, 17, 28, 36]:
+                    #email
+                    body += f'            <div class="tile-name">Email</div>\n'
                 else: 
                     #property/utility
                     col = data[id]["colour"]
                     if col != None:
                         #property
                         body += f'            <div class="tile-color {col}"></div>\n'
-                    body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                        body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                    else:
+                        #utility
+                        body += f'            <div class="tile-name">{data[id]["name"]}</div>\n'
+                        if id == 4:
+                            pass
+                        else:
+                            body += f'            <div class="wine-bottle-image v-image"></div>\n'
                     body += f'            <div class="tile-price">{data[id]["price"]}</div>\n'
                 body += f'            <div class="player" id="tile{id}"></div>\n'
                 body += f'        </div>\n'

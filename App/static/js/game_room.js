@@ -1,4 +1,5 @@
 var socket;
+var username;
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/gameroom');
     socket.on('connect', function() {
@@ -8,6 +9,10 @@ $(document).ready(function(){
     $('#dont-buy-property-button').hide();
 
     $('#dice-button').hide();
+    //get username
+    socket.on('get username', function(data) {
+        username = data.username;
+    });
     //for joining and leaving room
     socket.on('status', function(data) {
         $('#messages').val($('#messages').val() + data.msg + '\n');
@@ -64,11 +69,16 @@ $(document).ready(function(){
 
     //players position update
     socket.on('update player positions', function(data) {
-        console.log("positions updated");
+        console.log("positions updated, username: " + username);
         for (let i=0; i<40; i++) {
             $('#tile' + i).html("");
         }
         for (let i=0; i<data.positions.length; i++) {
+            if (data.positions[i][1] == username) {
+                let row = $('#tile' + data.positions[i][0]).parent().parent().attr('id').slice(-1);
+                document.getElementById('board').setAttribute('class', 'orientation' + row);
+                // $('#board').className = 'orientation' + row;
+            }
             $('#tile' + data.positions[i][0]).append("<b>" + data.positions[i][1] + "</b>");
         }
     });
