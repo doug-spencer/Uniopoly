@@ -19,6 +19,7 @@ def join(message):
     emit('update leaderboard', {'players': players_arr}, room=game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
     emit('buy property button change', {'operation':'hide'}, session=session)
+    emit('get username', {'username': session.get('username')}, session=session)
 
 @socketio.on('left', namespace='/gameroom') #leaving room
 def left(message):
@@ -60,7 +61,7 @@ def roll_dice():
     if player.turns_in_jail == 0:
         player.position = new_value
         emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
-        emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)   
+        emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
         gamelogic.update_position(game, game_code)
     db.session.commit()
     
