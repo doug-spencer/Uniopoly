@@ -78,7 +78,27 @@ $(document).ready(function(){
         console.log("in soceked on cards");
         for (let i=0; i<data.unmortgaged_cards.length; i++) {
             var name = data.unmortgaged_cards[i];
-            var name = 'property.webp'
+            //var name = 'property.webp'
+            var promises = data.unmortgaged_cards.map(function(name) {
+            return fetch(`/images/${name}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    console.log('yes')
+                    const url = URL.createObjectURL(blob);
+                    html += `<img scr="${url}" alt="${name}"/>`
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            });
+            // Wait for all promises to resolve before setting the HTML
+            Promise.all(promises).then(function() {
+                console.log('all fetch requests complete');
+                console.log(html);
+                $("#image-grid-unmortgaged").html(html);
+            });
+        }
+            /*
             fetch(`/images/${name}`)
                 .then(response => response.blob())
                 .then(blob => {
@@ -91,9 +111,10 @@ $(document).ready(function(){
                     console.error(error);
                 });
             }
+        console.log('wedcdswf');
         console.log(html);
         $("#image-grid-unmortgaged").html(html);
-        
+        */
         /*
         //$('#image-grid-container').html("<h3>Owned Property</h3>");
         for (let i=0; i<data.unmortgaged_cards.length; i++) {

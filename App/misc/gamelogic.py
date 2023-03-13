@@ -174,13 +174,13 @@ def get_houses(player):
     return split_property_by_colour
 
 def get_house_price(colour):
-    if colour in ['brown', 'light blue']:
+    if int(colour[3]) < 3:
         return 50
-    if colour in ['pink', 'orange']:
+    if int(colour[3]) < 5:
         return 100
-    if colour in ['yellow', 'red']:
+    if int(colour[3]) < 7:
         return 150
-    if colour in ['dark blue', 'green']:
+    else:
         return 200
 
 def player_landed_on_card(player, game_code, session, card):
