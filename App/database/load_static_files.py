@@ -1,5 +1,5 @@
-# from App.database.tables import Property, Utilities, Bus_stop, Email, Student_union
-# from App.main import db
+from App.database.tables import Property, Utilities, Bus_stop, Email, Student_union
+from App.main import db
 
 def load_static_files():
     with open('App/database/db_static_files.txt') as file:
@@ -176,5 +176,3 @@ def load_game_board():
     
     with open('App/templates/game_room.html', 'w') as file:
         file.write(body)
-
-load_game_board()
