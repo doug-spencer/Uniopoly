@@ -192,12 +192,12 @@ body {
     background-image: radial-gradient(ellipse, #7B1FA2, #660099);
     background-size: cover;
     font-family: Arial;
-    font-size: 1em;
+    font-size: 30px;
     font-weight: bold;
     color: white;
     margin: 10px;
     border: none;
-    border-radius: 0.4em;
+    border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
 }
@@ -210,14 +210,14 @@ body {
 
 #log-out, #menu {
     position: absolute;
-    top: 0.7em;
-    left: 0.7em;
+    top: 20px;
+    left: 20px;
 }
 
 #help-button {
     position: absolute;
-    top: 0.7em;
-    right: 0.7em;
+    top: 20px;
+    right: 20px;
 }
 
 .text-input {
