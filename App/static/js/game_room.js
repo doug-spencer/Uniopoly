@@ -15,7 +15,7 @@ $(document).ready(function(){
     socket.on('get username', function(data) {
         username = data.username;
     });
-    
+
     //for joining and leaving room
     socket.on('status', function(data) {
         $('#messages').val($('#messages').val() + data.msg + '\n');
@@ -44,6 +44,7 @@ $(document).ready(function(){
     //show or hide end turn button
     socket.on('end turn button change', function(data) {
         if(data.operation == 'show'){
+            console.log('fucj yu ')
             $('#end-turn-button').show();
         } else {
             $('#end-turn-button').hide();
@@ -196,7 +197,7 @@ $(document).ready(function(){
     });
     //when the end turn button is pressed
     $('#end-turn').click(function(data) {
-        $('#end-turn').hide();
+        $('#end-turn-button').hide();
         socket.emit('end turn');
     });
     //when the buy button is pressed

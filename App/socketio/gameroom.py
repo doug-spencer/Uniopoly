@@ -79,6 +79,7 @@ def roll_dice():
     #performs action associated with board position
     buy_choice_active = gamelogic.show_player_options(player, game_code, session)
     if not buy_choice_active:
+        print("asdfasdfsdfghgblzvnjjvfij")
         emit('end turn button change', {'operation':'show'}, session=session)
 
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
@@ -213,7 +214,7 @@ def dont_buy_property():
 
     emit('message', {'msg': 'card not bought'}, room=game_code)
 
-    gamelogic.resume_player_turn(game_code)
+    resume_player_turn(game_code)
     update_index_of_turn()
 
 @socketio.on('sell house', namespace='/gameroom') 

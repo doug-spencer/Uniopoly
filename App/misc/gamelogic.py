@@ -95,7 +95,6 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 
         if card_row == None:
             emit('buy property button change', {'operation':'show'}, session=session)
-            emit('roll dice button change', {'operation':'hide'}, session=session)
             return True #to stop the next player getting to roll the dice
 
         #you own it
