@@ -38,6 +38,13 @@ def left(message):
     db.session.commit()
     emit('status', {'msg': username + ' has left the room.'}, room = game_code)
 
+@socketio.on('end turn', namespace='/gameroom') #when a players turn ends
+def end_turn():
+    game_code = session.get('game_code')
+    resume_player_turn(game_code)
+    update_index_of_turn()
+    
+
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
 def roll_dice():
     game_code = session.get('game_code')
@@ -46,6 +53,8 @@ def roll_dice():
 
     if not game or not player:
         return False
+    
+    halt_player_turn(game_code)
     
     roll1 = randint(1,6)
     roll2 = randint(1,6)
@@ -70,7 +79,7 @@ def roll_dice():
     #performs action associated with board position
     buy_choice_active = gamelogic.show_player_options(player, game_code, session)
     if not buy_choice_active:
-        update_index_of_turn()
+        emit('end turn button change', {'operation':'show'}, session=session)
 
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
@@ -86,6 +95,18 @@ def update_index_of_turn():
         game.index_of_turn = 0
     else:
         game.index_of_turn = game.index_of_turn + 1
+    db.session.commit()
+
+#transforms the index of turn variable so that it applys to no player
+def halt_player_turn(game_code):
+    game= Game.query.filter_by(game_code=game_code).first()
+    game.index_of_turn = -1 * game.index_of_turn - 1
+    db.session.commit()
+
+#returns the index of turn variable to its previous value
+def resume_player_turn(game_code):
+    game= Game.query.filter_by(game_code=game_code).first()
+    game.index_of_turn = (game.index_of_turn + 1) * -1
     db.session.commit()
 
 @socketio.on('get cards', namespace='/gameroom')
@@ -143,6 +164,7 @@ def buy_property():
     if not game and not player:
         return False
     
+    #gathers the indeces of the respective cards on the board
     property_indices = [i.position for i in Property.query.all()]
     bus_stop_indices = [i.position for i in Bus_stop.query.all()]
     utility_indices = [i.position for i in Utilities.query.all()]
@@ -165,8 +187,7 @@ def buy_property():
     #checks the player has enough money to buy the card
     if card_price > player.money:
         emit('message', {'msg':"you too broke to buy this"})
-        gamelogic.resume_player_turn(game_code)
-        update_index_of_turn()
+        emit('buy property button change', {'operation':'show'}, session=session)
         return
 
     #buys the card
@@ -177,9 +198,12 @@ def buy_property():
 
     emit('message', {'msg': player.username + ' has bought ' + card.name + ' for ' + str(card_price)}, room=game_code)
 
+
+    emit('buy property button change', {'operation': 'hide'}, session=session)
+    emit('end turn button change', {'operation': 'show'}, session=session)
     #shows the roll dice button and updates the turn
-    gamelogic.resume_player_turn(game_code)
-    update_index_of_turn()
+    #gamelogic.resume_player_turn(game_code)
+    #update_index_of_turn()
 
 
 @socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button

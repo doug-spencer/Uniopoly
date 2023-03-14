@@ -7,7 +7,7 @@ $(document).ready(function(){
     });
     $('#buy-property-button').hide();
     $('#dont-buy-property-button').hide();
-
+    $('#end-turn-button').hide();
     $('#dice-button').hide();
 
     $('#card-box').hide();
@@ -15,11 +15,13 @@ $(document).ready(function(){
     socket.on('get username', function(data) {
         username = data.username;
     });
+    
     //for joining and leaving room
     socket.on('status', function(data) {
         $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
+
     //for any basic msgs
     socket.on('message', function(data) {
         $('#messages').val($('#messages').val() + data.msg + '\n');
@@ -29,6 +31,7 @@ $(document).ready(function(){
         $('#card-box').show();
         document.getElementById("card-text").innerHTML = data.text;
     });
+
     //show or hide roll dice button
     socket.on('roll dice button change', function(data) {
         if(data.operation == 'show'){
@@ -37,6 +40,16 @@ $(document).ready(function(){
             $('#dice-button').hide();
         };
     });
+
+    //show or hide end turn button
+    socket.on('end turn button change', function(data) {
+        if(data.operation == 'show'){
+            $('#end-turn-button').show();
+        } else {
+            $('#end-turn-button').hide();
+        };
+    });
+
     //show or hide buy property button  
     socket.on('buy property button change', function(data) {
         if(data.operation == 'show'){
@@ -180,6 +193,11 @@ $(document).ready(function(){
     $('#roll-dice').click(function(data) {
         $('#dice-button').hide();
         socket.emit('roll dice');
+    });
+    //when the end turn button is pressed
+    $('#end-turn').click(function(data) {
+        $('#end-turn').hide();
+        socket.emit('end turn');
     });
     //when the buy button is pressed
     $('#buy-property').click(function(e) {
