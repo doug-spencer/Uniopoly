@@ -3,6 +3,7 @@
   }
   #board {
      display: grid;
+     margin: auto;
      /*first and last row and column are bigger than others*/
      grid-template-columns: 13vh repeat(8, 10vh) 13vh;
      grid-template-rows: 13vh repeat(8, 10vh) 13vh;
