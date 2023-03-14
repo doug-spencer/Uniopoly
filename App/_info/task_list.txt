@@ -5,6 +5,7 @@ Backend for socket.on bankrupcy - Cally
 Backend for player owes player - Jacob
 Front end gamepage organisation - been
 Rent for all cards - Doug
+End turn button and functionality - Doug
 Mortgage functions backend - Abu
 Front end for mortgages - Jacob
 Style the open options pop up - Charlie
@@ -12,5 +13,13 @@ frontend for Photos/characters and not squashing the board - been
 Backend for emit positions - Jacob 
 Click and drag for fun - been
 Fixing buttons that dont work - Cally
+action chance cards - Abu
+Photos for the players - Charlie
+Backend for the photos - Cally
+frontend for the photos - been
+----------------
+SECONDARY TASKS
+----------------
+
 
 

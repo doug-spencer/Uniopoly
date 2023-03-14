@@ -10,17 +10,15 @@
 
 {% block body %}
 <button class="button" id="log-out" onclick=log_out()>Log Out</button>
-<div id="outer-frame">
-    <div id="inner-frame">
-        <form id="join-form" method="POST">
-            <label id="code-label" for="text-input">Code:</label>
-            <input class="text-input" type="tel" name="code" autocomplete="off" maxlength="6">
-            <input class="button" type="submit" name="button" value="Join">
-        </form>
-        <form id="create-form" method="POST">
-            <input class="button" type="submit" name="button" value="Create Game">
-        </form>
-    </div>
+<div id="frame">
+    <form id="join-form" method="POST">
+        <label id="code-label" for="text-input">Code:</label>
+        <input class="text-input" type="tel" name="code" autocomplete="off" maxlength="6">
+        <input class="button" type="submit" name="button" value="Join">
+    </form>
+    <form id="create-form" method="POST">
+        <input class="button" type="submit" name="button" value="Create Game">
+    </form>
 </div>
 <button class="button" id="help-button" onclick="window.location.href='help';">Help Page</button>
 {% endblock %}
