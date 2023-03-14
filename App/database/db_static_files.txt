@@ -24,10 +24,10 @@ Students Union;col8;db_students_union_f.png;39;400;200;50,200,600,1400,1700,2000
 Chesters;if you own 1 utility u gets ........;u_chesters_f.png;4;200;100
 NZ Wine;if you own 1 utility u gets ........;u_new_zealand_wines_f.png;38;200;100
 
-142 Bus;bus_stop_1.png;5;200;100
-143 Bus;bus_stop_2.png;15;200;100
-42 Bus;bus_stop_3.png;25;200;100
-43 Bus;bus_stop_4.png;35;200;100
+142 Bus;ts_142_bus_f.png;5;200;100
+143 Bus;ts_143_bus_f.png;15;200;100
+42 Bus;ts_42_bus_f.png;25;200;100
+43 Bus;ts_43_bus_f.png;35;200;100
 
 Its your birthday. Collect 50;+50;False
 Its your birthday. Collect 10;+10;False
