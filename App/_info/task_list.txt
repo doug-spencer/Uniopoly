@@ -5,7 +5,6 @@ Backend for socket.on bankrupcy - Cally
 Backend for player owes player - Jacob
 Front end gamepage organisation - been
 Rent for all cards - Doug
-End turn button and functionality - Doug
 Mortgage functions backend - Abu
 Front end for mortgages - Jacob
 Style the open options pop up - Charlie
