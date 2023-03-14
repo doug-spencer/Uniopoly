@@ -14,6 +14,9 @@ Backend for emit positions - Jacob
 Click and drag for fun - been
 Fixing buttons that dont work - Cally
 action chance cards - Abu
+Photos for the players - Charlie
+Backend for the photos - Cally
+frontend for the photos - been
 ----------------
 SECONDARY TASKS
 ----------------
