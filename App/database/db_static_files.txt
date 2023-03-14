@@ -1,28 +1,28 @@
-Kilburn;col1;property.png;1;60;30;3,10,30,90,160,250
-Unsworth;col1;property.png;3;60;30;4,20,60,180,320,450
-Stopford;col2;property.png;6;100;50;6,30,90,270,400,550
-New Zealand Wines;col2;property.png;8;100;50;6,30,90,270,400,550
-Ashburn Hall;col2;property.png;9;120;60;8,40,100,300,450,600
-Chemistry Building;col3;property.png;11;140;70;10,50,150,450,625,750
-Alans Chicken Shop;col3;property.png;13;140;70;10,50,150,450,625,750
-Simon Building;col3;property.png;14;160;80;12,60,180,500,700,900
-Alan Turing Building;col4;property.png;16;180;90;14,70,200,550,750,950
-Uni Place;col4;property.png;18;180;90;14,70,200,550,750,950
-Manchester Academy;col4;property.png;19;200;100;16,80,220,600,800,1000
-Roscoe Building;col5;property.png;21;220;110;18,90,250,700,875,1050
-IT Building;col5;property.png;23;220;110;18,90,250,700,875,1050
-James Chadwick Building;col5;property.png;24;240;120;20,100,300,750,925,1100
-Oddfellows Hall;col6;property.png;26;260;130;22,110,330,800,975,1150
-Whitworth Park;col6;property.png;27;260;130;22,110,330,800,975,1150
-Sam Alex Building;col6;property.png;29;280;140;22,120,360,850,1025,1200
-Alliance Business School;col7;property.png;31;300;150;26,130,390,900,1100,1275
-Uttley House;col7;property.png;32;300;150;26,130,390,900,1100,1275
-Sugden;col7;property.png;34;320;160;28,150,450,1000,1200,1400
-Engineering Building;col8;property.png;37;350;175;35,175,500,1100,1300,1500
-Students Union;col8;property.png;39;400;200;50,200,600,1400,1700,2000
+Kilburn;col1;br_kilburn_f.png;1;60;30;3,10,30,90,160,250
+Unsworth;col1;br_unsworth_f.png;3;60;30;4,20,60,180,320,450
+Stopford;col2;lb_stopford_f.png;6;100;50;6,30,90,270,400,550
+Humanities Building;col2;lb_humanitites_building_f.png;8;100;50;6,30,90,270,400,550
+Ashburn Hall;col2;lb_ashburn_hall_f.png;9;120;60;8,40,100,300,450,600
+Chemistry Building;col3;p_chemistry_building_f.png;11;140;70;10,50,150,450,625,750
+Alans Chicken Shop;col3;p_alans_chicken_shop_f.png;13;140;70;10,50,150,450,625,750
+Simon Building;col3;p_simon_building_f.png;14;160;80;12,60,180,500,700,900
+Alan Turing Building;col4;o_alan_turing_building_f.png;16;180;90;14,70,200,550,750,950
+Uni Place;col4;o_uni_place_f.png;18;180;90;14,70,200,550,750,950
+Manchester Academy;col4;o_manchester_academy_f.png;19;200;100;16,80,220,600,800,1000
+Roscoe Building;col5;r_roscoe_building_f.png;21;220;110;18,90,250,700,875,1050
+IT Building;col5;r_it_building_f.png;23;220;110;18,90,250,700,875,1050
+James Chadwick Building;col5;r_james_chadwick_building_f.png;24;240;120;20,100,300,750,925,1100
+Oddfellows Hall;col6;y_oddfellows_hall_f.png;26;260;130;22,110,330,800,975,1150
+Whitworth Park;col6;y_whitworth_f.png;27;260;130;22,110,330,800,975,1150
+Sam Alex Building;col6;y_sam_alex_building_f.png;29;280;140;22,120,360,850,1025,1200
+Alliance Business School;col7;g_alliance_building_school_f.png;31;300;150;26,130,390,900,1100,1275
+Uttley House;col7;g_uttley_house_f.png;32;300;150;26,130,390,900,1100,1275
+Sugden;col7;g_sugden_f.png;34;320;160;28,150,450,1000,1200,1400
+Engineering Building;col8;db_engineering_building_f.png;37;350;175;35,175,500,1100,1300,1500
+Students Union;col8;db_students_union_f.png;39;400;200;50,200,600,1400,1700,2000
 
-Chesters;if you own 1 utility u gets ........;utilites_chesters.png;4;200;100
-NZ Wine;if you own 1 utility u gets ........;new_z_wine.png;38;200;100
+Chesters;if you own 1 utility u gets ........;u_chesters_f.png;4;200;100
+NZ Wine;if you own 1 utility u gets ........;u_new_zealand_wines_f.png;38;200;100
 
 142 Bus;bus_stop_1.png;5;200;100
 143 Bus;bus_stop_2.png;15;200;100
