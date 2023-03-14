@@ -195,7 +195,7 @@ body {
     font-size: 30px;
     font-weight: bold;
     color: white;
-    margin: 10px;
+    margin: 2px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -221,17 +221,18 @@ body {
 }
 
 .text-input {
-    width: 5em;
-    height: 1.4em;
+    width: 10rem;
+    height: 2.5rem;
     border: none;
     border-radius: 5px;
-    margin: 0ch 1ch;
+    margin: 2px;
+    padding: 5px;
     font-family: Arial;
     font-weight: bold;
     background-color: white;
     color: black;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 30px;
 }
 
 footer {
