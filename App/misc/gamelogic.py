@@ -1,4 +1,4 @@
-from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, Student_union, Email, link_player_property, link_player_bus_stop, link_player_utilities
+from App.database.tables import Player, Game, Account, Property, Utilities, Bus_stop, Student_union, Email, link_player_property, link_player_bus_stop, link_player_utilities, link_player_email, link_player_student_union
 from flask_socketio import emit
 import random
 from App.main import db, socketio, engine
@@ -28,25 +28,29 @@ def show_player_options(player, game_code, session):
         buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop)
         return buy_choice_active    
     
-    pos_email = 7
-    pos_student_union = 16
-    pos_go_to_jail = 29
-    pos_free_parking = 19
-    pos_jail = 9
+    pos_email = [7, 17, 28, 36]
+    pos_student_union = [2, 12, 22, 33]
+    pos_go_to_jail = 30
+    pos_free_parking = 20
+    pos_jail = 10
     pos_start = 0
 
     if pos == pos_go_to_jail:
         player_landed_on_go_to_jail(player, game_code, session)
-    if pos == pos_jail:
+    elif pos == pos_jail:
         player_on_jail(player, game_code, session)
-    if pos == pos_start:
+    elif pos == pos_start:
         player_landed_on_start(player, game_code, session)
-    if pos == pos_free_parking:
+    elif pos == pos_free_parking:
         player_landed_on_free_parking(player, game_code, session)
-    if pos == pos_email:
-        player_landed_on_email(player, game_code)
-    if pos == pos_student_union:
-        player_landed_on_student_union(player, game_code)     
+    elif pos in pos_email:
+        card_table = Email.query.all()
+        card_type = "Email"
+        player_landed_on_money_card(player, game_code,  card_table, card_type)
+    elif pos in pos_student_union:
+        card_table = Student_union.query.all()
+        card_type = "Student Union"
+        player_landed_on_money_card(player, game_code,  card_table, card_type)     
 
     # all_emails = Email.query.all()
     # index_of_emails = [i.position for i in all_emails]
@@ -106,7 +110,13 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
         rent_amount, player_owed = get_rent_amount(card, link_table)
         functions.player1_owes_player2_money(player, rent_amount, player_owed)
         return False
-
+    
+def player_landed_on_money_card(player, game_code, card_table, card_type):
+    money_card = random.choice(card_table)
+    player.money += money_card.amount
+    emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
+    emit('display card', {'text': money_card.text}, room=game_code)
+    
 def update_position(game, game_code):
     positions = [[i, None] for i in range(40)]
     for i in game.players_connected:
@@ -201,18 +211,8 @@ def get_house_price(colour):
         return 150
     else:
         return 200
-    
-def player_landed_on_email(player, game_code):
-    email = random.choice(Email.query.all())
-    player.money += email.amount
-    emit('message', {'msg': player.username + ' landed on email'}, room=game_code)
-    emit('message', {'msg': email.text}, room=game_code)
 
-def player_landed_on_student_union(player, game_code):
-    student_union = random.choice(Student_union.query.all())
-    player.money += student_union.amount
-    emit('message', {'msg': player.username + ' landed on student union'}, room=game_code)
-    emit('message', {'msg': student_union.text}, room=game_code)
+
 
 # def player_landed_on_card(player, game_code, session, card):
 #     emit('message', {'msg': player.username + ' landed on a pick up card square '}, room=game_code)
