@@ -41,8 +41,17 @@ def left(message):
 @socketio.on('end turn', namespace='/gameroom') #when a players turn ends
 def end_turn():
     game_code = session.get('game_code')
-    resume_player_turn(game_code)
-    update_index_of_turn()
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+
+    if not game or not player:
+        return False
+    
+    if player.money >= 0:
+        resume_player_turn(game_code)
+        update_index_of_turn()
+    else:
+        emit('message', {'msg': 'You need to clear your dept. Sell some houses or mortgage your cards'}, session = session)
     
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
