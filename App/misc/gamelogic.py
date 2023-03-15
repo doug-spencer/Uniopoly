@@ -119,14 +119,18 @@ def player_landed_on_money_card(player, game_code, card_table, card_type):
     
 def update_position(game, game_code):
     positions = [[i, None] for i in range(40)]
+    symbols = [[i, None] for i in range(40)]
     for i in game.players_connected:
         if positions[i.position][1] == None:
+            symbols[i.position][1] = i.symbol
             positions[i.position][1] = i.username
         else:
+            symbols[i.position][1] = i.symbol
             positions[i.position][1] = positions[i.position][1] + ',' + i.username
     positions = [i for i in positions if i[1]!= None]
+    symbols = [i for i in symbols if i[1]!= None]
     print(positions, game.game_code)
-    emit('update player positions', {'positions': positions}, room=game_code) 
+    emit('update player positions', {'positions': positions, 'symbols':symbols}, room=game_code) 
 
 def get_rent_amount(card, link_table):
     with engine.connect() as conn:

@@ -1,9 +1,9 @@
 from App.database.tables import Account, Game, Player, Property, Utilities, Bus_stop, link_player_bus_stop, link_player_property, link_player_utilities
 from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db
-from App.database.link_table_updates import update_link_table
+from App.database.link_table_updates import update_link_table, query_link_table_with_one_id, query_link_table_with_two_id
 from flask_socketio import emit
-
+from App.misc import gamelogic
 
 
 def check_account(username, password):
@@ -72,13 +72,30 @@ def player1_owes_player2_money(player1, amount, player2=False):
         if player2:
             player2.money += amount
             emit('message', {'msg': player1.username + " payed " + player2.username + " " + str(amount)}, session=session)
-    elif True:
-        player1.money = 0
     else:
-        pass
-        #sell houses
-        #mortgage utilities
-        #...
+        total_money = 0
+        total_money += player1.money
+
+        #get worth of all houses
+        property = query_link_table_with_one_id(player1.id, None, Property, None)
+        for i in property:
+            card = Property.query.filter_by(property_id=i[1]).all()
+            house_price += gamelogic.get_house_price(i.colour)
+            total_money += house_price * i[3]
+
+        #add up unmortgaged cards
+        utilities =  query_link_table_with_one_id(player1.id, None, Utilities, None)
+        bus_stop = query_link_table_with_one_id(player1.id, None, Bus_stop, None)
+        all_cards = [[property, Property], [utilities, Utilities], [bus_stop, Bus_stop]]
+        for i in all_cards:
+            if not i[0][2]: #unmortgaged
+                card = i[1].query.filter_by(id=i[0][1]).first()
+                total_money += card.mortgage_value
+        if total_money >= amount:
+            total_money -= amount
+        else:
+            #bankrupt dem
+            pass
     db.session.commit()
 
 def load_test_data(player):
