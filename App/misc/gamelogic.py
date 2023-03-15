@@ -153,6 +153,8 @@ def get_rent_amount(card, link_table):
 def get_cards(player):
     unmortgaged_cards = []
     mortgaged_cards = []
+    unmortgaged_cards_id = []
+    mortgaged_cards_id = []
     tables = [[link_player_property, Property], [link_player_utilities, Utilities], [link_player_bus_stop, Bus_stop]]
     with engine.connect() as conn:
         for i in tables:
@@ -162,13 +164,15 @@ def get_cards(player):
                 print(card_row)
                 card = i[1].query.filter_by(id=card[1]).first()
                 unmortgaged_cards.append(card.photo)
+                unmortgaged_cards_id.append(card.id)
             query = i[0].select().where(i[0].c.player_id == player.id, i[0].c.mortgaged == True)
             card_row = conn.execute(query).fetchall()
             for card in card_row:
                 print(card_row)
                 card = i[1].query.filter_by(id=card[1]).first()
                 mortgaged_cards.append(card.photo)
-    return unmortgaged_cards, mortgaged_cards
+                mortgaged_cards_id.append(card.id)
+    return unmortgaged_cards, mortgaged_cards, unmortgaged_cards_id, mortgaged_cards_id
 
 def get_houses(player):
     property = []
