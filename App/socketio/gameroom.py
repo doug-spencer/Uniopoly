@@ -117,9 +117,15 @@ def get_cards():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
-    unmortgaged_cards, mortgaged_cards = gamelogic.get_cards(player)
+    unmortgaged_cards, mortgaged_cards,  unmortgaged_cards_id, mortgaged_cards_id= gamelogic.get_cards(player)
     print('cards:', unmortgaged_cards, mortgaged_cards)
-    emit('cards', {'unmortgaged_cards': unmortgaged_cards, 'mortgaged_cards':mortgaged_cards}, session=session)
+    emit('cards', {
+        'unmortgaged_cards': unmortgaged_cards, 
+        'mortgaged_cards':mortgaged_cards, 
+        'unmortgaged_cards_id':unmortgaged_cards_id, 
+        'mortgaged_cards_id':mortgaged_cards_id}, 
+        session=session
+    )
 
 @socketio.on('get houses', namespace='/gameroom')
 def get_houses():
