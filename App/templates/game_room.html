@@ -11,15 +11,18 @@
 {% block body %}
 <div id="screen">
     <div id="left-div">
-        <button class="button" id="menu" onclick=return_to_menu()>Leave</button>
-        <br><br><br>
-        <h2>Game Code : {{ session['game_code'] }}</h2>
-        <br>
-        <form id="chat">
-            <input class="text-input" type="text" id="text" size="30" placeholder="Enter message" />
-            <button class="button" name="button" value="send" id="send">Send</button>
-        </form>
-        <textarea id="messages" cols="30" rows="20" placeholder="No messages yet. Start one..."></textarea>
+        <div class="game-info-box" id="top-left">
+            <button class="button" id="menu" onclick=return_to_menu()>Leave</button>
+            <br><br><br>
+            <h2>Game Code : {{ session['game_code'] }}</h2>
+        </div>
+        <div class="game-info-box" id="middle-left">
+            <form id="chat">
+                <input class="text-input" type="text" id="text" size="30" placeholder="Enter message" />
+                <button class="button" name="button" value="send" id="send">Send</button>
+            </form>
+            <textarea id="messages" cols="30" rows="20" placeholder="No messages yet. Start one..."></textarea>
+        </div>
     </div>
     <div id="board">
         <div id="center">
@@ -307,6 +310,7 @@
     </div>
     <!--END-->
     <div id="right-div">
+        <h2>Leaderboard</h2>
         <table id="money-table">
             <thead>
               <tr class="table-header">
