@@ -2,7 +2,6 @@
 TASKS
 -----------------
 Backend for socket.on bankrupcy - Cally
-Backend for player owes player - Jacob
 Front end gamepage organisation - been
 Rent for all cards - Doug
 End turn button and functionality - Doug

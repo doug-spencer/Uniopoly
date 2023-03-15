@@ -18,7 +18,7 @@ def game_room():
         if not account: #player doesnt have account
             account = Account(username=username)
             db.session.add(account)
-        player = player.Player(position=0)
+        player = player.Player(position=0, symbol='duck')
         db.session.add(player)
         account.game_instances.append(player) #links account with the player in the new game
         if choice == 'make': #imaking a game

@@ -40,7 +40,7 @@ def create_game(username):
             unique = False
     account = Account.query.filter_by(username=username).first()
     game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
-    player = Player(position=0, index_in_game=0, money=1000, turns_in_jail=0)
+    player = Player(position=0, index_in_game=0, money=1000, turns_in_jail=0, symbol='duck')
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)
@@ -65,7 +65,7 @@ def join_game(code):
     if account.username in usernames_in_game:
         flash("You are already in this game")
         return render_template('menu.html')
-    player = Player(position=0, index_in_game=len(game.players_connected), money=1000, turns_in_jail=0)
+    player = Player(position=0, index_in_game=len(game.players_connected), money=1000, turns_in_jail=0, symbol='duck')
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)
