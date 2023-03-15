@@ -89,13 +89,24 @@ $(document).ready(function(){
     });
     socket.on('cards', function(data) {
         $("#image-grid-unmortgaged").html('');
-        console.log("in soceked on cards");
         for (let i=0; i<data.unmortgaged_cards.length; i++) {
             var name = data.unmortgaged_cards[i];
             const img = new Image();
             img.src = '/images/'+name;
-            console.log(img);
-            document.getElementById('image-grid-unmortgaged').appendChild(img);
+            img.addEventListener('click', function() {
+                socket.emit('mortgage card', {card: name});
+            });
+           document.getElementById('image-grid-unmortgaged').appendChild(img);
+        }
+        $("#image-grid-mortgaged").html('');
+        for (let i=0; i<data.mortgaged_cards.length; i++) {
+            var name = data.mortgaged_cards[i];
+            const img = new Image();
+            img.src = '/images/'+name;
+            img.addEventListener('click', function() {
+                socket.emit('unmortgage card', {card: name});
+            });
+            document.getElementById('image-grid-mortgaged').appendChild(img);
         }
     });
     socket.on('houses', function(data) {
