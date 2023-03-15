@@ -27,7 +27,6 @@ from App.socketio import gameroom, lobby
 
 
 if False:
-    from App.database.tables import Game, Player
     try:
         Game.__table__.drop(engine)
         Player.__table__.drop(engine)

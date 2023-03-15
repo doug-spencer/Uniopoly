@@ -1,7 +1,7 @@
 Kilburn;col1;br_kilburn_f.png;1;60;30;3,10,30,90,160,250
 Unsworth;col1;br_unsworth_f.png;3;60;30;4,20,60,180,320,450
 Stopford;col2;lb_stopford_f.png;6;100;50;6,30,90,270,400,550
-Humanities Building;col2;lb_humanitites_building_f.png;8;100;50;6,30,90,270,400,550
+Humanities Building;col2;lb_humanities_building_f.png;8;100;50;6,30,90,270,400,550
 Ashburn Hall;col2;lb_ashburn_hall_f.png;9;120;60;8,40,100,300,450,600
 Chemistry Building;col3;p_chemistry_building_f.png;11;140;70;10,50,150,450,625,750
 Alans Chicken Shop;col3;p_alans_chicken_shop_f.png;13;140;70;10,50,150,450,625,750
