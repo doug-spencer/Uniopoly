@@ -62,11 +62,11 @@ $(document).ready(function(){
         };
         
     });
-    // //show roll value of dice roll
-    // socket.on('dice_roll', function(data) {
-    //     document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
-    //     //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
-    // });
+    //show roll value of dice roll
+    socket.on('dice_roll', function(data) {
+        document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
+        //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
+    });
     //update the leaderboard
     socket.on('update leaderboard', function(data) {
         for (let i=0; i<data.players.length-1; i++) {
