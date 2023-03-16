@@ -3,13 +3,14 @@
   }
   #board {
      display: grid;
+     flex: 1;
      margin: auto;
      /*first and last row and column are bigger than others*/
-     grid-template-columns: 13vh repeat(8, 10vh) 13vh;
-     grid-template-rows: 13vh repeat(8, 10vh) 13vh;
+     grid-template-columns: 13vh repeat(8, 9vh) 13vh;
+     grid-template-rows: 13vh repeat(8, 9vh) 13vh;
      left:5%;
      width:fit-content;
-     align-items: centre;
+     /* align-items: centre; */
      /*a, b, c, d are 4 rows and o is center*/
      grid-template-areas:
         "c c c c c c c c c d"
@@ -24,24 +25,43 @@
         "b a a a a a a a a a";
       background-color: white;
       font-size: 2vh;
+      font-family: system-ui;
+      color: black;
+      box-shadow: 1px 4px 9px 0px black;
    }
 
    .orientation0 {
-      transform: rotateZ(0);
+      transform: rotateZ(0deg);
    }
    .orientation1 {
       transform: rotateZ(-90deg);
    }
+   .orientation1 #center{
+      transform: rotateZ(90deg);
+   }
    .orientation2 {
+      transform: rotateZ(180deg);
+   }
+   .orientation2 #center{
       transform: rotateZ(180deg);
    }
    .orientation3 {
       transform: rotateZ(90deg);
    }
+   .orientation3 #center{
+      transform: rotateZ(-90deg);
+   }
 
   #center {
-     grid-area: o;
-     background: rebeccapurple;
+      grid-area: o;
+      background-image: linear-gradient(41deg, blueviolet, violet), 
+                        linear-gradient(-59deg, lightblue, palevioletred), 
+                        /* linear-gradient(45deg, black, transparent); */
+                        radial-gradient(hotpink -29%, rebeccapurple 146%);
+      background-blend-mode: color;
+      background-position: center center;
+      background-size: 339%;
+      border: 2px solid black;
   }
   .row {
      display: flex;
@@ -307,6 +327,8 @@
 #money-table {
    border-collapse: collapse;
    font-family: Arial, sans-serif;
+   width: 100%;
+   margin: auto;
 }
 
 .table-header th {
@@ -328,9 +350,23 @@
 }
 
 #text {
-   width: 40rem;
+   width: 100%;
+   height: 100%;
+   padding: 8px;
+   margin: 5px 0px 5px 5px;
+   border-radius: 3px;
    text-align: left;
    font-weight: normal;
+   font-size: inherit;
+}
+
+#messages {
+   background-color: transparent;
+   border: none;
+   /* pointer-events: none; */
+   color: white;
+   direction: ltr;
+   /* overflow-y: scroll; */
 }
 
 #card-box {
@@ -373,4 +409,37 @@ footer {
    font-size: x-large;
    background-color: #ccc;
 
+}
+
+#screen {
+   display: flex;
+   /* padding: 10px; */
+}
+#left-div, #right-div {
+   flex: 1;
+   /* padding: 10px; */
+
+}
+#chat {
+   display: flex;
+   position: relative;
+   z-index: 1;
+   align-items: center;
+   font-size: 20px;
+}
+#send {
+   font-size: inherit;
+   margin: 4px;
+   border-radius: 3px;
+}
+.game-info-box {
+   background-image: radial-gradient(ellipse, #0000002f, #00000050);
+   box-shadow: 0 0 11px 0 white;
+   border-radius: 5px;
+   margin: 8px 8px 0px 8px;
+   color: white;
+}
+h2 {
+   margin: 0px;
+   padding: 10px;
 }
