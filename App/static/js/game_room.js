@@ -196,6 +196,12 @@ function buy_property() {
     const property = document.getElementById('property').value;
     socket.emit('buy property', {property: property});
 }
+function bankrupt() {
+    socket.emit('bankrupt');
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + 2000){ /* Do nothing */ }
+    window.location.href = "/menu";
+}
 function close_options() {
     document.getElementById("options").style.display = "none";
   }
@@ -225,7 +231,7 @@ function change_tab(evt, tab_name) {
     for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
     }
-  
+
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
