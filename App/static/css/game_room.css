@@ -209,6 +209,25 @@
   }
 
   /*options pop up box*/
+  .options-button {
+   padding: 10px 15px;
+   background-image: radial-gradient(ellipse, #7B1FA2, #660099);
+   background-size: cover;
+   font-family: Arial;
+   font-size: 30px;
+   font-weight: bold;
+   color: white;
+   margin: 2px;
+   border: none;
+   border-radius: 10px;
+   cursor: pointer;
+   transition: background-color 0.2s ease-in-out;
+}
+
+  .options-dropdown {
+   position: relative;
+   display: inline-block;
+   }
   .options-popup {
    display: none;
    position: fixed;
@@ -216,20 +235,35 @@
    height: 60%;
    left: 10%;
    width: 80%;
-   border: 3px solid #f1f1f1;
+   border: 3px solid #ccc;
    z-index: 9;
-   background-color: pink;
+   background-color: #855abe;
+ }
+ .options-button:hover .options-popup {
+   display: block;
  }
 
  /* Style the tab */
 .tab {
    float: left;
-   border: 1px solid #ccc;
-   background-color: #f1f1f1;
-   width: 30%;
-   height: 300px;
+   background-color: #ccc;
+   width: auto;
+   height: auto;
  }
  
+ .tablinks {
+   display: block;
+   background-color: inherit;
+   background-color: #660099;
+   color: white;
+   padding: 22px 16px;
+   width: 100%;
+   border: none;
+   outline: none;
+   text-align: left;
+   cursor: pointer;
+ }
+
  /* Style the buttons that are used to open the tab content */
  .tab button {
    display: block;
@@ -245,12 +279,12 @@
  
  /* Change background color of buttons on hover */
  .tab button:hover {
-   background-color: #ddd;
+   background-color: #855abe;
  }
  
  /* Create an active/current "tab button" class */
  .tab button.active {
-   background-color: #ccc;
+   background-color: #855abe;
  }
 
 
@@ -258,9 +292,9 @@
  .tabcontent {
    float: left;
    padding: 0px 12px;
-   border: 1px solid #ccc;
    width: 70%;
    border-left: none;
+   border-right: none;
    height: 100%;
    display: none;
    overflow: auto;
@@ -332,8 +366,11 @@ footer {
    flex-direction: column;
    flex-wrap: wrap;
    float: left;
+   padding: 20px;
  }
 .house button {
    font-weight: bold;
    font-size: x-large;
+   background-color: #ccc;
+
 }
