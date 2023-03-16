@@ -24,7 +24,7 @@ $(document).ready(function(){
 
     //for any basic msgs
     socket.on('message', function(data) {
-        $('#messages').val($('#messages').val() + data.msg + '\n');
+        $('#messages').val(data.msg + '\n' + $('#messages').val());
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
     socket.on('display card', function(data) {

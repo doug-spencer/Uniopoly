@@ -17,11 +17,11 @@
             <h2>Game shbbCode : {{ session['game_code'] }}</h2>
         </div>
         <div class="game-info-box" id="middle-left">
-            <textarea id="messages" cols="30" rows="20" placeholder="No messages yet. Start one..."></textarea>
             <form id="chat">
-                <input class="text-input" type="text" id="text" size="30" placeholder="Enter message" autocomplete="off"/>
+                <input class="text-input" type="text" id="text" size="30" placeholder="Enter message" />
                 <button class="button" name="button" value="send" id="send">Send</button>
             </form>
+            <textarea id="messages" cols="30" rows="20" placeholder="No messages yet. Start one..."></textarea>
         </div>
     </div>
     <div id="board">
@@ -307,21 +307,19 @@
                 <div class="player" id="tile39"></div>
             </div>
         </div>
-        <!--END-->
     </div>
+    <!--END-->
     <div id="right-div">
-        <div class="game-info-box">
-            <h2>Leaderboard</h2>
-            <table id="money-table">
-                <thead>
-                <tr class="table-header">
-                    <th>Name</th>
-                    <th>Money</th>
-                </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
+        <h2>Leaderboard</h2>
+        <table id="money-table">
+            <thead>
+              <tr class="table-header">
+                <th>Name</th>
+                <th>Money</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+         </table>
     </div>
 </div>
 
