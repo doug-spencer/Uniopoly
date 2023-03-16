@@ -3,7 +3,7 @@ from flask_socketio import emit, join_room, leave_room
 from App.main import db, socketio, engine
 from App.misc.functions import check_in_game, player1_owes_player2_money
 from random import randint
-from sqlalchemy import update
+from sqlalchemy import update, and_
 from App.misc import gamelogic
 from App.database.tables import link_player_property, link_player_bus_stop, link_player_utilities, Player, Game, Property, Bus_stop, Utilities
 from App.database import link_table_updates
@@ -32,7 +32,7 @@ def left(message):
     index = 0
     for i in game.players_connected:
         if index > index_of_player:
-            game.players_connected[index] = index - 1
+            game.players_connected[index].index_in_game = index - 1
         index += 1
     db.session.delete(player)
     db.session.commit()
@@ -276,7 +276,24 @@ def buy_house(data):
     else:
         emit('message', {'msg':"you don't have enough money to buy the house"}, session=session)
 
-
-
-    
-
+@socketio.on('bankrupt', namespace='/gameroom')
+def bankrupt():
+    print('bankrupt')
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game or not player:
+        return False
+    leave_room(game_code)
+    player = Player.query.filter_by(username = username, game_code=game_code).first()
+    game= Game.query.filter_by(game_code=game_code).first()
+    index_of_player = [i.id for i in game.players_connected].index(player.id)
+    index = 0
+    for i in game.players_connected:
+        if index > index_of_player:
+            game.players_connected[index].index_in_game = index - 1
+        index += 1
+    emit('status', {'msg': username + ' has left the room.'}, room = game_code)
+    db.session.delete(player)
+    db.session.commit()
+    session.pop('game_code', None)
