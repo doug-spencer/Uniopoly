@@ -168,11 +168,11 @@ def load_game_board():
         for line in file:
             if not generating:
                 body += line
-            if line == '<div id="board">\n':
+            if line == '<!--START-->\n':
                 generating = True
-            elif line == '</div><!--END-->\n':
+            elif line == '<!--END-->\n':
                 generating = False
-                body += generate_board() + '</div><!--END-->\n'
+                body += generate_board() + '<!--END-->\n'
     
     with open('App/templates/game_room.html', 'w') as file:
         file.write(body)
