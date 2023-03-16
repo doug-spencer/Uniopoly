@@ -27,7 +27,7 @@
       font-size: 2vh;
       font-family: system-ui;
       color: black;
-      box-shadow: 1px 4px 9px 3px black;
+      box-shadow: 1px 4px 9px 0px black;
    }
 
    .orientation0 {
@@ -294,6 +294,7 @@
    border-collapse: collapse;
    font-family: Arial, sans-serif;
    width: 100%;
+   margin: auto;
 }
 
 .table-header th {
@@ -328,7 +329,10 @@
 #messages {
    background-color: transparent;
    border: none;
-   pointer-events: none;
+   /* pointer-events: none; */
+   color: white;
+   direction: ltr;
+   /* overflow-y: scroll; */
 }
 
 #card-box {
@@ -392,7 +396,13 @@ footer {
    border-radius: 3px;
 }
 .game-info-box {
-   background-image: radial-gradient(ellipse, #ffffff4f, #ffffff90);
-   box-shadow: 0 0 11px 0 black;
+   background-image: radial-gradient(ellipse, #0000002f, #00000050);
+   box-shadow: 0 0 11px 0 white;
+   border-radius: 5px;
    margin: 8px 8px 0px 8px;
+   color: white;
+}
+h2 {
+   margin: 0px;
+   padding: 10px;
 }
