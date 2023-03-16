@@ -121,10 +121,9 @@ $(document).ready(function(){
                 console.log(data.houses);
                 console.log(name+data.houses[i][j][2]);
                 html += `<div class="house">`
-                html += `<button onclick="sell_house('${name}')">-</button>`;
-                html += `<p>${name}</p>`;
-                html += `<p>${data.houses[i][j][2]}</p>`;
+                html += `<p>${name} <br> ${data.houses[i][j][2]}</p>`;
                 html += `<button onclick="buy_house('${name}')">+</button>`;
+                html += `<button onclick="sell_house('${name}')">-</button>`;
                 html += `</div>`;
             }
             html += `</div>`;
@@ -196,11 +195,22 @@ function buy_property() {
     const property = document.getElementById('property').value;
     socket.emit('buy property', {property: property});
 }
+function bankrupt() {
+    socket.emit('bankrupt');
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + 2000){ /* Do nothing */ }
+    window.location.href = "/menu";
+}
 function close_options() {
     document.getElementById("options").style.display = "none";
+    document.getElementById("openOpt").style.display = "block";
+    document.getElementById("closeOpt").style.display = "none";
   }
 function open_options() {
     document.getElementById("options").style.display = "block";
+    document.getElementById("openOpt").style.display = "none";
+    document.getElementById("closeOpt").style.display = "block";
+    
 }
 function sell_house(name){
     console.log("selling house");
@@ -225,7 +235,7 @@ function change_tab(evt, tab_name) {
     for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
     }
-  
+
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
