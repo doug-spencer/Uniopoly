@@ -65,8 +65,8 @@ def roll_dice():
     
     halt_player_turn(game_code)
     
-    roll1 = randint(5,5)
-    roll2 = randint(0,0)
+    roll1 = randint(1,6)
+    roll2 = randint(1,6)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
