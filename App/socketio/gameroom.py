@@ -32,7 +32,7 @@ def left(message):
     index = 0
     for i in game.players_connected:
         if index > index_of_player:
-            game.players_connected[index] = index - 1
+            game.players_connected[index].index_in_game = index - 1
         index += 1
     db.session.delete(player)
     db.session.commit()
@@ -65,8 +65,8 @@ def roll_dice():
     
     halt_player_turn(game_code)
     
-    roll1 = randint(1,6)
-    roll2 = randint(1,6)
+    roll1 = randint(5,5)
+    roll2 = randint(0,0)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value

@@ -17,15 +17,15 @@ def show_player_options(player, game_code, session):
     index_of_bus_stops = [i.position for i in all_bus_stops]
     print(index_of_properties)
     if pos in index_of_properties:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_properties.index(pos)], link_player_property)
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_properties.index(pos)], link_player_property, "property")
         return buy_choice_active
 
     elif pos in index_of_utilities:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_utilities[index_of_utilities.index(pos)], link_player_utilities)
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_utilities[index_of_utilities.index(pos)], link_player_utilities, "utility")
         return buy_choice_active   
 
     elif pos in index_of_bus_stops:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop)
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop, "bus")
         return buy_choice_active    
     
     pos_email = [7, 17, 28, 36]
@@ -89,7 +89,7 @@ def player_landed_on_go_to_jail(player, game_code, session):
     emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
 
 
-def player_landed_on_purchasable_card(player, game_code, session, card, link_table):
+def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type):
 
     emit('message', {'msg': player.username + ' landed on ' + card.name}, room=game_code)
 
@@ -107,7 +107,12 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
             return False
     
         #someone owns it and it isn't you so pay rent
-        rent_amount, player_owed = get_rent_amount(card, link_table)
+        if type == "property":
+            rent_amount, player_owed = get_rent_amount(card, link_table)
+        elif type == "utility":
+            pass
+        elif type == "bus":
+            pass
         functions.player1_owes_player2_money(player, rent_amount, player_owed)
         return False
     
@@ -145,7 +150,6 @@ def get_rent_amount(card, link_table):
         card_row = conn.execute(renter_id_query).fetchone()
         renter_id = card_row.player_id
         no_of_houses = card_row.houses
-
         ##finds the number of the houses of the select colour that the renter owns
         number_of_colour_owned = 0
         for card_id_with_colour in card_ids_with_colour:
