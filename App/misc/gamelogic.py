@@ -5,7 +5,7 @@ from App.main import db, socketio, engine
 from App.database import link_table_updates
 from . import functions
 
-def show_player_options(player, game_code, session):
+def show_player_options(player, game_code, session, roll_value):
     pos = player.position
 
     all_properties = Property.query.all()
@@ -21,11 +21,11 @@ def show_player_options(player, game_code, session):
         return buy_choice_active
 
     elif pos in index_of_utilities:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_utilities[index_of_utilities.index(pos)], link_player_utilities, "utility")
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_utilities[index_of_utilities.index(pos)], link_player_utilities, "utility", index_of_utilities, roll_value)
         return buy_choice_active   
 
     elif pos in index_of_bus_stops:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop, "bus")
+        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop, "bus", index_of_bus_stops)
         return buy_choice_active    
     
     pos_email = [7, 17, 28, 36]
@@ -89,7 +89,7 @@ def player_landed_on_go_to_jail(player, game_code, session):
     emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
 
 
-def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type):
+def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type, index_of_types=None, roll_value=None):
 
     emit('message', {'msg': player.username + ' landed on ' + card.name}, room=game_code)
 
@@ -108,11 +108,11 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
     
         #someone owns it and it isn't you so pay rent
         if type == "property":
-            rent_amount, player_owed = get_rent_amount(card, link_table)
+            rent_amount, player_owed = get_property_rent_amount(card, link_table)
         elif type == "utility":
-            pass
+            rent_amount, player_owed = get_bus_or_utility_rent_amount(card, link_table, type, index_of_types, roll_value)
         elif type == "bus":
-            pass
+            rent_amount, player_owed = get_bus_or_utility_rent_amount(card, link_table, type, index_of_types)
         functions.player1_owes_player2_money(player, rent_amount, player_owed)
         return False
     
@@ -137,9 +137,8 @@ def update_position(game, game_code):
     print(positions, game.game_code)
     emit('update player positions', {'positions': positions, 'symbols':symbols}, room=game_code) 
 
-def get_rent_amount(card, link_table):
+def get_property_rent_amount(card, link_table):
     with engine.connect() as conn:
-
         ##finds the ids of the cards that are the same colour as the card that was landed on
         card_colour = Property.query.filter_by(id=card.id).first().colour
         cards_with_colour = Property.query.filter_by(colour=card_colour).all()
@@ -150,6 +149,7 @@ def get_rent_amount(card, link_table):
         card_row = conn.execute(renter_id_query).fetchone()
         renter_id = card_row.player_id
         no_of_houses = card_row.houses
+
         ##finds the number of the houses of the select colour that the renter owns
         number_of_colour_owned = 0
         for card_id_with_colour in card_ids_with_colour:
@@ -167,6 +167,33 @@ def get_rent_amount(card, link_table):
         ##returns the rent amount associated with the set and the number of houses owned by the renter
         elif number_of_colour_owned == len(card_ids_with_colour):
             return int(card.rents.split(',')[1+no_of_houses]), player_owed
+        
+def get_bus_or_utility_rent_amount(card, link_table, type, index_of_cards=None, roll_value=None):
+    with engine.connect() as conn:
+        ##finds the id of the owner of the bus stop or utility that was landed on
+        renter_id_query = link_table.select().where(link_table.c.card_id == card.id)
+        card_row = conn.execute(renter_id_query).fetchone()
+        renter_id = card_row.player_id
+
+        ##finds the number of bus stops/utilities owned by the renter
+        no_owned = 0
+        for index_of_card in index_of_cards:
+            no_owned_query = link_table.select().where(link_table.c.card_id==index_of_card, link_table.c.player_id==renter_id)
+            if conn.execute(no_owned_query).fetchone() != None:
+                no_owned += 1
+
+        ##returns the rent amount associated with the number of bus stops or utilities owned by the renter and the renter
+        if type == "bus": 
+            bus_rents = [25, 50, 100, 200]
+            rent = bus_rents[no_owned-1]
+        elif type == "utility":
+            if no_owned == 1:
+                rent = roll_value * 4
+            elif no_owned == 2:
+                rent = roll_value * 10
+
+        player_owed = Player.query.filter_by(id=renter_id).first()
+        return rent, player_owed
 
 def get_cards(player):
     unmortgaged_cards = []

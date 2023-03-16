@@ -86,7 +86,7 @@ def roll_dice():
     db.session.commit()
     
     #performs action associated with board position
-    buy_choice_active = gamelogic.show_player_options(player, game_code, session)
+    buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
     if not buy_choice_active:
         print("asdfasdfsdfghgblzvnjjvfij")
         emit('end turn button change', {'operation':'show'}, session=session)
