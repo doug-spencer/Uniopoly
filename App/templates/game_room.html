@@ -258,7 +258,9 @@
 
 </div><!--END-->
 
-<button onclick=open_options()>open options</button>
+<div class="options-dropdown">
+<button class="options-button" onclick=open_options() style="display: block;" id="openOpt">open options</button>
+<button class="options-button" onclick=close_options() style="display: none;" id="closeOpt">close options</button>
 <div class="options-popup" id="options">
    <div class="tab">
       <button class="tablinks" onmouseover="change_tab(event, 'cards')">view cards</button>
@@ -276,19 +278,16 @@
           <div class="image-grid" id="image-grid-mortgaged">
           </div>    
       </div>
-      <button onclick=close_options()>close options</button>
    </div>
    <div class="tabcontent" id="houses">
-      <h4>houses</h4>
+      <h4>Houses:</h4>
       <div class="row-houses" id="row-houses">
       </div>
-      <button onclick=close_options()>close options</button>
    </div>
    <div class="tabcontent" id="mortgage">
-      <p>mortgage</p>
-      <button onclick=close_options()>close options</button>
+      <h4>Mortgages:</h4>
    </div>
-   
+</div>
 </div>
    <p id="dice">nobody has rolled the dice yet</p>
 <div name="dice-button" id="dice-button">
