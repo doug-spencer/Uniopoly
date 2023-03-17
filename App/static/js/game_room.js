@@ -109,6 +109,17 @@ $(document).ready(function(){
             document.getElementById('image-grid-mortgaged').appendChild(img);
         }
     });
+    socket.on('sprites', function(data) {
+        const sprite_imgs = [
+            'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDgareth_standard.webp', 
+            'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
+            'terence_standard.webp', 'uli_standard.webp'
+        ];
+        const sprite = new Image();
+        sprite.src = '/static/images/playerIcons/' + sprite_imgs[data.symbol];
+        sprite.alt = "FUCK ALL Y'ALL"
+        document.getElementById('test_sprites').appendChild(sprite);
+    });
     socket.on('houses', function(data) {
     console.log(data.houses);
     if (data.houses !== undefined) {
