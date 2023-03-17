@@ -71,14 +71,16 @@ def roll_dice():
     current_value = player.position
     new_value = roll_value + current_value
 
-    if new_value > 39:
-        new_value -= 40
-        player.money += 200
-        emit('message', {'msg': player.username + ' passed go and collected 200'}, room=game_code)
+
 
 
     #only emits roll message and updates position if player is not in jail
     if player.turns_in_jail == 0:
+        if new_value > 39:
+            new_value -= 40
+            player.money += 200
+            emit('message', {'msg': player.username + ' passed go and collected 200'}, room=game_code)
+
         player.position = new_value
         emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
         emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
@@ -88,7 +90,6 @@ def roll_dice():
     #performs action associated with board position
     buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
     if not buy_choice_active:
-        print("asdfasdfsdfghgblzvnjjvfij")
         emit('end turn button change', {'operation':'show'}, session=session)
 
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
@@ -144,7 +145,6 @@ def get_houses():
     if not game and not player:
         return False
     houses = gamelogic.get_houses(player)
-    print(houses)
     emit('houses', {'houses': houses}, session=session)
 
 @socketio.on('text', namespace='/gameroom') #sending text

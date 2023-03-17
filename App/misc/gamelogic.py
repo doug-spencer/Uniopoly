@@ -7,7 +7,6 @@ from . import functions
 
 def show_player_options(player, game_code, session, roll_value):
     pos = player.position
-
     all_properties = Property.query.all()
     all_utilities = Utilities.query.all()
     all_bus_stops = Bus_stop.query.all()
@@ -36,7 +35,7 @@ def show_player_options(player, game_code, session, roll_value):
     pos_start = 0
 
     if pos == pos_go_to_jail:
-        player_landed_on_go_to_jail(player, game_code, session)
+        player_landed_on_go_to_jail(player, game_code, pos_jail)
     elif pos == pos_jail:
         player_on_jail(player, game_code, session)
     elif pos == pos_start:
@@ -62,18 +61,17 @@ def player_on_jail(player, game_code, session):
     if player.turns_in_jail == 0:
         emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
     elif player.turns_in_jail == 1:
-        emit('message', {'msg': f'{player.username} must pay 50 or use a get out of jail free card'}, room=game_code)
+        emit('message', {'msg': f'{player.username} has 1 turn left in jail they, pay 50 or use a get out of jail free card'}, room=game_code)
     else:
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
     
-    player.turns_in_jail -= 1
     player.turns_in_jail = max(0, player.turns_in_jail-1)
     db.session.commit()
 
 
-def player_landed_on_go_to_jail(player, game_code, session):
+def player_landed_on_go_to_jail(player, game_code, pos_jail):
     player.turns_in_jail += 3
-    player.position = 9
+    player.position = pos_jail
     db.session.commit()
     emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
 

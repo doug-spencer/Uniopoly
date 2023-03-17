@@ -9,7 +9,6 @@ def game_room():
     if page != 'game_room':
         if game_code == None:
             return redirect(url_for(page))
-        print(page, game_code)
         return redirect(url_for(page, game_code=game_code))
     if(request.method=='POST'): #player has made a game or is joining one
         username = request.form['username']
