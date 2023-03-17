@@ -46,11 +46,11 @@ def show_player_options(player, game_code, session, roll_value):
     elif pos in pos_email:
         card_table = Email.query.all()
         card_type = "Email"
-        player_landed_on_money_card(player, game_code,  card_table, card_type)
+        player_landed_on_money_card(player, game_code,  card_table, card_type, session)
     elif pos in pos_student_union:
         card_table = Student_union.query.all()
         card_type = "Student Union"
-        player_landed_on_money_card(player, game_code,  card_table, card_type)     
+        player_landed_on_money_card(player, game_code,  card_table, card_type, session)     
 
 def player_landed_on_start(player, game_code, session):
     emit('message', {'msg': player.username + ' landed on go '}, room=game_code)
@@ -117,11 +117,11 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
         functions.player1_owes_player2_money(player, rent_amount, player_owed)
         return False
     
-def player_landed_on_money_card(player, game_code, card_table, card_type):
+def player_landed_on_money_card(player, game_code, card_table, card_type, session):
     money_card = random.choice(card_table)
     player.money += money_card.amount
     emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
-    emit('display card', {'text': money_card.text}, room=game_code)
+    emit('display card', {'text': money_card.text}, session=session)
     
 def update_position(game, game_code):
     positions = [[i, None] for i in range(40)]
