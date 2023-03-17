@@ -40,7 +40,7 @@ def create_game(username):
             unique = False
     account = Account.query.filter_by(username=username).first()
     game = Game(game_code=int(new_id), index_of_turn=0, game_started=False)
-    player = Player(position=0, index_in_game=0, money=1000, turns_in_jail=0, symbol='duck')
+    player = Player(position=0, index_in_game=0, money=1000, turns_in_jail=0, symbol=randint(0,7))
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)
@@ -65,7 +65,17 @@ def join_game(code):
     if account.username in usernames_in_game:
         flash("You are already in this game")
         return render_template('menu.html')
-    player = Player(position=0, index_in_game=len(game.players_connected), money=1000, turns_in_jail=0, symbol='duck')
+    players_in_game = Player.query.all()
+    players_symbols = [i.symbol for i in players_in_game]
+    # If there are fewer than 8 players, the index of a random unused sprite is chosen
+    if len(players_symbols) < 8:
+        symbol = randint(0,7)
+        while symbol in players_symbols:
+            symbol = randint(0,7)
+    # Else the index lies outside the array of sprites
+    else:
+        symbol = 8
+    player = Player(position=0, index_in_game=len(game.players_connected), symbol=symbol, money=1000, turns_in_jail=0)
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)

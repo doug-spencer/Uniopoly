@@ -20,6 +20,10 @@ def join(message):
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
     emit('buy property button change', {'operation':'hide'}, session=session)
     emit('get username', {'username': session.get('username')}, session=session)
+    username = session.get('username')
+    player = Player.query.filter_by(username = username, game_code=game_code).first()
+    emit('sprites', {'symbol' : player.symbol}, session=session)
+
 
 @socketio.on('left', namespace='/gameroom') #leaving room
 def left(message):
