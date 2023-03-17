@@ -3,8 +3,6 @@ TASKS
 -----------------
 Backend for socket.on bankrupcy - Cally
 Front end gamepage organisation - been
-Rent for all cards - Doug
-End turn button and functionality - Doug
 Mortgage functions backend - Abu
 Style the open options pop up - Charlie
 frontend for Photos/characters and not squashing the board - been
