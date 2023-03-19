@@ -12,9 +12,13 @@
 .table-header th:not(:last-child) {
     padding: 10px;
     background-image: radial-gradient(ellipse, #7B1FA2, #660099);
-    border: 5px solid white;
+    border-radius: 10px; 
     color: white;
+   
 }
+
+
+table thead th {margin: 10px; display: inline-block;}
 
 .table-rows td:not(:last-child) {
     padding: 10px;
@@ -26,3 +30,13 @@
 .table-rows:not(:last-child):nth-child(even) td {
     background-color: #f2f2f2;
 }
+
+form  div{
+    display: inline;
+    background-color: black;
+    color: #f2f2f2;
+    padding: 20px;
+}
+
+
+
