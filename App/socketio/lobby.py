@@ -10,8 +10,8 @@ def check_pregame_status():
     except:
         print('INTRUDER')
         return False
-    player = Player.query.filter_by(username=username).first()
-    game = Game.query.filter_by(game_code=player.game_code).first()
+    game_code = session['game_code']
+    game = Game.query.filter_by(game_code=game_code).first()
     if game.game_started:
         emit('game started', session=session)
     else: #updates list of players in game so far
@@ -21,7 +21,8 @@ def check_pregame_status():
         if usernames == '':
             usernames = []
         print('usrs: ', usernames)
-        emit('player list', {'players': usernames}, session=session)
+        # emit('get username', {'username': username}, session=session)
+        emit('player list', {'players': usernames, 'username': username}, session=session)
 
 @socketio.on('remove', namespace='/lobby')
 def remove(data):
@@ -41,4 +42,4 @@ def leave_lobby():
         session['username']
     except:
         return False
-    #emit('status', {'msg':  session.get('username') + ' has entered the room.'}, session=session)
+    # emit('status', {'msg':  session.get('username') + ' has left the room.'}, session=session)

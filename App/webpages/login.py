@@ -1,7 +1,8 @@
 from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db, app
 from App.database.tables import Account, Game
-from App.misc.functions import check_account, get_correct_location
+from App.misc.functions import check_account, check_username, get_correct_location
+import hashlib
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -33,8 +34,6 @@ def login():
         return redirect(url_for(page, game_code=game_code))
     elif(request.method=='POST'):
         formSubmitted = request.form.get("button")
-        print(formSubmitted)
-
         if formSubmitted == 'signup':
             return signup()
         elif formSubmitted == "login":
@@ -42,24 +41,29 @@ def login():
         
 def login():
     username = request.form.get("loginname")
-    account = check_account(username)
-    if account:
-        print("You can log in")
-        session['username'] = username
-        return redirect(url_for('menu'))
-    else:
-        print("Account doesn't exist")
+    password = hashlib.sha256(request.form.get("loginpassword").encode()).hexdigest()
+    if not check_username(username):
+        flash("Account doesn't exist")
         return render_template('login.html')
 
-def signup():
-    username = request.form.get("signupname")
-    account = check_account(username)
-    if account:
-        print("Account taken")
+    if not check_account(username, password):
+        flash("Incorrect password")
         return render_template('login.html')
-    else:
-        new_account = Account(username=username)
-        db.session.add(new_account)
-        db.session.commit()
-        session['username'] = username
-        return redirect(url_for('menu'))
+
+    session['username'] = username
+    flash("You have successfully logged in")
+    return redirect(url_for('menu'))
+
+def signup():
+    username = request.form.get("loginname")
+    password = hashlib.sha256(request.form.get("loginpassword").encode()).hexdigest()
+    if check_username(username):
+        flash("Username taken")
+        return render_template('login.html')
+    
+    new_account = Account(username=username, password=password)
+    db.session.add(new_account)
+    db.session.commit()
+    session['username'] = username
+    flash("You have successfully signed up")
+    return redirect(url_for('menu'))

@@ -1,11 +1,50 @@
-div {
+.login-div {
     position: absolute;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-color: #000000a8;
+    font-size: 30px;
+}
+
+#login-header {
+    margin: 1rem;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 5rem;
+    color: #fff;
 }
 
 form {
-    width: 20rem;
-    /* border: 1px solid black; */
+    width: 23rem;
+}
+
+#switch {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#switch-p, #switch {
+    display: inline-block;
+    margin: 0px;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+#switch:hover {
+    text-decoration: underline;
+}
+
+#username, #password {
+    margin: 15px 2px;
+    width: 12rem;
+}
+
+#submit {
+    margin: 10px 2px;
+    /* font-size: 1.5em; */
 }

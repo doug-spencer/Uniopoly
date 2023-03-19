@@ -1,21 +1,29 @@
 //runs on refresh or load of lobby
+var username;
 $(document).ready(function() {
     socket = io.connect('http://' + document.domain + ':' + location.port + '/lobby');
     socket.on('game started', function(data) {
         window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"
     });
+    //get username
+    socket.on('get username', function(data) {
+      username = data.username;
+    });
     //gathers the player list
     //adds the players to a table with a remove button 
     socket.on('player list', function(data) {
-      table = document.getElementById("table-body");
-      table.innerHTML = `<tr class="table-rows"><td>Player 1</td><td>${data.players[0]}</td><td></td></tr>`;
-      for(var i=1; i<data.players.length; i++){
-        var row = `<tr class="table-rows">
-                      <td>Player ${i+1}</td>
-                      <td>${data.players[i]}</td>
-                      <td><button type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td>
-                    </tr>`
-        table.innerHTML += row
+      var isNotHost = data.username != data.players[0];
+      var body = '';
+      for(var i=0; i<data.players.length; i++){
+        if (isNotHost || i == 0) {
+          body += `<tr class="table-rows"><td>Player ${i+1}</td><td>${data.players[i]}</td><td></td></tr>`
+        } else {
+          body += `<tr class="table-rows"><td>Player ${i+1}</td><td>${data.players[i]}</td><td><button type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`
+        }
+      }
+      document.getElementById("table-body").innerHTML = body;
+      if (isNotHost) {
+        document.getElementById("start").style.display = "none";
       }
     });
     

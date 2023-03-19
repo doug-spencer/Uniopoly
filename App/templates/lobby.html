@@ -9,23 +9,38 @@
 {% endblock %}
 
 {% block body %}
-<h2>Welcome to the lobby</h2>
-<h1 id="code">{{game_code}}</h1>
 
-<table id="players-table">
-  <thead>
-    <tr class="table-header">
-      <th>Number</th>
-      <th>Name</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="table-body"></tbody>
-</table>
+<div id="head">
+  <h2 id="message">Welcome to the lobby!</h2>
+  <h1 id="game-code">{{ game_code }}</h1>
+</div>
 
+<<<<<<< HEAD
 <form action="/lobby" method="POST">  
   <input class="button" type="submit" name="leaveButton" value="Leave Room"></input>
   <input class="button" type="submit" name="startButton" value="Start Game"></input>
 
 </form>
+=======
+<div id="mid-section">
+  <div id="table-div">
+    <table id="players-table">
+      <thead>
+        <tr class="table-header">
+          <th>Number</th>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+  <div id="button-div">
+    <form action="/lobby" method="POST">  
+      <input class="button" id="leave" type="submit" name="leaveButton" value="Leave Room"></input>
+      <input class="button" id="start" type="submit" name="startButton" value="Start Game"></input>
+    </form>
+  </div>
+</div>
+>>>>>>> master
 {% endblock %}

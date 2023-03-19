@@ -1,40 +1,55 @@
-p1;brown;property.png;1;200;100;10,20,30,40,50,60,70
-p2;brown;property.png;2;200;100;10,20,30,40,50,60,70
-p3;brown;property.png;3;200;100;10,20,30,40,50,60,70
-p4;light blue;property.png;5;200;100;10,20,30,40,50,60,70
-p5;light blue;property.png;6;200;100;10,20,30,40,50,60,70
-p6;light blue;property.png;8;200;100;10,20,30,40,50,60,70
-p7;blue;property.png;10;200;100;10,20,30,40,50,60,70
-p8;blue;property.png;12;200;100;10,20,30,40,50,60,70
-p9;blue;property.png;13;200;100;10,20,30,40,50,60,70
-p10;orange;property.png;15;200;100;10,20,30,40,50,60,70
-p11;orange;property.png;17;200;100;10,20,30,40,50,60,70
-p12;orange;property.png;18;200;100;10,20,30,40,50,60,70
-p13;yellow;property.png;20;200;100;10,20,30,40,50,60,70
-p14;yellow;property.png;22;200;100;10,20,30,40,50,60,70
-p15;yellow;property.png;23;200;100;10,20,30,40,50,60,70
-p16;green;property.png;25;200;100;10,20,30,40,50,60,70
-p17;green;property.png;27;200;100;10,20,30,40,50,60,70
-p18;green;property.png;28;200;100;10,20,30,40,50,60,70
-p19;pink;property.png;30;200;100;10,20,30,40,50,60,70
-p20;pink;property.png;32;200;100;10,20,30,40,50,60,70
-p21;pink;property.png;33;200;100;10,20,30,40,50,60,70
-p22;dark blue;property.png;35;200;100;10,20,30,40,50,60,70
-p23;dark blue;property.png;38;200;100;10,20,30,40,50,60,70
+Kilburn;col1;br_kilburn_f.png;1;60;30;3,10,30,90,160,250
+Unsworth;col1;br_unsworth_f.png;3;60;30;4,20,60,180,320,450
+Stopford;col2;lb_stopford_f.png;6;100;50;6,30,90,270,400,550
+Humanities Building;col2;lb_humanities_building_f.png;8;100;50;6,30,90,270,400,550
+Ashburn Hall;col2;lb_ashburn_hall_f.png;9;120;60;8,40,100,300,450,600
+Chemistry Building;col3;p_chemistry_building_f.png;11;140;70;10,50,150,450,625,750
+Alans Chicken Shop;col3;p_alans_chicken_shop_f.png;13;140;70;10,50,150,450,625,750
+Simon Building;col3;p_simon_building_f.png;14;160;80;12,60,180,500,700,900
+Alan Turing Building;col4;o_alan_turing_building_f.png;16;180;90;14,70,200,550,750,950
+Uni Place;col4;o_uni_place_f.png;18;180;90;14,70,200,550,750,950
+Manchester Academy;col4;o_manchester_academy_f.png;19;200;100;16,80,220,600,800,1000
+Roscoe Building;col5;r_roscoe_building_f.png;21;220;110;18,90,250,700,875,1050
+IT Building;col5;r_it_building_f.png;23;220;110;18,90,250,700,875,1050
+James Chadwick Building;col5;r_james_chadwick_building_f.png;24;240;120;20,100,300,750,925,1100
+Oddfellows Hall;col6;y_oddfellows_hall_f.png;26;260;130;22,110,330,800,975,1150
+Whitworth Park;col6;y_whitworth_f.png;27;260;130;22,110,330,800,975,1150
+Sam Alex Building;col6;y_sam_alex_building_f.png;29;280;140;22,120,360,850,1025,1200
+Alliance Business School;col7;g_alliance_building_school_f.png;31;300;150;26,130,390,900,1100,1275
+Uttley House;col7;g_uttley_house_f.png;32;300;150;26,130,390,900,1100,1275
+Sugden;col7;g_sugden_f.png;34;320;160;28,150,450,1000,1200,1400
+Engineering Building;col8;db_engineering_building_f.png;37;350;175;35,175,500,1100,1300,1500
+Students Union;col8;db_students_union_f.png;39;400;200;50,200,600,1400,1700,2000
 
-chesters;if you own 1 utility u gets ........;utilites_chesters.png;11;200;100
-new z wine;if you own 1 utility u gets ........;new_z_wine.png;37;200;100
+Chesters;if you own 1 utility u gets ........;u_chesters_f.png;4;200;100
+NZ Wine;if you own 1 utility u gets ........;u_new_zealand_wines_f.png;38;200;100
 
-bs1;bus_stop_1.png;4;200;100
-bs2;bus_stop_2.png;14;200;100
-bs3;bus_stop_3.png;24;200;100
-bs4;bus_stop_4.png;34;200;100
+142 Bus;ts_142_bus_f.png;5;200;100
+143 Bus;ts_143_bus_f.png;15;200;100
+42 Bus;ts_42_bus_f.png;25;200;100
+43 Bus;ts_43_bus_f.png;35;200;100
 
-its your birthday u get 50;+50;False
-its your birthday u get 10;+10;False
-its your birthday u get 20;+20;False
-its your birthday u get 30;+30;False
+Its your birthday. Collect 50;+50;False
+Its your birthday. Collect 10;+10;False
+Its your birthday. Collect 20;+20;False
+Its your birthday. Collect 30;+30;False
+You joined the rent strike and the uni won for each house. Pay 25;-25;False
+Theres no queue for jacket potatos. Collect 50;50;False
 
-you miss a deadline and have to bribe your teacher you lose 100;-100;False
-you miss a deadline and have to bribe your teacher you lose 200;-200;False
-you miss a deadline and have to bribe your teacher you lose 300;-300;False
+You miss a deadline and have to bribe your teacher. Pay 100;-100;False
+You miss a deadline and have to bribe your teacher. Pay 200;-200;False
+You miss a deadline and have to bribe your teacher. Pay 300;-300;False
+You get a first on an exam. Collect 100;100;False
+You slept through your alarm. Pay 15;-15;False
+You find second year housemates. Collect 150;150;False
+You finisg a semester. Collect 200;-200;False
+Its time for your student load installment. Collect 200;200;False
+Your laptop dies in a lecture. Pay 50;-50;False
+You find a free study room in engineering. Collect 100;100;False
+You actually remember to check into a lecture. Collect 20;20;False
+Your lecturer doesn't just read the notes. Collect 100;100;False
+You get lost inside of Kilburn and miss a lecture. Pay 100;-100;False
+You didnt tag your git lab submission correctly. Pay 50;-50;False
+Your timetable has no 9ams. Collect 25;25;False
+You fail first year and have to repeat next year. Pay 200;-200;False
+You used chat GPT for an essay and got away with it. Collect 100;100;False

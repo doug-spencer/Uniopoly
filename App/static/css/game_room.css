@@ -3,10 +3,14 @@
   }
   #board {
      display: grid;
+     flex: 1;
+     margin: auto;
      /*first and last row and column are bigger than others*/
-     grid-template-columns: 100px repeat(8, 70px) 100px;
-     grid-template-rows: 100px repeat(8, 70px) 100px;
-     
+     grid-template-columns: 13vh repeat(8, 9vh) 13vh;
+     grid-template-rows: 13vh repeat(8, 9vh) 13vh;
+     left:5%;
+     width:fit-content;
+     /* align-items: centre; */
      /*a, b, c, d are 4 rows and o is center*/
      grid-template-areas:
         "c c c c c c c c c d"
@@ -19,10 +23,45 @@
         "b o o o o o o o o d"
         "b o o o o o o o o d"
         "b a a a a a a a a a";
-  }
+      background-color: white;
+      font-size: 2vh;
+      font-family: system-ui;
+      color: black;
+      box-shadow: 1px 4px 9px 0px black;
+   }
+
+   .orientation0 {
+      transform: rotateZ(0deg);
+   }
+   .orientation1 {
+      transform: rotateZ(-90deg);
+   }
+   .orientation1 #center{
+      transform: rotateZ(90deg);
+   }
+   .orientation2 {
+      transform: rotateZ(180deg);
+   }
+   .orientation2 #center{
+      transform: rotateZ(180deg);
+   }
+   .orientation3 {
+      transform: rotateZ(90deg);
+   }
+   .orientation3 #center{
+      transform: rotateZ(-90deg);
+   }
+
   #center {
-     grid-area: o;
-     background: purple;
+      grid-area: o;
+      background-image: linear-gradient(41deg, blueviolet, violet), 
+                        linear-gradient(-59deg, lightblue, palevioletred), 
+                        /* linear-gradient(45deg, black, transparent); */
+                        radial-gradient(hotpink -29%, rebeccapurple 146%);
+      background-blend-mode: color;
+      background-position: center center;
+      background-size: 339%;
+      border: 2px solid black;
   }
   .row {
      display: flex;
@@ -36,14 +75,38 @@
   }
   .tile-color {
      flex: 3;
-     background: red;
-     border: 1px solid;
   }
   .tile-name {
      flex: 6;
   }
   .tile-price {
-     flex: 3;
+     font-size: 0.8em;
+     font-weight: bold;
+  }
+  /*colour each group of properties*/
+  .col1 {
+     background-color: saddlebrown;
+  }
+  .col2 {
+   background-color: lightskyblue;
+  }
+  .col3 {
+     background-color: hotpink;
+  }
+  .col4 {
+     background-color: orange;
+  }
+  .col5 {
+     background-color: red;
+  }
+  .col6 {
+     background-color: yellow;
+  }
+  .col7 {
+     background-color: green;
+  }
+  .col8 {
+     background-color: darkblue;
   }
   
   /*Flex directions are used to give the tiles correct order*/
@@ -63,10 +126,36 @@
      grid-area: d;
      flex-direction: column;
   }
+
+  /*test image*/
+  .bus-stop-image {
+      background-image: url('/static/images/bus.webp');
+  }
+  .wine-bottle-image {
+      background-image: url('/static/images/wine.webp')
+  }
+
+  .h-image {
+   background-size: contain;
+   background-position: center;
+   background-repeat: no-repeat;
+   width: 100%;
+   height: 100%;
+   margin: 0.75em 0em;
+  }
+  .v-image {
+   background-size: contain;
+   background-position: center;
+   background-repeat: no-repeat;
+   width: 100%;
+   height: 100%;
+   margin: 0em 0.75em;
+   transform: rotate(90deg);
+  }
   
   /*To make the corner tiles bigger and square*/
   .row > .tile:nth-child(1){
-    flex: 0 0 100px;
+    flex: 0 0 13vh;
   }
   
   /*Turn tiles*/
@@ -80,20 +169,277 @@
       writing-mode: vertical-rl;
       transform: rotate(180deg);
   }
+
+   /*move text down a bit*/
+   #row-0 .tile .tile-name{
+      padding-top : 0.4em;
+      padding-bottom : 0.4em;
+   }
+   #row-1 .tile .tile-name{
+      padding-right : 0.4em;
+      padding-left : 0.4em;
+   }
+   #row-2 .tile .tile-name{
+      padding-top : 0.4em;
+      padding-bottom : 0.4em;
+   }
+   #row-3 .tile .tile-name{
+      padding-right : 0.4em;
+      padding-left : 0.4em;
+   }
+
+   /*give each colour a black border along one side*/
+   #row-0 .tile .tile-color{
+      height: 10%;
+      border-bottom: 2px solid black;
+   }
+   #row-1 .tile .tile-color{
+      width: 10%;
+      border-left: 2px solid black;
+   }
+   #row-2 .tile .tile-color{
+      height: 10%;
+      border-bottom: 2px solid black;
+   }
+   #row-3 .tile .tile-color{
+      width: 10%;
+      border-left: 2px solid black;
+   }
   
   /*Turn corners*/
   .row > .tile:first-child{
       text-align: center;
   }
   #row-0 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translateY(38px);
+      transform: rotate(-45deg) translateY(35%);
   }
   #row-1 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translateX(-38px);
+      transform: rotate(-45deg) translateX(-35%);
   }
   #row-2 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translateY(38px);
+      transform: rotate(-45deg) translateY(35%);
   }
   #row-3 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translateX(-38px);
+      transform: rotate(-45deg) translatex(-35%);
   }
+  .grid > .player{
+   color: black;
+   grid-row: 2 / 10;
+   grid-column: 1 / 10;
+  }
+
+  /*options pop up box*/
+  .options-button {
+   padding: 10px 15px;
+   background-image: radial-gradient(ellipse, #7B1FA2, #660099);
+   background-size: cover;
+   font-family: Arial;
+   font-size: 30px;
+   font-weight: bold;
+   color: white;
+   margin: 2px;
+   border: none;
+   border-radius: 10px;
+   cursor: pointer;
+   transition: background-color 0.2s ease-in-out;
+}
+
+  .options-dropdown {
+   position: relative;
+   display: inline-block;
+   }
+  .options-popup {
+   display: none;
+   position: fixed;
+   top: 20%;
+   height: 60%;
+   left: 10%;
+   width: 80%;
+   border: 3px solid #ccc;
+   z-index: 9;
+   background-color: #855abe;
+ }
+ .options-button:hover .options-popup {
+   display: block;
+ }
+
+ /* Style the tab */
+.tab {
+   float: left;
+   background-color: #ccc;
+   width: auto;
+   height: auto;
+ }
+ 
+ .tablinks {
+   display: block;
+   background-color: inherit;
+   background-color: #660099;
+   color: white;
+   padding: 22px 16px;
+   width: 100%;
+   border: none;
+   outline: none;
+   text-align: left;
+   cursor: pointer;
+ }
+
+ /* Style the buttons that are used to open the tab content */
+ .tab button {
+   display: block;
+   background-color: inherit;
+   color: black;
+   padding: 22px 16px;
+   width: 100%;
+   border: none;
+   outline: none;
+   text-align: left;
+   cursor: pointer;
+ }
+ 
+ /* Change background color of buttons on hover */
+ .tab button:hover {
+   background-color: #855abe;
+ }
+ 
+ /* Create an active/current "tab button" class */
+ .tab button.active {
+   background-color: #855abe;
+ }
+
+
+ /* Style the tab content */
+ .tabcontent {
+   float: left;
+   padding: 0px 12px;
+   width: 70%;
+   border-left: none;
+   border-right: none;
+   height: 100%;
+   display: none;
+   overflow: auto;
+ }
+ .tabcontent button {
+   top:5px;
+   right:5px;
+ }
+
+#money-table {
+   border-collapse: collapse;
+   font-family: Arial, sans-serif;
+   width: 100%;
+   margin: auto;
+}
+
+.table-header th {
+   padding: 10px;
+   background-image: radial-gradient(ellipse, #7B1FA2, #660099);
+   border: 2px solid white;
+   color: white;
+}
+
+.table-rows td {
+   padding: 10px;
+   background-color: white;
+   border: 2px solid white;
+   color: black;
+}
+
+.table-rows:nth-child(even) td {
+   background-color: #f2f2f2;
+}
+
+#text {
+   width: 100%;
+   height: 100%;
+   padding: 8px;
+   margin: 5px 0px 5px 5px;
+   border-radius: 3px;
+   text-align: left;
+   font-weight: normal;
+   font-size: inherit;
+}
+
+#messages {
+   background-color: transparent;
+   border: none;
+   /* pointer-events: none; */
+   color: white;
+   direction: ltr;
+   /* overflow-y: scroll; */
+}
+
+#card-box {
+   padding: 10px;
+   width: 70%;
+   margin: auto;
+   background-color: white;
+   border: 1px solid black;
+}
+
+footer {
+   position: static;
+}
+.image-grid-container {
+   overflow: auto;
+}
+.image-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   grid-gap: 10px;
+   padding: 10px;
+} 
+.image-grid img {
+   max-width: 100%;
+   height: auto;
+}
+.row-houses::after {
+   display: flex;
+   flex-direction: row;
+}
+.house {
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   float: left;
+   padding: 20px;
+ }
+.house button {
+   font-weight: bold;
+   font-size: x-large;
+   background-color: #ccc;
+
+}
+
+#screen {
+   display: flex;
+   /* padding: 10px; */
+}
+#left-div, #right-div {
+   flex: 1;
+   /* padding: 10px; */
+
+}
+#chat {
+   display: flex;
+   position: relative;
+   z-index: 1;
+   align-items: center;
+   font-size: 20px;
+}
+#send {
+   font-size: inherit;
+   margin: 4px;
+   border-radius: 3px;
+}
+.game-info-box {
+   background-image: radial-gradient(ellipse, #0000002f, #00000050);
+   box-shadow: 0 0 11px 0 white;
+   border-radius: 5px;
+   margin: 8px 8px 0px 8px;
+   color: white;
+}
+h2 {
+   margin: 0px;
+   padding: 10px;
+}

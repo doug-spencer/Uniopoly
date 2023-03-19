@@ -9,7 +9,6 @@ def game_room():
     if page != 'game_room':
         if game_code == None:
             return redirect(url_for(page))
-        print(page, game_code)
         return redirect(url_for(page, game_code=game_code))
     if(request.method=='POST'): #player has made a game or is joining one
         username = request.form['username']
@@ -18,7 +17,7 @@ def game_room():
         if not account: #player doesnt have account
             account = Account(username=username)
             db.session.add(account)
-        player = player.Player(position=0)
+        player = player.Player(position=0, symbol='duck')
         db.session.add(player)
         account.game_instances.append(player) #links account with the player in the new game
         if choice == 'make': #imaking a game
@@ -37,5 +36,4 @@ def game_room():
         #session_id[player.id] = session.get('session_id') 
         return render_template('game_room.html', session = session)
     else:
-        #return get_correct_location()
         return render_template('game_room.html', session = session)

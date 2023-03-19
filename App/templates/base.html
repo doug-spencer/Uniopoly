@@ -6,8 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
-        <script src="/static/js/script.js"></script>
-        <link rel="stylesheet" href="/static/css/normalize.css">
         <link rel="stylesheet" href="/static/css/base.css">
         {% block head %}{% endblock %}
     </head>
@@ -16,8 +14,13 @@
             function log_out() {
                 window.location.href = "/logout"
             }
+            function return_to_menu() {
+                let username = session['username']
+                session.clear()
+                session['username'] = username
+                window.location.href = "/menu"
+            }
         </script>
-        <button onclick=log_out()>log out</button>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -26,5 +29,20 @@
             {% endif %}
         {% endwith %}
         {% block body %}{% endblock %}
+        <footer>
+            <!-- <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Play Game</a>
+                <a href="#">Leaderboard</a>
+                <a href="#">FAQ</a>
+                <a href="#">Contact Us</a>
+            </div> -->
+            <div class="footer-legal">
+                <p>&copy; 2023 Monopoly Game. All Rights Reserved.</p>
+                <a href="#TOS">Terms of Service</a>
+                |
+                <a href="#PP">Privacy Policy</a>
+            </div>
+        </footer>
     </body>
 </html>
