@@ -301,6 +301,7 @@ def mortgage(data):
         link_table_updates.update_link_table(player.id, id, table, True)
 
         player.money += amount
+        db.session.commit()
         emit('message', {'msg': player.username + ' mortgaged'}, room = game_code)
     else:
         emit('message', {'msg': player.username + ' has already mortgaged'}, room = game_code)
@@ -326,6 +327,7 @@ def unmortgage(data):
         link_table_updates.update_link_table(player.id, id, table, False)
 
         player.money -= amount
+        db.session.commit()
         emit('message', {'msg': player.username + ' unmortgaged'}, room = game_code)
     else:
         emit('message', {'msg': player.username + ' has already unmortgaged'}, room = game_code)

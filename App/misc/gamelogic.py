@@ -275,7 +275,7 @@ def check_if_mortgaged(player_id, photo):
         table = link_player_utilities
     
     card_id = card.id
-    amount = card.mortgage_value
+    amount = card.morgage_value
 
     result = link_table_updates.query_link_table_with_two_id(player_id, card_id, table, True)
     return amount, table, result
