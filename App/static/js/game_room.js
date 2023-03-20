@@ -210,7 +210,7 @@ function buy_property() {
 function bankrupt() {
     socket.emit('bankrupt');
     var now = new Date().getTime();
-    while(new Date().getTime() < now + 2000){ /* Do nothing */ }
+    while(new Date().getTime() < now + 1000){ /* Do nothing */ }
     window.location.href = "/menu";
 }
 function close_options() {

@@ -62,6 +62,14 @@ def player_on_jail(player, game_code, session):
         emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
     elif player.turns_in_jail == 1:
         emit('message', {'msg': f'{player.username} has 1 turn left in jail they, pay 50 or use a get out of jail free card'}, room=game_code)
+        
+        paidMessage = functions.player1_owes_player2_money(player, 50)
+        if paidMessage == "debt not paid":
+            pass
+        elif paidMessage == "bankrupt":
+            pass
+        elif paidMessage == "debt paid":
+            pass
     else:
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
     

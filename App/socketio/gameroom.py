@@ -4,7 +4,7 @@ from App.main import db, socketio, engine
 from App.misc.functions import check_in_game, player1_owes_player2_money
 from random import randint
 from sqlalchemy import update, and_
-from App.misc import gamelogic
+from App.misc import gamelogic, functions
 from App.database.tables import link_player_property, link_player_bus_stop, link_player_utilities, Player, Game, Property, Bus_stop, Utilities
 from App.database import link_table_updates
 
@@ -288,15 +288,4 @@ def bankrupt():
     game, player = check_in_game(game_code, username)
     if not game or not player:
         return False
-    leave_room(game_code)
-    player = Player.query.filter_by(username = username, game_code=game_code).first()
-    game= Game.query.filter_by(game_code=game_code).first()
-    index_of_player = [i.id for i in game.players_connected].index(player.id)
-    index = 0
-    for i in game.players_connected:
-        if index > index_of_player:
-            game.players_connected[index].index_in_game = index - 1
-        index += 1
-    db.session.delete(player)
-    db.session.commit()
-    session.pop('game_code', None)
+    functions.bankrupt_player(player)
