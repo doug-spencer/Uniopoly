@@ -65,7 +65,8 @@ def join_game(code):
     if account.username in usernames_in_game:
         flash("You are already in this game")
         return render_template('menu.html')
-    players_symbols = [i.symbol for i in game.players_connected]
+    players_in_game = Player.query.all()
+    players_symbols = [i.symbol for i in players_in_game]
     # If there are fewer than 8 players, the index of a random unused sprite is chosen
     if len(players_symbols) < 8:
         symbol = randint(0,7)
