@@ -141,6 +141,10 @@ def bankrupt_player(player):
 
 def players_won(game):
     #game = Game.query.filter_by(game_code=game_code).first()
-    username = game.players_connected[0].username
+    player = game.players_connected[0]
+    username = player.username
+    db.session.delete(player)
+    db.session.delete(game)
+    db.session.commit()
     emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
     emit('game_over', room=game.game_code)
