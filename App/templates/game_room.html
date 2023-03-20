@@ -26,38 +26,6 @@
     </div>
     <div id="board">
         <div id="center">
-            <div class="options-dropdown">
-                <button class="options-button" onclick=open_options() style="display: block;" id="openOpt">open options</button>
-                <button class="options-button" onclick=close_options() style="display: none;" id="closeOpt">close options</button>
-                <div class="options-popup" id="options">
-                    <div class="tab">
-                        <button class="tablinks" onmouseover="change_tab(event, 'cards')">view cards</button>
-                        <button class="tablinks" onmouseover="change_tab(event, 'houses')">buy sell houses</button>
-                        <button class="tablinks" onmouseover="change_tab(event, 'mortgage')">mortagages</button>
-                    </div>
-                    <div class="tabcontent" id="cards" style="display:block;">
-                        <h4>Your cards:</h4>
-                        <div class="image-grid-container">
-                            <div class="image-grid" id="image-grid-unmortgaged">
-                            </div>
-                        </div>
-                        <h4>Your mortgaged cards:</h4>
-                        <div class="image-grid-container">
-                            <div class="image-grid" id="image-grid-mortgaged">
-                            </div>    
-                        </div>
-                    </div>
-                    <div class="tabcontent" id="houses">
-                        <h4>Houses:</h4>
-                        <div class="row-houses" id="row-houses">
-                        </div>
-                    </div>
-                    <div class="tabcontent" id="mortgage">
-                        <h4>Mortgages:</h4>
-                    </div>
-                </div>
-            </div>
-            <p id="dice">nobody has rolled the dice yet</p>
             <div name="dice-button" id="dice-button">
                 <button class="button" type="button" id="roll-dice">roll dice</button><br>
             </div>
@@ -325,6 +293,34 @@
                 <tbody id="table-body"></tbody>
             </table>
         </div>
+        <div class="options-popup" id="options">
+            <div class="tab">
+                <button class="tablinks" onclick="change_tab(event, 'cards')">view cards</button>
+                <button class="tablinks" onclick="change_tab(event, 'houses')">buy sell houses</button>
+                <button class="tablinks" onclick="change_tab(event, 'mortgage')">mortagages</button>
+            </div>
+            <div class="tabcontent" id="cards" style="display:block;">
+                <h4>Your cards:</h4>
+                <div class="image-grid-container">
+                    <div class="image-grid" id="image-grid-unmortgaged">
+                    </div>
+                </div>
+                <h4>Your mortgaged cards:</h4>
+                <div class="image-grid-container">
+                    <div class="image-grid" id="image-grid-mortgaged">
+                    </div>    
+                </div>
+            </div>
+            <div class="tabcontent" id="houses">
+                <h4>Houses:</h4>
+                <div class="row-houses" id="row-houses">
+                </div>
+            </div>
+            <div class="tabcontent" id="mortgage">
+                <h4>Mortgages:</h4>
+            </div>
+        </div>
+        <button class="button" onclick=open_options() id="open-close">Open Options</button>
     </div>
 </div>
 <div id="test_sprites">

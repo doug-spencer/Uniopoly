@@ -62,11 +62,7 @@ $(document).ready(function(){
         };
         
     });
-    //show roll value of dice roll
-    socket.on('dice_roll', function(data) {
-        document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
-        //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
-    });
+
     //update the leaderboard
     socket.on('update leaderboard', function(data) {
         for (let i=0; i<data.players.length-1; i++) {
@@ -213,15 +209,14 @@ function bankrupt() {
     window.location.href = "/menu";
 }
 function close_options() {
-    document.getElementById("options").style.display = "none";
-    document.getElementById("openOpt").style.display = "block";
-    document.getElementById("closeOpt").style.display = "none";
-  }
+    document.getElementById("options").style.display = 'none';
+    document.getElementById("open-close").onclick = open_options;
+    document.getElementById("open-close").innerHTML = 'Open Options';
+}
 function open_options() {
-    document.getElementById("options").style.display = "block";
-    document.getElementById("openOpt").style.display = "none";
-    document.getElementById("closeOpt").style.display = "block";
-    
+    document.getElementById("options").style.display = 'block';
+    document.getElementById("open-close").onclick = close_options;
+    document.getElementById("open-close").innerHTML = 'Close Options';
 }
 function sell_house(name){
     console.log("selling house");
