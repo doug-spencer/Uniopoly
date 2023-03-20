@@ -192,15 +192,15 @@ def buy_property():
     #finds the card the player has landed on
     if player.position in property_indices:
         card = Property.query.filter_by(position=player.position).first()
-        insert_stmnt = link_player_property.insert().values(player_id=player.id, card_id=card.id, houses=0)
+        insert_stmnt = link_player_property.insert().values(player_id=player.id, card_id=card.id, mortgaged=False, houses=0)
 
     if player.position in utility_indices:
         card = Utilities.query.filter_by(position=player.position).first()
-        insert_stmnt = link_player_utilities.insert().values(player_id=player.id, card_id=card.id)
+        insert_stmnt = link_player_utilities.insert().values(player_id=player.id, card_id=card.id, mortgaged=False)
 
     if player.position in bus_stop_indices:
         card = Bus_stop.query.filter_by(position=player.position).first()
-        insert_stmnt = link_player_bus_stop.insert().values(player_id=player.id, card_id=card.id)
+        insert_stmnt = link_player_bus_stop.insert().values(player_id=player.id, card_id=card.id, mortgaged=False)
 
     card_price = card.buy_price
 
