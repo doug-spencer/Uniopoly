@@ -443,3 +443,16 @@ h2 {
    margin: 0px;
    padding: 10px;
 }
+.player {
+   position: absolute;
+   display: flex;
+   bottom: 0;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.player img {
+   width: 4vh;
+   height: 4vh;
+   flex: 1;
+}

@@ -14,15 +14,13 @@ def join(message):
     if game_code == None:
         return False
     join_room(game_code)
-    players = Game.query.filter_by(game_code=game_code).first().players_connected
-    players_arr = [[player.username, player.money] for player in players]
+    game = Game.query.filter_by(game_code=game_code).first()
+    players_arr = [[player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players_arr}, room=game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
     emit('buy property button change', {'operation':'hide'}, session=session)
     emit('get username', {'username': session.get('username')}, session=session)
-    username = session.get('username')
-    player = Player.query.filter_by(username = username, game_code=game_code).first()
-    emit('sprites', {'symbol' : player.symbol}, session=session)
+    gamelogic.update_position(game, game_code)
 
 
 @socketio.on('left', namespace='/gameroom') #leaving room
