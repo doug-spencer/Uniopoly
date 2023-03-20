@@ -225,7 +225,6 @@ def buy_property():
     #gamelogic.resume_player_turn(game_code)
     #update_index_of_turn()
 
-
 @socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
 def dont_buy_property():
     #shows the roll dice button and updates the turn    
@@ -279,6 +278,41 @@ def buy_house(data):
         player1_owes_player2_money(player, amount)
     else:
         emit('message', {'msg':"you don't have enough money to buy the house"}, session=session)
+
+@socketio.on('mortgage', namespace='/gameroom')
+def mortgage(choice):
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    
+    card, result = gamelogic.check_if_mortgaged(player, choice)
+
+    amount = card.mortgage_value
+
+    if result.mortgaged == False:
+        link_table_updates.update_link_table(player.id, card.id, True)
+        
+        player.money += amount
+        emit('message', {'msg': player.username + 'mortgaged their card' + card.id + 'and received' + str(amount)}, room = game_code)
+    elif result.mortgaged == True:
+        link_table_updates.update_link_table(player.id, card.id, False)
+
+        player.money -= amount
+        emit('message', {'msg': player.username + 'unmortgaged their card' + card.id + 'and paid' + str(amount)}, room = game_code)
+    
+
+    # unmortgaged_cards, mortgaged_cards,  unmortgaged_cards_id, mortgaged_cards_id= gamelogic.mortgage(player, card)
+    
+    # print('cards:', unmortgaged_cards, mortgaged_cards)
+    # emit('cards', {
+    #     'unmortgaged_cards': unmortgaged_cards, 
+    #     'mortgaged_cards':mortgaged_cards, 
+    #     'unmortgaged_cards_id':unmortgaged_cards_id, 
+    #     'mortgaged_cards_id':mortgaged_cards_id}, 
+    #     session=session
+    # )
 
 @socketio.on('bankrupt', namespace='/gameroom')
 def bankrupt():

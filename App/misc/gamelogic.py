@@ -264,6 +264,37 @@ def get_house_price(colour):
     else:
         return 200
 
+def check_if_mortgaged(player, choice):
+    card = Property.query.filter_by(id=choice).first()
+    table = link_player_property
+    if not card:
+        card = Bus_stop.query.filter_by(id=choice).first()
+        table = link_player_bus_stop
+    if not card:
+        card = Utilities.query.filter_by(id=choice).first()
+        table = link_player_utilities
+
+    result = link_table_updates.query_link_table_with_two_id(player.id, card.id, table)
+
+    return card, result
+
+'''
+def mortgage(player, card):
+    link_table_updates.update_link_table(player.id, card.id, True)
+
+    # unmortgaged_cards, mortgaged_cards, unmortgaged_cards_id, mortgaged_cards_id = get_cards(player)
+
+    # unmortgaged_cards.remove(card.photo)
+    # unmortgaged_cards_id.remove(card.id)
+
+    # mortgaged_cards.append(card.photo)
+    # mortgaged_cards_id.append(card.id)
+
+    # return unmortgaged_cards, mortgaged_cards, unmortgaged_cards_id, mortgaged_cards_id
+
+def unmortgage(player, card):
+    link_table_updates.update_link_table(player.id, card.id, False)
+'''
 
 def eliminate_players(game):
     for player in game.players_connected:
