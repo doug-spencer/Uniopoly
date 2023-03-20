@@ -135,6 +135,9 @@ def bankrupt_player(player):
         if index > index_of_player:
             game.players_connected[index].index_in_game = index - 1
         index += 1
+
+    if index == 1: #there is only one player in the game
+        print("end the game")
     db.session.delete(player)
     db.session.commit()
     session.pop('game_code', None)
