@@ -117,7 +117,7 @@ $(document).ready(function(){
         ];
         const sprite = new Image();
         sprite.src = '/static/images/playerIcons/' + sprite_imgs[data.symbol];
-        sprite.alt = "FUCK ALL Y'ALL"
+        sprite.alt = "DISPLAY SPRITES"
         document.getElementById('test_sprites').appendChild(sprite);
     });
     socket.on('houses', function(data) {
