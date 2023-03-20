@@ -156,7 +156,7 @@ $(document).ready(function(){
     });
     socket.on('game_over', function(data){
     var now = new Date().getTime();
-    while(new Date().getTime() < now + 1000){ /* Do nothing */ }
+    while(new Date().getTime() < now + 15000){ /* Do nothing */ }
     window.location.href = "/menu";
     })
     //when the send message box is pressed
