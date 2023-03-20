@@ -27,6 +27,7 @@ $(document).ready(function(){
         $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
+
     socket.on('display card', function(data) {
         $('#card-box').show();
         document.getElementById("card-text").innerHTML = data.text;

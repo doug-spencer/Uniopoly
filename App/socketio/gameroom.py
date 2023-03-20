@@ -40,7 +40,7 @@ def left(message):
         index += 1
     db.session.delete(player)
     db.session.commit()
-    emit('status', {'msg': username + ' has left the room.'}, room = game_code)
+    emit('status', {'msg': username + ' has left the room.'}, room=game_code)
 
 @socketio.on('end turn', namespace='/gameroom') #when a players turn ends
 def end_turn():
@@ -69,8 +69,8 @@ def roll_dice():
     
     halt_player_turn(game_code)
     
-    roll1 = randint(1,6)
-    roll2 = randint(1,6)
+    roll1 = randint(30, 30)
+    roll2 = randint(0,0)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
@@ -297,7 +297,6 @@ def bankrupt():
         if index > index_of_player:
             game.players_connected[index].index_in_game = index - 1
         index += 1
-    emit('status', {'msg': username + ' has left the room.'}, room = game_code)
     db.session.delete(player)
     db.session.commit()
     session.pop('game_code', None)

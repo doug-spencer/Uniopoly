@@ -72,9 +72,10 @@ def player1_owes_player2_money(player1, amount, player2=False):
         if player2:
             player2.money += amount
             emit('message', {'msg': player1.username + " payed " + player2.username + " " + str(amount)}, session=session)
+            db.session.commit()
+
     else:
-        total_money = 0
-        total_money += player1.money
+        total_money = player1.money
 
         #get worth of all houses
         property = query_link_table_with_one_id(player1.id, None, Property, None)
@@ -92,12 +93,13 @@ def player1_owes_player2_money(player1, amount, player2=False):
                 card = i[1].query.filter_by(id=i[0][1]).first()
                 total_money += card.mortgage_value
         if total_money >= amount:
-            total_money -= amount
+            free_up = amount - player1.money
+            emit('message', {'msg': player1.username + "needs to sell things to free up " + free_up}, session=session)
+            return "debt not paid"
         else:
-            #bankrupt dem
-            pass
-    db.session.commit()
-
+            emit("bankrupt")
+            return "bankrupt"
+        
 def load_test_data(player):
     for i in range(8): #add all light blue
         property = Property.query.filter_by(id=i+3).first()
