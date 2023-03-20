@@ -1,5 +1,10 @@
 var socket;
 var username;
+const sprite_imgs = [
+    'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDgareth_standard.webp', 
+    'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
+    'terence_standard.webp', 'uli_standard.webp'
+];
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/gameroom');
     socket.on('connect', function() {
@@ -76,10 +81,12 @@ $(document).ready(function(){
             }
         }
         let body = "";
+        console.log(sprite_imgs[data.players[0][0]]);
         for (let i=0; i<data.players.length; i++) {
             body += `<tr class="table-rows">
-                        <td>${data.players[i][0]}</td>
+                        <td><img src="/static/images/playerIcons/${sprite_imgs[data.players[i][0]]}"/></td>
                         <td>${data.players[i][1]}</td>
+                        <td>${data.players[i][2]}</td>
                     </tr>`;
         }
         $('#table-body').html(body);
@@ -137,11 +144,6 @@ $(document).ready(function(){
         for (let i=0; i<40; i++) {
             $('#tile' + i).html("");
         }
-        const sprite_imgs = [
-            'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDgareth_standard.webp', 
-            'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
-            'terence_standard.webp', 'uli_standard.webp'
-        ];
         for (let i=0; i<data.positions.length; i++) {
             if (data.positions[i][1] == username) {
                 let row = $('#tile' + data.positions[i][0]).parent().parent().attr('id').slice(-1);

@@ -305,8 +305,8 @@
 #money-table {
    border-collapse: collapse;
    font-family: Arial, sans-serif;
-   width: 100%;
-   margin: auto;
+   width: 95%;
+   margin: 10px auto;
 }
 
 .table-header th {
@@ -424,12 +424,15 @@ h2 {
 .player {
    position: absolute;
    display: flex;
-   bottom: 0;
+   bottom: 10px;
    justify-content: space-between;
    align-items: center;
 }
 .player img {
-   width: 4vh;
-   height : 4vh;
+   width: 4.5vh;
+   height : 4.5vh;
    flex: 1;
+}
+#bankrupt {
+   margin: 20px 0px;
 }
