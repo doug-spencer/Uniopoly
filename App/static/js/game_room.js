@@ -106,17 +106,6 @@ $(document).ready(function(){
             document.getElementById('image-grid-mortgaged').appendChild(img);
         }
     });
-    socket.on('sprites', function(data) {
-        const sprite_imgs = [
-            'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDgareth_standard.webp', 
-            'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
-            'terence_standard.webp', 'uli_standard.webp'
-        ];
-        const sprite = new Image();
-        sprite.src = '/static/images/playerIcons/' + sprite_imgs[data.symbol];
-        sprite.alt = "DISPLAY SPRITES"
-        document.getElementById('test_sprites').appendChild(sprite);
-    });
     socket.on('houses', function(data) {
     console.log(data.houses);
     if (data.houses !== undefined) {
@@ -145,17 +134,24 @@ $(document).ready(function(){
     });
     //players position update
     socket.on('update player positions', function(data) {
-        console.log("positions updated, username: " + username);
         for (let i=0; i<40; i++) {
             $('#tile' + i).html("");
         }
+        const sprite_imgs = [
+            'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDgareth_standard.webp', 
+            'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
+            'terence_standard.webp', 'uli_standard.webp'
+        ];
         for (let i=0; i<data.positions.length; i++) {
             if (data.positions[i][1] == username) {
                 let row = $('#tile' + data.positions[i][0]).parent().parent().attr('id').slice(-1);
                 document.getElementById('board').setAttribute('class', 'orientation' + row);
-                // $('#board').className = 'orientation' + row;
             }
-            $('#tile' + data.positions[i][0]).append("<b>" + data.positions[i][1] + "</b>");
+            let players = data.positions[i][1].split(',');
+            let symbols = data.positions[i][2].split(',');
+            for (let j=0; j<players.length; j++) {
+                $('#tile' + data.positions[i][0]).append('<img src="/static/images/playerIcons/' + sprite_imgs[symbols[j]] + '" alt="' + players[j] + '"/>');
+            }
         }
     });
     //when the send message box is pressed
