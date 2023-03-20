@@ -27,6 +27,7 @@ $(document).ready(function(){
         $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
+
     socket.on('display card', function(data) {
         $('#card-box').show();
         document.getElementById("card-text").innerHTML = data.text;
@@ -171,7 +172,6 @@ $(document).ready(function(){
     });
     //when the end turn button is pressed
     $('#end-turn').click(function(data) {
-        $('#end-turn-button').hide();
         socket.emit('end turn');
     });
     //when the buy button is pressed
@@ -205,7 +205,7 @@ function buy_property() {
 function bankrupt() {
     socket.emit('bankrupt');
     var now = new Date().getTime();
-    while(new Date().getTime() < now + 2000){ /* Do nothing */ }
+    while(new Date().getTime() < now + 1000){ /* Do nothing */ }
     window.location.href = "/menu";
 }
 function close_options() {

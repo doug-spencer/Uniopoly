@@ -16,16 +16,16 @@ def show_player_options(player, game_code, session, roll_value):
     index_of_bus_stops = [i.position for i in all_bus_stops]
     
     if pos in index_of_properties:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_properties.index(pos)], link_player_property, "property")
+        buy_choice_active= player_landed_on_purchasable_card(player, game_code, session, all_properties[index_of_properties.index(pos)], link_player_property, "property")
         return buy_choice_active
 
     elif pos in index_of_utilities:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_utilities[index_of_utilities.index(pos)], link_player_utilities, "utility", roll_value)
-        return buy_choice_active   
+        buy_choice_active= player_landed_on_purchasable_card(player, game_code, session, all_utilities[index_of_utilities.index(pos)], link_player_utilities, "utility", roll_value)
+        return buy_choice_active
 
     elif pos in index_of_bus_stops:
-        buy_choice_active = player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop, "bus")
-        return buy_choice_active    
+        buy_choice_active= player_landed_on_purchasable_card(player, game_code, session, all_bus_stops[index_of_bus_stops.index(pos)], link_player_bus_stop, "bus")
+        return buy_choice_active 
     
     pos_email = [7, 17, 28, 36]
     pos_student_union = [2, 12, 22, 33]
@@ -49,7 +49,9 @@ def show_player_options(player, game_code, session, roll_value):
     elif pos in pos_student_union:
         card_table = Student_union.query.all()
         card_type = "Student Union"
-        player_landed_on_money_card(player, game_code,  card_table, card_type, session)     
+        player_landed_on_money_card(player, game_code,  card_table, card_type, session)
+
+    return False, False    
 
 def player_landed_on_start(player, game_code, session):
     emit('message', {'msg': player.username + ' landed on go '}, room=game_code)
@@ -62,11 +64,14 @@ def player_on_jail(player, game_code, session):
         emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
     elif player.turns_in_jail == 1:
         emit('message', {'msg': f'{player.username} has 1 turn left in jail they, pay 50 or use a get out of jail free card'}, room=game_code)
+        functions.player1_owes_player2_money(player, 50)     
     else:
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
     
     player.turns_in_jail = max(0, player.turns_in_jail-1)
     db.session.commit()
+
+    return False
 
 
 def player_landed_on_go_to_jail(player, game_code, pos_jail):
@@ -265,14 +270,26 @@ def get_house_price(colour):
         return 200
 
 
-def eliminate_players(game):
-    for player in game.players_connected:
-        if player.money  <= 0:
-            tables = [link_player_property, link_player_utilities, link_player_bus_stop]
-            broke = True
-            for table in tables:
-                results = link_table_updates.query_link_table_with_one_id(player.id, False, table)
-                for result in results:
-                    if result[2] == False:#hasnt been mortgaged
-                        broke = False
-                        break
+# def eliminate_players(game):
+#     for player in game.players_connected:
+#         if player.money  <= 0:
+#             tables = [link_player_property, link_player_utilities, link_player_bus_stop]
+#             broke = True
+#             for table in tables:
+#                 results = link_table_updates.query_link_table_with_one_id(player.id, False, table)
+#                 for result in results:
+#                     if result[2] == False:#hasnt been mortgaged
+#                         broke = False
+#                         break
+
+#transforms the index of turn variable so that it applys to no player
+def halt_player_turn(game_code):
+    game= Game.query.filter_by(game_code=game_code).first()
+    game.index_of_turn = -1 * game.index_of_turn - 1
+    db.session.commit()
+
+#returns the index of turn variable to its previous value
+def resume_player_turn(game_code):
+    game= Game.query.filter_by(game_code=game_code).first()
+    game.index_of_turn = (game.index_of_turn + 1) * -1
+    db.session.commit()
