@@ -67,12 +67,12 @@ def get_correct_location():
     return "lobby", game.game_code
 
 def player1_owes_player2_money(player1, amount, player2=False):
-    if player1.money >= amount:
-        player1.money -= amount
+    player1.money -= amount
+    db.session.commit()
+    if player1.money >= 0:
         if player2:
             player2.money += amount
             emit('message', {'msg': player1.username + " payed " + player2.username + " " + str(amount)}, session=session)
-        db.session.commit()
         return "debt paid"
 
     else:
@@ -94,9 +94,9 @@ def player1_owes_player2_money(player1, amount, player2=False):
                 if not j[2]: #unmortgaged
                     card = i[1].query.filter_by(id=j[1]).first()
                     total_money += card.morgage_value
-        if total_money >= amount:
-            need_to_free_up = amount - player1.money
-            emit('message', {'msg': player1.username + "needs to sell things to free up " + str(need_to_free_up)}, session=session)
+        if total_money >= 0:
+            need_to_free_up = -1*player1.money
+            emit('message', {'msg': player1.username + "the bayliffs are here gather " + str(need_to_free_up) + " before you ende your turn"}, session=session)
             return "debt not paid"
         else:
             bankrupt_player(player1)

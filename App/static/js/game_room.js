@@ -176,7 +176,6 @@ $(document).ready(function(){
     });
     //when the end turn button is pressed
     $('#end-turn').click(function(data) {
-        $('#end-turn-button').hide();
         socket.emit('end turn');
     });
     //when the buy button is pressed

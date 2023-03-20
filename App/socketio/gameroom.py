@@ -50,10 +50,10 @@ def end_turn():
 
     if not game or not player:
         return False
-    
     if player.money >= 0:
-        resume_player_turn(game_code)
+        gamelogic.resume_player_turn(game_code)
         update_index_of_turn()
+        emit('end turn button change', {'operation':'hide'}, session=session)
     else:
         emit('message', {'msg': 'You need to clear your dept. Sell some houses or mortgage your cards'}, session = session)
     
@@ -67,7 +67,7 @@ def roll_dice():
     if not game or not player:
         return False
     
-    halt_player_turn(game_code)
+    gamelogic.halt_player_turn(game_code)
     
     roll1 = randint(30, 30)
     roll2 = randint(0,0)
@@ -92,8 +92,8 @@ def roll_dice():
     db.session.commit()
     
     #performs action associated with board position
-    buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
-    if not buy_choice_active:
+    buy_choice_active, player_owes_money = gamelogic.show_player_options(player, game_code, session, roll_value)
+    if not buy_choice_active and not player_owes_money:
         emit('end turn button change', {'operation':'show'}, session=session)
 
     #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
@@ -110,18 +110,6 @@ def update_index_of_turn():
         game.index_of_turn = 0
     else:
         game.index_of_turn = game.index_of_turn + 1
-    db.session.commit()
-
-#transforms the index of turn variable so that it applys to no player
-def halt_player_turn(game_code):
-    game= Game.query.filter_by(game_code=game_code).first()
-    game.index_of_turn = -1 * game.index_of_turn - 1
-    db.session.commit()
-
-#returns the index of turn variable to its previous value
-def resume_player_turn(game_code):
-    game= Game.query.filter_by(game_code=game_code).first()
-    game.index_of_turn = (game.index_of_turn + 1) * -1
     db.session.commit()
 
 @socketio.on('get cards', namespace='/gameroom')
@@ -233,7 +221,7 @@ def dont_buy_property():
 
     emit('message', {'msg': 'card not bought'}, room=game_code)
 
-    resume_player_turn(game_code)
+    gamelogic.resume_player_turn(game_code)
     update_index_of_turn()
 
 @socketio.on('sell house', namespace='/gameroom') 
