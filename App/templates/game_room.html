@@ -12,7 +12,7 @@
 <div id="screen">
     <div id="left-div">
         <div class="game-info-box" id="top-left">
-            <button class="button" id="menu" onclick=bankrupt()>Declare Bankrupcy</button>
+            <button class="button" id="menu" onclick=bankrupt()>Declare Bankruptcy</button>
             <br><br><br>
             <h2>Game Code : {{ session['game_code'] }}</h2>
         </div>
@@ -27,13 +27,13 @@
     <div id="board">
         <div id="center">
             <div class="options-dropdown">
-                <button class="options-button" onclick=open_options() style="display: block;" id="openOpt">open options</button>
-                <button class="options-button" onclick=close_options() style="display: none;" id="closeOpt">close options</button>
+                <button class="options-button" onclick=open_options() style="display: block;" id="openOpt">Open options</button>
+                <button class="options-button" onclick=close_options() style="display: none;" id="closeOpt">Close options</button>
                 <div class="options-popup" id="options">
                     <div class="tab">
-                        <button class="tablinks" onmouseover="change_tab(event, 'cards')">view cards</button>
-                        <button class="tablinks" onmouseover="change_tab(event, 'houses')">buy sell houses</button>
-                        <button class="tablinks" onmouseover="change_tab(event, 'mortgage')">mortagages</button>
+                        <button class="tablinks" onmouseover="change_tab(event, 'cards')">View cards</button>
+                        <button class="tablinks" onmouseover="change_tab(event, 'houses')">Buy/Sell houses</button>
+                        <button class="tablinks" onmouseover="change_tab(event, 'mortgage')">Mortagage</button>
                     </div>
                     <div class="tabcontent" id="cards" style="display:block;">
                         <h4>Your cards:</h4>
@@ -59,18 +59,18 @@
             </div>
             <p id="dice">nobody has rolled the dice yet</p>
             <div name="dice-button" id="dice-button">
-                <button class="button" type="button" id="roll-dice">roll dice</button><br>
+                <button class="button" type="button" id="roll-dice">Roll dice</button><br>
             </div>
             <div name="end-turn-button" id="end-turn-button">
-                <button class="button" type="button" id="end-turn">end turn</button><br>
+                <button class="button" type="button" id="end-turn">End turn</button><br>
             </div>
             
             <div name="buy-property-button" id="buy-property-button">
-                <button class="button" type="button" id="buy-property">buy</button><br>
+                <button class="button" type="button" id="buy-property">Buy</button><br>
             </div>
             
             <div name="dont-buy-property-button" id="dont-buy-property-button">
-                <button class="button" type="button" id="dont-buy-property">dont buy</button><br>
+                <button class="button" type="button" id="dont-buy-property">Don't buy</button><br>
             </div>
             
             <div name="card-box" id="card-box">

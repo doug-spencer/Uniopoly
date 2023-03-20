@@ -52,18 +52,18 @@ def show_player_options(player, game_code, session, roll_value):
         player_landed_on_money_card(player, game_code,  card_table, card_type, session)     
 
 def player_landed_on_start(player, game_code, session):
-    emit('message', {'msg': player.username + ' landed on go '}, room=game_code)
+    emit('message', {'msg': player.username + ' landed on go.'}, room=game_code)
 
 def player_landed_on_free_parking(player, game_code, session):
-    emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
+    emit('message', {'msg': player.username + ' is on free parking.'}, room=game_code)
 
 def player_on_jail(player, game_code, session):
     if player.turns_in_jail == 0:
-        emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
+        emit('message', {'msg': f'{player.username} is on jail.'}, room=game_code)
     elif player.turns_in_jail == 1:
-        emit('message', {'msg': f'{player.username} has 1 turn left in jail they, pay 50 or use a get out of jail free card'}, room=game_code)
+        emit('message', {'msg': f'{player.username} has 1 turn left in jail they, pay 50 or use a get out of jail free card.'}, room=game_code)
     else:
-        emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
+        emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail.'}, room=game_code)
     
     player.turns_in_jail = max(0, player.turns_in_jail-1)
     db.session.commit()
@@ -73,7 +73,7 @@ def player_landed_on_go_to_jail(player, game_code, pos_jail):
     player.turns_in_jail += 3
     player.position = pos_jail
     db.session.commit()
-    emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
+    emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' has been sent to jail.'}, room=game_code)
 
 
 def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type, roll_value=None):
@@ -118,7 +118,7 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 def player_landed_on_money_card(player, game_code, card_table, card_type, session):
     money_card = random.choice(card_table)
     player.money += money_card.amount
-    emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
+    emit('message', {'msg': f'{player.username} landed on {card_type.lower()}.'}, room=game_code)
     emit('display card', {'text': money_card.text}, session=session)
     
 def update_position(game, game_code):
@@ -264,37 +264,21 @@ def get_house_price(colour):
     else:
         return 200
 
-def check_if_mortgaged(player, choice):
-    card = Property.query.filter_by(id=choice).first()
+def check_if_mortgaged(player_id, photo):
+    card = Property.query.filter_by(photo=photo).first()
     table = link_player_property
     if not card:
-        card = Bus_stop.query.filter_by(id=choice).first()
+        card = Bus_stop.query.filter_by(photo=photo).first()
         table = link_player_bus_stop
     if not card:
-        card = Utilities.query.filter_by(id=choice).first()
+        card = Utilities.query.filter_by(photo=photo).first()
         table = link_player_utilities
+    
+    card_id = card.id
+    amount = card.mortgage_value
 
-    result = link_table_updates.query_link_table_with_two_id(player.id, card.id, table)
-
-    return card, result
-
-'''
-def mortgage(player, card):
-    link_table_updates.update_link_table(player.id, card.id, True)
-
-    # unmortgaged_cards, mortgaged_cards, unmortgaged_cards_id, mortgaged_cards_id = get_cards(player)
-
-    # unmortgaged_cards.remove(card.photo)
-    # unmortgaged_cards_id.remove(card.id)
-
-    # mortgaged_cards.append(card.photo)
-    # mortgaged_cards_id.append(card.id)
-
-    # return unmortgaged_cards, mortgaged_cards, unmortgaged_cards_id, mortgaged_cards_id
-
-def unmortgage(player, card):
-    link_table_updates.update_link_table(player.id, card.id, False)
-'''
+    result = link_table_updates.query_link_table_with_two_id(player_id, card_id, table, True)
+    return amount, table, result
 
 def eliminate_players(game):
     for player in game.players_connected:
