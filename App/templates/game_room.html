@@ -280,43 +280,43 @@
         </div>
         <!--END-->
     </div>
-    <div id="right-div">
+    <div id="right-div" >
         <div class="game-info-box">
-            <h2>Leaderboard</h2>
-            <table id="money-table">
-                <thead>
-                <tr class="table-header">
-                    <th>Name</th>
-                    <th>Money</th>
-                </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
-        <div class="options-popup" id="options">
-            <div class="tab">
-                <button class="tablinks" onclick="change_tab(event, 'cards')">view cards</button>
-                <button class="tablinks" onclick="change_tab(event, 'houses')">buy sell houses</button>
-            </div>
-            <div class="tabcontent" id="cards" style="display:block;">
-                <h4>Your cards:</h4>
-                <div class="image-grid-container">
-                    <div class="image-grid" id="image-grid-unmortgaged">
+                <h2>Leaderboard</h2>
+                <table id="money-table">
+                    <thead>
+                    <tr class="table-header">
+                        <th>Name</th>
+                        <th>Money</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            <div class="options-popup" id="options">
+                <div class="tab">
+                    <button class="tablinks" onclick="change_tab(event, 'cards')">view cards</button>
+                    <button class="tablinks" onclick="change_tab(event, 'houses')">buy sell houses</button>
+                </div>
+                <div class="tabcontent" id="cards" style="display:block;">
+                    <h4>Your cards:</h4>
+                    <div class="image-grid-container">
+                        <div class="image-grid" id="image-grid-unmortgaged">
+                        </div>
+                    </div>
+                    <h4>Your mortgaged cards:</h4>
+                    <div class="image-grid-container">
+                        <div class="image-grid" id="image-grid-mortgaged">
+                        </div>    
                     </div>
                 </div>
-                <h4>Your mortgaged cards:</h4>
-                <div class="image-grid-container">
-                    <div class="image-grid" id="image-grid-mortgaged">
-                    </div>    
+                <div class="tabcontent" id="houses">
+                    <h4>Houses:</h4>
+                    <div class="row-houses" id="row-houses">
+                    </div>
                 </div>
             </div>
-            <div class="tabcontent" id="houses">
-                <h4>Houses:</h4>
-                <div class="row-houses" id="row-houses">
-                </div>
-            </div>
+            <button class="button" onclick=open_options() id="open-close">Open Options</button>
         </div>
-        <button class="button" onclick=open_options() id="open-close">Open Options</button>
     </div>
 </div>
 <div id="test_sprites">
