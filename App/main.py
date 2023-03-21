@@ -38,4 +38,6 @@ db.session.commit()
 
 if False:
     load_static_files.load_static_files()
+
+if False:
     load_static_files.load_game_board()

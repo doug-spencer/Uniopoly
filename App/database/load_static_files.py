@@ -68,7 +68,7 @@ def load_static_files():
             db.session.add(Student_union(
                 text=details[0],
                 amount=int(details[1]),
-                save_for_later=bool(details[2][0:len(details[2]) - 1])
+                go_to=int(details[2][0:len(details[2]) - 1])
                 ))
             index += 1
             current_line = lines[index]
@@ -83,7 +83,7 @@ def load_static_files():
             db.session.add(Email(
                 text=details[0],
                 amount=int(details[1]),
-                save_for_later=bool(details[2][0:len(details[2]) - 1])
+                go_to=int(details[2][0:len(details[2]) - 1])
                 ))
             try:
                 index += 1

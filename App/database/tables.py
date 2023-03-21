@@ -105,11 +105,10 @@ class Student_union(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(500))
     amount = db.Column(db.Integer)
-    save_for_later = db.Column(db.Boolean)
-
+    go_to = db.Column(db.Integer)
 
 class Email(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(500))
     amount = db.Column(db.Integer)
-    save_for_later = db.Column(db.Boolean)
+    go_to = db.Column(db.Integer)
