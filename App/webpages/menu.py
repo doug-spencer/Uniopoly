@@ -74,7 +74,7 @@ def join_game(code):
     # Else the index lies outside the array of sprites
     else:
         symbol = 8
-    player = Player(position=0, index_in_game=len(game.players_connected), symbol=symbol, money=1, turns_in_jail=0)
+    player = Player(position=0, index_in_game=len(game.players_connected), symbol=symbol, money=1000, turns_in_jail=0)
     account.game_instances.append(player)
     game.players_connected.append(player)
     db.session.add(player)
