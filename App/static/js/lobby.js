@@ -2,9 +2,27 @@
 var username;
 $(document).ready(function() {
     socket = io.connect('http://' + document.domain + ':' + location.port + '/lobby');
+    
+    socket.on('connect', function(){
+      socket.emit('join', {});
+    });
+
+    socket.on('flash function', function(data) {
+      const animatedText = document.getElementById('flashing-text');
+      animatedText.innerHTML = data.msg + " entered the room";
+      animatedText.classList.add('flashing-text');
+    
+      // Remove the animation class after it finishes to allow for re-triggering
+      setTimeout(() => {
+        animatedText.innerHTML = "";
+        animatedText.classList.remove('flashing-text');
+      }, 3000); // Match the duration of the animation (3s)
+    })
+
     socket.on('game started', function(data) {
         window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"
     });
+    
     //get username
     socket.on('get username', function(data) {
       username = data.username;

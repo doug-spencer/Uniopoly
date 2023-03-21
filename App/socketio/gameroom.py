@@ -13,7 +13,7 @@ def join(message):
     game_code = session.get('game_code')
     if game_code == None:
         return False
-    join_room(game_code)
+    #join_room(game_code)
     game = Game.query.filter_by(game_code=game_code).first()
     players_arr = [[player.symbol, player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players_arr}, room=game_code)
