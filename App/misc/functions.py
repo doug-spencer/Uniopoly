@@ -4,6 +4,7 @@ from App.main import db
 from App.database.link_table_updates import update_link_table, query_link_table_with_one_id, query_link_table_with_two_id
 from flask_socketio import emit, leave_room
 from App.misc import gamelogic
+import time
 
 
 def check_account(username, password):
@@ -57,7 +58,6 @@ def get_correct_location():
         return "menu", None
     game = Game.query.filter_by(game_code=game_code).first()
     if game == None:
-        flash("your not in any games")
         print(3)
         return "menu", None
     if game.game_started:
@@ -135,16 +135,26 @@ def bankrupt_player(player):
         if index > index_of_player:
             game.players_connected[index].index_in_game = index - 1
         index += 1
+    game_code = player.game_code
     db.session.delete(player)
     db.session.commit()
     session.pop('game_code', None)
+    check_game_over(game_code)
+
+def check_game_over(game_code):
+    game = Game.query.filter_by(game_code=game_code).first()
+    if len(game.players_connected) == 1:
+        players_won(game)
 
 def players_won(game):
+    print('players_won')
     #game = Game.query.filter_by(game_code=game_code).first()
     player = game.players_connected[0]
     username = player.username
+    emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, session=session)
+    emit('game_over', session=session)
+    time.sleep(5)
     db.session.delete(player)
     db.session.delete(game)
     db.session.commit()
-    emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
-    emit('game_over', room=game.game_code)
+    session.pop('game_code', None)
