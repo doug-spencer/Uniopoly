@@ -69,6 +69,10 @@ $(document).ready(function(){
         
     });
 
+    socket.on('redirect to winner page', function() {
+        window.location.href = "/winner";
+    });
+
     //update the leaderboard
     socket.on('update leaderboard', function(data) {
         for (let i=0; i<data.players.length-1; i++) {
