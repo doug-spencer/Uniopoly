@@ -9,17 +9,33 @@
 }
 
 #mid-section {
-    display: flex;
-    position: relative;
-    transform: translateX(25%);
+    display: relative;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
 }
 #table-div {
+    /* padding: 10px;
+    font-size: 30px; */
+    width: 50%;
+    display: block;
+    box-sizing: border-box;
     padding: 10px;
     font-size: 30px;
+    align-items: center;
+    position: absolute;
+    left: 25%;
+    
+    
+
 }
 #players-table {
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
+    width: 100%;
+
+    
 }
 .table-header th {
     padding: 10px;
@@ -41,5 +57,48 @@
     background-color: #f2f2f2;
 }
 #button-div {
-    padding: 10px;
+   
+    background-color: black;
+    /* padding: 10px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    color: white;
+    padding:40px 20px; ;
+    border-radius: 20px;
+    width: 40%;
+    left: 20%;
+    
+    
+}
+
+section {
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+
+
+}
+
+#image-div img {
+    width: 50px;
+    height: 50px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+
+
+}
+
+#image-div {
+   
+   display:inline-block;
+
+    
+    
 }
