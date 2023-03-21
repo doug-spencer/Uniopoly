@@ -15,7 +15,7 @@ def join(message):
         return False
     join_room(game_code)
     game = Game.query.filter_by(game_code=game_code).first()
-    players_arr = [[player.username, player.money] for player in game.players_connected]
+    players_arr = [[player.symbol, player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players_arr}, room=game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
     emit('buy property button change', {'operation':'hide'}, session=session)
@@ -155,8 +155,7 @@ def update_turn():
     else:
         emit('roll dice button change', {'operation': 'hide'}, session = session)
 
-    players = [[player.username, player.money] for player in game.players_connected]
-
+    players = [[player.symbol, player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players}, room=game_code)
 
 @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
