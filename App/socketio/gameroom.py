@@ -1,7 +1,7 @@
 from flask import session
 from flask_socketio import emit, join_room, leave_room
 from App.main import db, socketio, engine
-from App.misc.functions import check_in_game, player1_owes_player2_money, check_game_over
+from App.misc.functions import check_in_game, player1_owes_player2_money
 from random import randint
 from sqlalchemy import update, and_
 from App.misc import gamelogic, functions
