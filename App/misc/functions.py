@@ -67,12 +67,14 @@ def get_correct_location():
     return "lobby", game.game_code
 
 def player1_owes_player2_money(player1, amount, player2=False):
+    game_code = session.get('game_code')
     player1.money -= amount
     db.session.commit()
     if player1.money >= 0:
         if player2:
             player2.money += amount
-            emit('message', {'msg': player1.username + " payed " + player2.username + " " + str(amount)}, session=session)
+            emit('message', {'msg': player1.username + " payed " + player2.username + " " + str(amount)}, room=game_code)
+            db.session.commit()
         return "debt paid"
 
     else:
@@ -136,11 +138,14 @@ def bankrupt_player(player):
             game.players_connected[index].index_in_game = index - 1
         index += 1
 
-    if index == 1: #there is only one player in the game
-        print("end the game")
     db.session.delete(player)
     db.session.commit()
     session.pop('game_code', None)
+
+    
+    print("index" + str(index))
+    if index == 2: #there is only one player in the game after deletion of player
+        players_won(game)
 
 def players_won(game):
     #game = Game.query.filter_by(game_code=game_code).first()
@@ -149,5 +154,6 @@ def players_won(game):
     db.session.delete(player)
     db.session.delete(game)
     db.session.commit()
-    emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
-    emit('game_over', room=game.game_code)
+    return redirect(url_for('winner'))
+    #emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
+    #emit('game_over', room=game.game_code)

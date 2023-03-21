@@ -122,7 +122,7 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
     
 def player_landed_on_money_card(player, game_code, card_table, card_type, session):
     money_card = random.choice(card_table)
-    player.money += money_card.amount
+    functions.player1_owes_player2_money(player, money_card.amount)
     emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
     emit('display card', {'text': money_card.text}, session=session)
     
