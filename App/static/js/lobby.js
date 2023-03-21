@@ -14,7 +14,7 @@ $(document).ready(function() {
     
       // Remove the animation class after it finishes to allow for re-triggering
       setTimeout(() => {
-        animatedText.innerHTML = "";
+        animatedText.innerHTML = " ";
         animatedText.classList.remove('flashing-text');
       }, 3000); // Match the duration of the animation (3s)
     })
