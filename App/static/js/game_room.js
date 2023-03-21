@@ -15,7 +15,7 @@ $(document).ready(function(){
     $('#end-turn-button').hide();
     $('#dice-button').hide();
 
-    $('#card-box').hide();
+    $('#text-box').hide();
     //get username
     socket.on('get username', function(data) {
         username = data.username;
@@ -33,9 +33,9 @@ $(document).ready(function(){
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
 
-    socket.on('display card', function(data) {
-        $('#card-box').show();
-        document.getElementById("card-text").innerHTML = data.text;
+    socket.on('display text', function(data) {
+        $('#text-box').show();
+        document.getElementById("main-text").innerHTML = data.text;
     });
 
     //show or hide roll dice button
@@ -191,8 +191,8 @@ $(document).ready(function(){
         socket.emit('dont-buy-property');
     });
     //when the card display button is pressed
-    $('#card-button').click(function(e) {
-        $('#card-box').hide();
+    $('#text-button').click(function(e) {
+        $('#text-box').hide();
     });
 });
 //if a player leaves the room (WIP)
