@@ -115,13 +115,13 @@ def load_test_data(player):
         print(utility.name)
         player.utilities.append(utility)
         db.session.commit()
-        update_link_table(player.id,  property.id, link_player_utilities, False)
+        update_link_table(player.id,  utility.id, link_player_utilities, False)
     for i in range(2): #add the first 2 bus stops
         bus_stop = Bus_stop.query.filter_by(id=i+1).first()
         print(bus_stop.name) 
         player.bus_stop.append(bus_stop)
         db.session.commit()
-        update_link_table(player.id,  property.id, link_player_bus_stop, False)
+        update_link_table(player.id,  bus_stop.id, link_player_bus_stop, False)
 
 def bankrupt_player(player):
     game_code = session.get('game_code')
@@ -141,3 +141,13 @@ def bankrupt_player(player):
     db.session.delete(player)
     db.session.commit()
     session.pop('game_code', None)
+
+def players_won(game):
+    #game = Game.query.filter_by(game_code=game_code).first()
+    player = game.players_connected[0]
+    username = player.username
+    db.session.delete(player)
+    db.session.delete(game)
+    db.session.commit()
+    emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
+    emit('game_over', room=game.game_code)

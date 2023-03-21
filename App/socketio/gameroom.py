@@ -14,15 +14,13 @@ def join(message):
     if game_code == None:
         return False
     join_room(game_code)
-    players = Game.query.filter_by(game_code=game_code).first().players_connected
-    players_arr = [[player.username, player.money] for player in players]
+    game = Game.query.filter_by(game_code=game_code).first()
+    players_arr = [[player.symbol, player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players_arr}, room=game_code)
     emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
     emit('buy property button change', {'operation':'hide'}, session=session)
     emit('get username', {'username': session.get('username')}, session=session)
-    username = session.get('username')
-    player = Player.query.filter_by(username = username, game_code=game_code).first()
-    emit('sprites', {'symbol' : player.symbol}, session=session)
+    gamelogic.update_position(game, game_code)
 
 
 @socketio.on('left', namespace='/gameroom') #leaving room
@@ -69,8 +67,8 @@ def roll_dice():
     
     gamelogic.halt_player_turn(game_code)
     
-    roll1 = randint(30, 30)
-    roll2 = randint(0,0)
+    roll1 = randint(1, 6)
+    roll2 = randint(1,6)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
@@ -87,16 +85,15 @@ def roll_dice():
 
         player.position = new_value
         emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
-        emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session)
         gamelogic.update_position(game, game_code)
     db.session.commit()
     
     #performs action associated with board position
-    buy_choice_active, player_owes_money = gamelogic.show_player_options(player, game_code, session, roll_value)
-    if not buy_choice_active and not player_owes_money:
+    buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
+    
+    if not buy_choice_active:
         emit('end turn button change', {'operation':'show'}, session=session)
 
-    #emit('dice_roll', {'dice_value': roll_value, 'position': new_value}, session=session_id[player.id])
 
 #increments the index of turn counter in the db
 def update_index_of_turn():
@@ -159,8 +156,7 @@ def update_turn():
     else:
         emit('roll dice button change', {'operation': 'hide'}, session = session)
 
-    players = [[player.username, player.money] for player in game.players_connected]
-
+    players = [[player.symbol, player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players}, room=game_code)
 
 @socketio.on('buy-property', namespace='/gameroom') #When player presses buy button
@@ -180,15 +176,15 @@ def buy_property():
     #finds the card the player has landed on
     if player.position in property_indices:
         card = Property.query.filter_by(position=player.position).first()
-        insert_stmnt = link_player_property.insert().values(player_id=player.id, card_id=card.id, houses=0)
+        insert_stmnt = link_player_property.insert().values(player_id=player.id, card_id=card.id, mortgaged=False, houses=0)
 
     if player.position in utility_indices:
         card = Utilities.query.filter_by(position=player.position).first()
-        insert_stmnt = link_player_utilities.insert().values(player_id=player.id, card_id=card.id)
+        insert_stmnt = link_player_utilities.insert().values(player_id=player.id, card_id=card.id, mortgaged=False)
 
     if player.position in bus_stop_indices:
         card = Bus_stop.query.filter_by(position=player.position).first()
-        insert_stmnt = link_player_bus_stop.insert().values(player_id=player.id, card_id=card.id)
+        insert_stmnt = link_player_bus_stop.insert().values(player_id=player.id, card_id=card.id, mortgaged=False)
 
     card_price = card.buy_price
 
@@ -209,9 +205,7 @@ def buy_property():
 
     emit('buy property button change', {'operation': 'hide'}, session=session)
     emit('end turn button change', {'operation': 'show'}, session=session)
-    #shows the roll dice button and updates the turn
-    #gamelogic.resume_player_turn(game_code)
-    #update_index_of_turn()
+
 
 
 @socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
@@ -221,8 +215,8 @@ def dont_buy_property():
 
     emit('message', {'msg': 'card not bought'}, room=game_code)
 
-    gamelogic.resume_player_turn(game_code)
-    update_index_of_turn()
+    emit('buy property button change', {'operation': 'hide'}, session=session)
+    emit('end turn button change', {'operation': 'show'}, session=session)
 
 @socketio.on('sell house', namespace='/gameroom') 
 def sell_house(data):

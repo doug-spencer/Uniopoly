@@ -1,5 +1,10 @@
 var socket;
 var username;
+const sprite_imgs = [
+    'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDgareth_standard.webp', 
+    'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
+    'terence_standard.webp', 'uli_standard.webp'
+];
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/gameroom');
     socket.on('connect', function() {
@@ -63,11 +68,7 @@ $(document).ready(function(){
         };
         
     });
-    //show roll value of dice roll
-    socket.on('dice_roll', function(data) {
-        document.getElementById('dice').innerHTML = 'dice value: ' + data.dice_value + ' new position: ' + data.position
-        //$('dice').val('dice value: ' + data.dice_value + ' new position: ' + data.position);
-    });
+
     //update the leaderboard
     socket.on('update leaderboard', function(data) {
         for (let i=0; i<data.players.length-1; i++) {
@@ -80,10 +81,12 @@ $(document).ready(function(){
             }
         }
         let body = "";
+        console.log(sprite_imgs[data.players[0][0]]);
         for (let i=0; i<data.players.length; i++) {
             body += `<tr class="table-rows">
-                        <td>${data.players[i][0]}</td>
+                        <td><img src="/static/images/playerIcons/${sprite_imgs[data.players[i][0]]}"/></td>
                         <td>${data.players[i][1]}</td>
+                        <td>${data.players[i][2]}</td>
                     </tr>`;
         }
         $('#table-body').html(body);
@@ -109,17 +112,6 @@ $(document).ready(function(){
             });
             document.getElementById('image-grid-mortgaged').appendChild(img);
         }
-    });
-    socket.on('sprites', function(data) {
-        const sprite_imgs = [
-            'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDgareth_standard.webp', 
-            'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
-            'terence_standard.webp', 'uli_standard.webp'
-        ];
-        const sprite = new Image();
-        sprite.src = '/static/images/playerIcons/' + sprite_imgs[data.symbol];
-        sprite.alt = "FUCK ALL Y'ALL"
-        document.getElementById('test_sprites').appendChild(sprite);
     });
     socket.on('houses', function(data) {
     console.log(data.houses);
@@ -149,7 +141,6 @@ $(document).ready(function(){
     });
     //players position update
     socket.on('update player positions', function(data) {
-        console.log("positions updated, username: " + username);
         for (let i=0; i<40; i++) {
             $('#tile' + i).html("");
         }
@@ -157,11 +148,19 @@ $(document).ready(function(){
             if (data.positions[i][1] == username) {
                 let row = $('#tile' + data.positions[i][0]).parent().parent().attr('id').slice(-1);
                 document.getElementById('board').setAttribute('class', 'orientation' + row);
-                // $('#board').className = 'orientation' + row;
             }
-            $('#tile' + data.positions[i][0]).append("<b>" + data.positions[i][1] + "</b>");
+            let players = data.positions[i][1].split(',');
+            let symbols = data.positions[i][2].split(',');
+            for (let j=0; j<players.length; j++) {
+                $('#tile' + data.positions[i][0]).append('<img src="/static/images/playerIcons/' + sprite_imgs[symbols[j]] + '" alt="' + players[j] + '"/>');
+            }
         }
     });
+    socket.on('game_over', function(data){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + 15000){ /* Do nothing */ }
+    window.location.href = "/menu";
+    })
     //when the send message box is pressed
     $('form').submit(function(e) {
         e.preventDefault();
@@ -213,15 +212,14 @@ function bankrupt() {
     window.location.href = "/menu";
 }
 function close_options() {
-    document.getElementById("options").style.display = "none";
-    document.getElementById("openOpt").style.display = "block";
-    document.getElementById("closeOpt").style.display = "none";
-  }
+    document.getElementById("options").style.display = 'none';
+    document.getElementById("open-close").onclick = open_options;
+    document.getElementById("open-close").innerHTML = 'Open Options';
+}
 function open_options() {
-    document.getElementById("options").style.display = "block";
-    document.getElementById("openOpt").style.display = "none";
-    document.getElementById("closeOpt").style.display = "block";
-    
+    document.getElementById("options").style.display = 'block';
+    document.getElementById("open-close").onclick = close_options;
+    document.getElementById("open-close").innerHTML = 'Close Options';
 }
 function sell_house(name){
     console.log("selling house");

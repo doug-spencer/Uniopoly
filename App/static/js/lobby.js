@@ -18,7 +18,7 @@ $(document).ready(function() {
         if (isNotHost || i == 0) {
           body += `<tr class="table-rows"><td>Player ${i+1}</td><td>${data.players[i]}</td><td></td></tr>`
         } else {
-          body += `<tr class="table-rows"><td>Player ${i+1}</td><td>${data.players[i]}</td><td><button type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`
+          body += `<tr class="table-rows"><td>Player ${i+1}</td><td>${data.players[i]}</td><td><button class="button" type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`
         }
       }
       document.getElementById("table-body").innerHTML = body;

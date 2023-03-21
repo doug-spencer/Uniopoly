@@ -12,8 +12,7 @@
 <div id="screen">
     <div id="left-div">
         <div class="game-info-box" id="top-left">
-            <button class="button" id="menu" onclick=bankrupt()>Declare Bankrupcy</button>
-            <br><br><br>
+            <button class="button" id="bankrupt" onclick=bankrupt()>Declare Bankrupcy</button>
             <h2>Game Code : {{ session['game_code'] }}</h2>
         </div>
         <div class="game-info-box" id="middle-left">
@@ -26,6 +25,7 @@
     </div>
     <div id="board">
         <div id="center">
+<<<<<<< HEAD
             <div class="options-dropdown">
                 <button class="button" onclick=open_options() style="display: block;" id="openOpt">open options</button>
                 <button class="button" onclick=close_options() style="display: none;" id="closeOpt">close options</button>
@@ -58,6 +58,8 @@
                 </div>
             </div>
             <p id="dice">nobody has rolled the dice yet</p>
+=======
+>>>>>>> 1bb1cd383613bf66615717d87306f4040d263d23
             <div name="dice-button" id="dice-button">
                 <button class="button" type="button" id="roll-dice">roll dice</button><br>
             </div>
@@ -312,18 +314,43 @@
         </div>
         <!--END-->
     </div>
-    <div id="right-div">
+    <div id="right-div" >
         <div class="game-info-box">
             <h2>Leaderboard</h2>
             <table id="money-table">
                 <thead>
                 <tr class="table-header">
+                    <th>Symbol</th>
                     <th>Name</th>
                     <th>Money</th>
                 </tr>
                 </thead>
                 <tbody id="table-body"></tbody>
             </table>
+            <div class="options-popup" id="options">
+                <div class="tab">
+                    <button class="tablinks" onclick="change_tab(event, 'cards')">view cards</button>
+                    <button class="tablinks" onclick="change_tab(event, 'houses')">buy sell houses</button>
+                </div>
+                <div class="tabcontent" id="cards" style="display:block;">
+                    <h4>Your cards:</h4>
+                    <div class="image-grid-container">
+                        <div class="image-grid" id="image-grid-unmortgaged">
+                        </div>
+                    </div>
+                    <h4>Your mortgaged cards:</h4>
+                    <div class="image-grid-container">
+                        <div class="image-grid" id="image-grid-mortgaged">
+                        </div>    
+                    </div>
+                </div>
+                <div class="tabcontent" id="houses">
+                    <h4>Houses:</h4>
+                    <div class="row-houses" id="row-houses">
+                    </div>
+                </div>
+            </div>
+            <button class="button" onclick=open_options() id="open-close">Open Options</button>
         </div>
     </div>
 </div>

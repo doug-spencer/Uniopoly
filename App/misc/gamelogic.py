@@ -51,7 +51,7 @@ def show_player_options(player, game_code, session, roll_value):
         card_type = "Student Union"
         player_landed_on_money_card(player, game_code,  card_table, card_type, session)
 
-    return False, False    
+    return False    
 
 def player_landed_on_start(player, game_code, session):
     emit('message', {'msg': player.username + ' landed on go '}, room=game_code)
@@ -127,18 +127,16 @@ def player_landed_on_money_card(player, game_code, card_table, card_type, sessio
     emit('display card', {'text': money_card.text}, session=session)
     
 def update_position(game, game_code):
-    positions = [[i, None] for i in range(40)]
-    symbols = [[i, None] for i in range(40)]
+    positions = [[i, None, None] for i in range(40)]
     for i in game.players_connected:
         if positions[i.position][1] == None:
-            symbols[i.position][1] = i.symbol
             positions[i.position][1] = i.username
+            positions[i.position][2] = str(i.symbol)
         else:
-            symbols[i.position][1] = i.symbol
             positions[i.position][1] = positions[i.position][1] + ',' + i.username
+            positions[i.position][2] = positions[i.position][2] + ',' + str(i.symbol)
     positions = [i for i in positions if i[1]!= None]
-    symbols = [i for i in symbols if i[1]!= None]
-    emit('update player positions', {'positions': positions, 'symbols':symbols}, room=game_code) 
+    emit('update player positions', {'positions': positions}, room=game_code) 
 
 def get_property_rent_amount(card, link_table, player_ids_in_game):
     with engine.connect() as conn:
@@ -225,6 +223,7 @@ def get_cards(player):
         for i in tables:
             query = i[0].select().where(i[0].c.player_id == player.id, i[0].c.mortgaged == False)
             card_row = conn.execute(query).fetchall()
+            print(card_row)
             for card in card_row:
                 card = i[1].query.filter_by(id=card[1]).first()
                 unmortgaged_cards.append(card.photo)

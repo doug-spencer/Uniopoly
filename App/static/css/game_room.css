@@ -229,25 +229,6 @@
   }
 
   /*options pop up box*/
-  .options-button {
-   padding: 10px 15px;
-   background-image: radial-gradient(ellipse, #7B1FA2, #660099);
-   background-size: cover;
-   font-family: Arial;
-   font-size: 30px;
-   font-weight: bold;
-   color: white;
-   margin: 2px;
-   border: none;
-   border-radius: 10px;
-   cursor: pointer;
-   transition: background-color 0.2s ease-in-out;
-}
-
-  .options-dropdown {
-   position: relative;
-   display: inline-block;
-   }
   .options-popup {
    display: none;
    position: fixed;
@@ -258,9 +239,6 @@
    border: 3px solid #ccc;
    z-index: 9;
    background-color: #855abe;
- }
- .options-button:hover .options-popup {
-   display: block;
  }
 
  /* Style the tab */
@@ -327,8 +305,8 @@
 #money-table {
    border-collapse: collapse;
    font-family: Arial, sans-serif;
-   width: 100%;
-   margin: auto;
+   width: 95%;
+   margin: 10px auto;
 }
 
 .table-header th {
@@ -442,4 +420,19 @@ footer {
 h2 {
    margin: 0px;
    padding: 10px;
+}
+.player {
+   position: absolute;
+   display: flex;
+   bottom: 10px;
+   justify-content: space-between;
+   align-items: center;
+}
+.player img {
+   width: 4.5vh;
+   height : 4.5vh;
+   flex: 1;
+}
+#bankrupt {
+   margin: 20px 0px;
 }

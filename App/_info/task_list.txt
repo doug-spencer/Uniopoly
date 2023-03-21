@@ -1,20 +1,25 @@
------------------
-TASKS
------------------
-Backend for socket.on bankrupcy - Cally
-Front end gamepage organisation - been
-Mortgage functions backend - Abu
-Style the open options pop up - Charlie
-frontend for Photos/characters and not squashing the board - been
-Click and drag for fun - been
-Fixing buttons that dont work - Cally
-action chance cards - Abu
-Photos for the players - Charlie
-Backend for the photos - Cally
-frontend for the photos - been
 ----------------
-SECONDARY TASKS
+FINAL TASKS
 ----------------
+Style the open options pop up - Been
+End game procedure - Jacob
+Check for more than 1 player and <= 8 - Jacob
+front end of remove button in lobby - Douglas
+Changing DB for chance cards - Jacob
+Moving the players name to jail with the player - Been
+Remove the footer - Cally
+----------------
+IDEAL TASKS
+----------------
+Action chance cards - Abu
+Player owes player pop up box - Cally
+More frontend - Eveyone
+suitable for phone - Been
+----------------
+Before submitting 
+----------------
+Dont load test data
+Set player cap at number of valid sprites 
 
 
 

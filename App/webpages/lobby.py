@@ -20,7 +20,7 @@ def lobby():
     player = Player.query.filter_by(username=username, game_code=game_code).first()
     #only runs if POST
     if request.form.get('leaveButton') == 'Leave Room':
-        player.delete()
+        db.session.delete(player)
         db.session.commit()
         username = session['username']
         session.clear()
