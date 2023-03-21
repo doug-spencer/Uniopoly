@@ -15,25 +15,25 @@
   <h1 id="game-code">{{ game_code }}</h1>
 </div>
 
-<div id="mid-section">
-  <div id="table-div">
-    <table id="players-table">
-      <thead>
-        <tr class="table-header">
-          <th>Number</th>
-          <th>Name</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="table-body"></tbody>
-    </table>
-  </div>
-  <div id="button-div">
-    <form action="/lobby" method="POST">  
-      <input class="button" id="leave" type="submit" name="leaveButton" value="Leave Room"></input>
-      <input class="button" id="start" type="submit" name="startButton" value="Start Game"></input>
-    </form>
-  </div>
+
+<div id="button-div">
+  <form action="/lobby" method="POST">  
+    <input class="button" id="leave" type="submit" name="leaveButton" value="Leave Room"></input>
+    <input class="button" id="start" type="submit" name="startButton" value="Start Game"></input>
+  </form>
 </div>
-<div id="flashing-text">Flashing Text</div>
+
+<div id="table-div">
+  <table id="players-table">
+    <thead>
+      <tr class="table-header">
+        <th>Name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<div id="flashing-text"></div>
 {% endblock %}

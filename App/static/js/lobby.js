@@ -14,7 +14,7 @@ $(document).ready(function() {
     
       // Remove the animation class after it finishes to allow for re-triggering
       setTimeout(() => {
-        animatedText.innerHTML = "";
+        animatedText.innerHTML = " ";
         animatedText.classList.remove('flashing-text');
       }, 3000); // Match the duration of the animation (3s)
     })
@@ -34,9 +34,9 @@ $(document).ready(function() {
       var body = '';
       for(var i=0; i<data.players.length; i++){
         if (isNotHost || i == 0) {
-          body += `<tr class="table-rows"><td>Player ${i+1}</td><td>${data.players[i]}</td><td></td></tr>`
+          body += `<tr class="table-rows"><td>${data.players[i]}</td><td></td></tr>`
         } else {
-          body += `<tr class="table-rows"><td>Player ${i+1}</td><td>${data.players[i]}</td><td><button class="button" type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`
+          body += `<tr class="table-rows"><td>${data.players[i]}</td><td><button class="button" type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`
         }
       }
       document.getElementById("table-body").innerHTML = body;
