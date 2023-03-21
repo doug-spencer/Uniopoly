@@ -67,8 +67,8 @@ def roll_dice():
     
     gamelogic.halt_player_turn(game_code)
     
-    roll1 = randint(15,15)
-    roll2 = randint(15,15)
+    roll1 = randint(1,6)
+    roll2 = randint(1,6)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
@@ -101,7 +101,7 @@ def roll_dice():
         
         emit('end turn button change', {'operation':'show'}, session=session)
     
-    
+
 #increments the index of turn counter in the db
 def update_index_of_turn():
     game_code = session.get('game_code')
