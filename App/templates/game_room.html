@@ -16,7 +16,8 @@
             <h2>Game Code : {{ session['game_code'] }}</h2>
         </div>
         <div class="game-info-box" id="middle-left">
-            <textarea id="messages" cols="30" rows="20" placeholder="No messages yet. Start one..."></textarea>
+            <div id="messages" contenteditable="true"></div>
+            <!-- <textarea id="messages" cols="30" rows="20" placeholder="No messages yet. Start one..."></textarea> -->
             <form id="chat">
                 <input class="text-input" type="text" id="text" size="30" placeholder="Enter message" autocomplete="off"/>
                 <button class="button" name="button" value="send" id="send">Send</button>

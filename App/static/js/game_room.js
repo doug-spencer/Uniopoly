@@ -5,6 +5,7 @@ const sprite_imgs = [
     'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
     'terence_standard.webp', 'uli_standard.webp'
 ];
+var colours = ['#FF69B4', 'black', 'darkred', 'blue', 'darkgreen', 'gold'];
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/gameroom');
     socket.on('connect', function() {
@@ -21,15 +22,11 @@ $(document).ready(function(){
         username = data.username;
     });
 
-    //for joining and leaving room
-    socket.on('status', function(data) {
-        $('#messages').val($('#messages').val() + data.msg + '\n');
-        $('#messages').scrollTop($('#messages')[0].scrollHeight);
-    });
-
     //for any basic msgs
     socket.on('message', function(data) {
-        $('#messages').val($('#messages').val() + data.msg + '\n');
+        let colour = colours[Math.floor(Math.random() * colours.length)];
+        $('#messages').append(`<p style="margin: 0px;color: ${colour};">${data.msg}</p>`);
+        // $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
 
