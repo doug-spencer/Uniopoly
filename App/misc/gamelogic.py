@@ -51,7 +51,7 @@ def show_player_options(player, game_code, session, roll_value):
         card_type = "Student Union"
         player_landed_on_money_card(player, game_code,  card_table, card_type, session)
 
-    return False, False    
+    return False    
 
 def player_landed_on_start(player, game_code, session):
     emit('message', {'msg': player.username + ' landed on go '}, room=game_code)

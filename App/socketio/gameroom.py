@@ -89,9 +89,10 @@ def roll_dice():
     db.session.commit()
     
     #performs action associated with board position
-    gamelogic.show_player_options(player, game_code, session, roll_value)
+    buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
     
-    emit('end turn button change', {'operation':'show'}, session=session)
+    if not buy_choice_active:
+        emit('end turn button change', {'operation':'show'}, session=session)
 
 
 #increments the index of turn counter in the db
@@ -204,9 +205,7 @@ def buy_property():
 
     emit('buy property button change', {'operation': 'hide'}, session=session)
     emit('end turn button change', {'operation': 'show'}, session=session)
-    #shows the roll dice button and updates the turn
-    #gamelogic.resume_player_turn(game_code)
-    #update_index_of_turn()
+
 
 
 @socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
@@ -216,8 +215,8 @@ def dont_buy_property():
 
     emit('message', {'msg': 'card not bought'}, room=game_code)
 
-    gamelogic.resume_player_turn(game_code)
-    update_index_of_turn()
+    emit('buy property button change', {'operation': 'hide'}, session=session)
+    emit('end turn button change', {'operation': 'show'}, session=session)
 
 @socketio.on('sell house', namespace='/gameroom') 
 def sell_house(data):
