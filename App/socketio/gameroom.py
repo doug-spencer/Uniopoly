@@ -89,9 +89,9 @@ def roll_dice():
     db.session.commit()
     
     #performs action associated with board position
-    buy_choice_active, player_owes_money = gamelogic.show_player_options(player, game_code, session, roll_value)
-    if not buy_choice_active and not player_owes_money:
-        emit('end turn button change', {'operation':'show'}, session=session)
+    gamelogic.show_player_options(player, game_code, session, roll_value)
+    
+    emit('end turn button change', {'operation':'show'}, session=session)
 
 
 #increments the index of turn counter in the db
