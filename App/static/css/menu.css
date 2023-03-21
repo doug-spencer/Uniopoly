@@ -46,7 +46,7 @@
 }
   
 
-.button {
+.button, #frame {
     animation: fadeIn 1s ease-in-out forwards;
-  }
+}
   
