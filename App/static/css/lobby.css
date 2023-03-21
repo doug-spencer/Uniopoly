@@ -18,14 +18,13 @@
 #table-div {
     /* padding: 10px;
     font-size: 30px; */
-    width: 50%;
+    width: 40%;
     display: block;
     box-sizing: border-box;
     padding: 10px;
     font-size: 30px;
     align-items: center;
-    position: absolute;
-    left: 25%;
+    
     
     
 
@@ -63,12 +62,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    
     color: white;
     padding:40px 20px; ;
     border-radius: 20px;
     width: 40%;
-    left: 20%;
+    margin-right: 20px;
     
     
 }
@@ -76,7 +75,7 @@
 section {
     max-width: 60%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px 20px;
     justify-content: center;
     text-align: center;
     position: relative;
@@ -85,8 +84,8 @@ section {
 }
 
 #image-div img {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     margin: 0 10px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
@@ -101,4 +100,11 @@ section {
 
     
     
+}
+
+.upper-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
 }
