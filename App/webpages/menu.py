@@ -4,6 +4,7 @@ from App.main import app, db
 from App.database.tables import Game, Player, Account
 from App.misc.functions import get_correct_location
 from random import randint
+from flask_socketio import emit
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
@@ -57,23 +58,28 @@ def join_game(code):
     if not game:
         flash("Code was not valid")
         return render_template('menu.html')
+    
     if game.game_started:
         flash("Game has already started, please pick on the list!!")
         return render_template('menu.html')
+    
     account = Account.query.filter_by(username=session['username']).first()
     usernames_in_game = [i.username for i in game.players_connected]
     if account.username in usernames_in_game:
         flash("You are already in this game")
         return render_template('menu.html')
-    players_symbols = [i.symbol for i in game.players_connected]
+    
     # If there are fewer than 8 players, the index of a random unused sprite is chosen
+    players_symbols = [i.symbol for i in game.players_connected]
     if len(players_symbols) < 8:
         symbol = randint(0,7)
         while symbol in players_symbols:
             symbol = randint(0,7)
+
     # Else the index lies outside the array of sprites
     else:
         symbol = 8
+
     player = Player(position=0, index_in_game=len(game.players_connected), symbol=symbol, money=1000, turns_in_jail=0)
     account.game_instances.append(player)
     game.players_connected.append(player)
@@ -81,4 +87,7 @@ def join_game(code):
     db.session.commit()
     session['game_code'] = code
     flash("Game joined!")
+
+    
+
     return redirect(url_for('lobby'))
