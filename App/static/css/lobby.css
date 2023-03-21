@@ -24,6 +24,7 @@
     padding: 10px;
     font-size: 30px;
     align-items: center;
+    margin-top: -30vh;
     
     
     
@@ -55,10 +56,18 @@
 .table-rows:not(:last-child):nth-child(even) td {
     background-color: #f2f2f2;
 }
+
+#button-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+
+}
 #button-div {
    
     background-color: black;
-    /* padding: 10px; */
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,8 +75,8 @@
     color: white;
     padding:40px 20px; ;
     border-radius: 20px;
-    width: 40%;
-    margin-right: 20px;
+    width: 100%;
+   
     
     
 }
