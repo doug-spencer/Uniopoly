@@ -84,7 +84,7 @@ $(document).ready(function(){
         console.log(sprite_imgs[data.players[0][0]]);
         for (let i=0; i<data.players.length; i++) {
             body += `<tr class="table-rows">
-                        <td><img src="/static/images/playerIcons/${sprite_imgs[data.players[i][0]]}"/></td>
+                        <td><img src="/static/images/playerIcons/${sprite_imgs[data.players[i][0]]}" alt="image ${i}"/></td>
                         <td>${data.players[i][1]}</td>
                         <td>${data.players[i][2]}</td>
                     </tr>`;

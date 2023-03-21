@@ -61,7 +61,7 @@ def player_landed_on_free_parking(player, game_code, session):
 
 def player_on_jail(player, game_code, session):
     if player.turns_in_jail == 0:
-        emit('message', {'msg': f'{player.username} is on jail'}, room=game_code)
+        emit('message', {'msg': f'{player.username} is just visiting'}, room=game_code)
     elif player.turns_in_jail == 1:
         emit('message', {'msg': f'{player.username} has 1 turn left in jail they, pay 50 or use a get out of jail free card'}, room=game_code)
         functions.player1_owes_player2_money(player, 50)     
@@ -78,7 +78,7 @@ def player_landed_on_go_to_jail(player, game_code, pos_jail):
     player.turns_in_jail += 3
     player.position = pos_jail
     db.session.commit()
-    emit('message', {'msg': player.username + str(player.position) + str(player.turns_in_jail) +' is sent to jail'}, room=game_code)
+    emit('message', {'msg': player.username + ' is sent to jail'}, room=game_code)
 
 
 def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type, roll_value=None):

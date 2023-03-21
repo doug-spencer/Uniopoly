@@ -67,14 +67,11 @@ def roll_dice():
     
     gamelogic.halt_player_turn(game_code)
     
-    roll1 = randint(1, 6)
-    roll2 = randint(1,6)
+    roll1 = randint(15,15)
+    roll2 = randint(15,15)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
-
-
-
 
     #only emits roll message and updates position if player is not in jail
     if player.turns_in_jail == 0:
@@ -85,12 +82,20 @@ def roll_dice():
 
         player.position = new_value
         emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
-        gamelogic.update_position(game, game_code)
-    db.session.commit()
     
-    #performs action associated with board position
-    gamelogic.show_player_options(player, game_code, session, roll_value)
+        db.session.commit()
+        
+        #performs action associated with board position
+        gamelogic.show_player_options(player, game_code, session, roll_value)
+    else:
+        #escapes jail if a double is rolled
+        if roll1 == roll2:
+            player.turns_in_jail = 0
+            emit('message', {'msg': player.username + ' rolled a double ' + str(roll1) + ' and gets out of jail'})
+            
+            db.session.commit()
     
+    gamelogic.update_position(game, game_code)
     emit('end turn button change', {'operation':'show'}, session=session)
 
 
