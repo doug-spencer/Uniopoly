@@ -139,6 +139,28 @@ $(document).ready(function(){
     }
     $('#houses').html(html);
     });
+    socket.on('display dice', function(data) {
+        // Clears previous dice
+        var div = document.getElementById('dice-display');
+        while(div.firstChild){
+            div.removeChild(div.firstChild);
+        }
+
+        const dice = [
+            'dice_1.png', 'dice_2.png', 'dice_3.png',
+            'dice_4.png','dice_5.png', 'dice_6.png',
+        ];
+        // Displays both dice inline
+        const img1 = new Image();
+        img1.src = '/static/images/dice/' + dice[data.roll1 - 1];
+        img1.alt = "FUCK ALL Y'ALL";
+        document.getElementById('dice-display').appendChild(img1);
+        const img2 = new Image();
+        img2.src = '/static/images/dice/' + dice[data.roll2 - 1];
+        img2.alt = "FUCK ALL Y'ALL";
+        document.getElementById('dice-display').appendChild(img2);
+    });
+
     //players position update
     socket.on('update player positions', function(data) {
         for (let i=0; i<40; i++) {

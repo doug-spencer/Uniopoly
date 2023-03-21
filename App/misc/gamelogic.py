@@ -84,8 +84,8 @@ def player_landed_on_go_to_jail(player, game_code, pos_jail, session):
     player.turns_in_jail += 3
     player.position = pos_jail
     db.session.commit()
-    emit('message', {'msg': f'{player.username}{str(player.position)}{str(player.turns_in_jail)} is sent to jail'}, room=game_code)
-    emit('display text', {'text': f'{player.username}{str(player.position)}{str(player.turns_in_jail)} is sent to jail'}, session=session)
+    emit('message', {'msg': f'{player.username} is sent to jail'}, room=game_code)
+    emit('display text', {'text': f'{player.username} is sent to jail'}, session=session)
 
 
 def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type, roll_value=None):
