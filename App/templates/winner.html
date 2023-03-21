@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Menu</title>
+<meta name="description"
+    content="Some description of the winner page.">
+<!-- <script type="text/javascript" src="/static/js/lobby.js"></script> -->
+<!-- <link rel="stylesheet" href="/static/css/lobby.css"> -->
+{% endblock %}
+
+{% block body %}
+
+<div id="head">
+  <h2 id="message"></h2>
+  <h1 id="game-code">the winner is:</h1>
+</div>
+
+<div id="mid-section">
+  <div id="button-div">
+    <form action="/winner" method="POST">  
+      <input class="button" id="leave" type="submit" name="returnToMenuButton" value="Menu"></input>
+    </form>
+  </div>
+</div>
+{% endblock %}
