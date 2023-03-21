@@ -1,7 +1,7 @@
 from flask import session
 from flask_socketio import emit, join_room, leave_room
 from App.main import db, socketio, engine
-from App.misc.functions import check_in_game, player1_owes_player2_money
+from App.misc.functions import check_in_game, player1_owes_player2_money, check_game_over
 from random import randint
 from sqlalchemy import update, and_
 from App.misc import gamelogic, functions
@@ -264,7 +264,6 @@ def buy_house(data):
 
 @socketio.on('bankrupt', namespace='/gameroom')
 def bankrupt():
-    print('bankrupt')
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
