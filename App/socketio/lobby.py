@@ -1,5 +1,5 @@
 from flask import session
-from flask_socketio import emit
+from flask_socketio import emit, join_room, leave_room
 from App.database.tables import Player, Game
 from App.main import db, socketio
 
@@ -35,6 +35,8 @@ def remove(data):
     Player.query.filter_by(username = data['username']).delete()
     db.session.commit()
     print(data['username'])
+    game_code = session['game_code']
+    leave_room(game_code)
 
 @socketio.on('leave lobby', namespace='/lobby') #player leaving lobby
 def leave_lobby():
@@ -42,4 +44,16 @@ def leave_lobby():
         session['username']
     except:
         return False
+    game_code = session['game_code']
+    leave_room(game_code)
     # emit('status', {'msg':  session.get('username') + ' has left the room.'}, session=session)
+
+@socketio.on('join', namespace='/lobby') #player leaving lobby
+def join(data):
+    game_code = session['game_code']
+    game = Game.query.filter_by(game_code=game_code).first()
+    join_room(game_code)
+    usernames = []
+    for i in game.players_connected:
+        usernames += [str(i.username)]
+        emit("flash function", {'msg': session.get('username')}, room=game_code)

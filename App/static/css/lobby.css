@@ -43,3 +43,23 @@
 #button-div {
     padding: 10px;
 }
+
+.flashing-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    text-align: center;
+    animation: flashFade 3s linear forwards;
+}
+  
+@keyframes flashFade {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+  
