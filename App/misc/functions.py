@@ -138,21 +138,9 @@ def bankrupt_player(player):
             game.players_connected[index].index_in_game = index - 1
         index += 1
 
-    game_code = player.game_code
     db.session.delete(player)
     db.session.commit()
     session.pop('game_code', None)
-    check_game_over(game_code)
-
-def check_game_over(game_code):
-    game = Game.query.filter_by(game_code=game_code).first()
-    if len(game.players_connected) == 1:
-        players_won(game)
-
-    
-    print("index" + str(index))
-    if index == 2: #there is only one player in the game after deletion of player
-        players_won(game)
 
     
     print("index" + str(index))
@@ -160,17 +148,13 @@ def check_game_over(game_code):
         players_won(game)
 
 def players_won(game):
-    print('players_won')
     #game = Game.query.filter_by(game_code=game_code).first()
     player = game.players_connected[0]
     username = player.username
-    emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, session=session)
-    emit('game_over', session=session)
-    time.sleep(5)
     db.session.delete(player)
     db.session.delete(game)
     db.session.commit()
     emit("redirect to winner page") ##needs to work for everyone
     #emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
     #emit('game_over', room=game.game_code)
-    session.pop('game_code', None)
+ 
