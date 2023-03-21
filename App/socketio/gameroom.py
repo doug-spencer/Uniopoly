@@ -17,7 +17,7 @@ def join(message):
     game = Game.query.filter_by(game_code=game_code).first()
     players_arr = [[player.symbol, player.username, player.money] for player in game.players_connected]
     emit('update leaderboard', {'players': players_arr}, room=game_code)
-    emit('status', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
+    emit('message', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
     emit('buy property button change', {'operation':'hide'}, session=session)
     emit('get username', {'username': session.get('username')}, session=session)
     gamelogic.update_position(game, game_code)
@@ -38,7 +38,7 @@ def left(message):
         index += 1
     db.session.delete(player)
     db.session.commit()
-    emit('status', {'msg': username + ' has left the room.'}, room=game_code)
+    emit('message', {'msg': username + ' has left the room.'}, room=game_code)
 
 @socketio.on('end turn', namespace='/gameroom') #when a players turn ends
 def end_turn():

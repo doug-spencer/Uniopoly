@@ -42,4 +42,4 @@ def leave_lobby():
         session['username']
     except:
         return False
-    # emit('status', {'msg':  session.get('username') + ' has left the room.'}, session=session)
+    # emit('message', {'msg':  session.get('username') + ' has left the room.'}, session=session)
