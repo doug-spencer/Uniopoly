@@ -35,7 +35,7 @@ def show_player_options(player, game_code, session, roll_value):
     pos_start = 0
 
     if pos == pos_go_to_jail:
-        player_landed_on_go_to_jail(player, game_code, pos_jail)
+        player_landed_on_go_to_jail(player, game_code, pos_jail, session)
     elif pos == pos_jail:
         player_on_jail(player, game_code, session)
     elif pos == pos_start:
@@ -74,11 +74,12 @@ def player_on_jail(player, game_code, session):
     return False
 
 
-def player_landed_on_go_to_jail(player, game_code, pos_jail):
+def player_landed_on_go_to_jail(player, game_code, pos_jail, session):
     player.turns_in_jail += 3
     player.position = pos_jail
     db.session.commit()
     emit('message', {'msg': player.username + ' is sent to jail'}, room=game_code)
+    emit('flash function', session=session)
 
 
 def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type, roll_value=None):

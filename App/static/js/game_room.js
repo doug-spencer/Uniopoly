@@ -162,7 +162,22 @@ $(document).ready(function(){
         var now = new Date().getTime();
         while(new Date().getTime() < now + 15000){ /* Do nothing */ }
         window.location.href = "/menu";
-    })
+    });
+
+    socket.on('flash function', function(data) {
+        const animatedText = document.getElementById('flashing-image');
+        //animatedText.innerHTML = "image here";
+        body = `<img src="/static/images/oakHouseKitchen.jpg" alt="oak house kitchen"/>`
+        document.getElementById("flashing-image").innerHTML = body;
+        animatedText.classList.add('flashing-image');
+      
+        // Remove the animation class after it finishes to allow for re-triggering
+        setTimeout(() => {
+            document.getElementById("flashing-image").innerHTML = "";
+            animatedText.classList.remove('flashing-image');
+        }, 3000); // Match the duration of the animation (3s)
+      });
+
     //when the send message box is pressed
     $('form').submit(function(e) {
         e.preventDefault();
