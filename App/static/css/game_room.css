@@ -23,7 +23,7 @@
         "b o o o o o o o o d"
         "b a a a a a a a a a";
       background-color: white;
-      font-size: 2vh;
+      font-size: 1.9vh;
       font-family: system-ui;
       color: black;
       box-shadow: 1px 4px 9px 0px black;
@@ -224,11 +224,19 @@
    #jail {
       width: 70%;
       height: 100%;
-      border-left: 0.2vh solid black;
-      border-bottom: 0.2vh solid black;
+      border-left: 0.3vh solid black;
+      border-bottom: 0.3vh solid black;
    }
    #jail .tile-name {
       transform: rotateZ(-45deg) translate(10px, -20px);
+   }
+   #top-jail #just .player {
+      left: auto;
+      transform: rotateZ(90deg) translateY(-4.5vh);
+   }
+   #top-jail #jail .player {
+      left: auto;
+      transform: rotateZ(90deg) translateY(0.5vh);
    }
    #visiting {
       width: 100%;
@@ -465,9 +473,11 @@ h2 {
 #row-0 .player, #row-2 .player {
    position: absolute;
    display: flex;
-   bottom: 10px;
+   bottom: 0px; 
    justify-content: space-between;
    align-items: center;
+   /* z-index: 2; 
+   bottom: 128px; */
 }
 #row-1 .player, #row-3 .player {
    position: absolute;
@@ -475,8 +485,10 @@ h2 {
    bottom: auto;
    justify-content: space-between;
    align-items: center;
-   left: 10px;
+   left: 0px;
    transform: rotateZ(90deg);
+   /* z-index: 2;
+   left: 128px; */
 }
 .player img {
    width: 4.5vh;

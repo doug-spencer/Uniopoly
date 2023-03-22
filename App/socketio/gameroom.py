@@ -101,7 +101,7 @@ def roll_dice():
             emit('end turn button change', {'operation':'show'}, session=session)
 
             
-        gamelogic.update_position(game, game_code)
+    gamelogic.update_position(game, game_code)
     
 
 #increments the index of turn counter in the db
