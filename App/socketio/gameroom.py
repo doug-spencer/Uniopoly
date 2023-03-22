@@ -74,34 +74,34 @@ def roll_dice():
     current_value = player.position
     new_value = roll_value + current_value
 
-    #only emits roll message and updates position if player is not in jail
-    if player.turns_in_jail == 0:
-        if new_value > 39:
-            new_value -= 40
-            player.money += 200
-            emit('message', {'msg': player.username + ' passed go and collected 200'}, room=game_code)
-
-        player.position = new_value
-        emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
-    
-        db.session.commit()
+    #escapes jail if a double is rolled
+    if roll1 == roll2 and player.turns_in_jail > 0:
+        player.turns_in_jail = 0
+        emit('message', {'msg': player.username + ' rolled a double ' + str(roll1) + ' and gets out of jail'})
         
-        #performs action associated with board position
+        db.session.commit()
+        emit('end turn button change', {'operation':'show'}, session=session)
+
+    #only emits roll message and updates position if player is not in jail
+    else:
+        if player.turns_in_jail == 0:
+            if new_value > 39:
+                new_value -= 40
+                player.money += 200
+                emit('message', {'msg': player.username + ' passed go and collected 200'}, room=game_code)
+
+            player.position = new_value
+            emit('message', {'msg': player.username + ' rolled a ' + str(roll_value) + ' they are now at positon ' + str(new_value)}, room = game_code)
+        
+            db.session.commit()
+            #performs action associated with board position
         buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
 
         if not buy_choice_active:
             emit('end turn button change', {'operation':'show'}, session=session)
 
-    else:
-        #escapes jail if a double is rolled
-        if roll1 == roll2:
-            player.turns_in_jail = 0
-            emit('message', {'msg': player.username + ' rolled a double ' + str(roll1) + ' and gets out of jail'})
             
-            db.session.commit()
-        
-        emit('end turn button change', {'operation':'show'}, session=session)
-    gamelogic.update_position(game, game_code)
+        gamelogic.update_position(game, game_code)
     
 
 #increments the index of turn counter in the db
