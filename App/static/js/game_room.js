@@ -5,7 +5,7 @@ const sprite_imgs = [
     'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
     'terence_standard.webp', 'uli_standard.webp'
 ];
-var colours = ['#FF69B4', 'black', 'darkred', 'blue', 'darkgreen', 'gold'];
+var colours = ['gold', 'blue', 'darkgreen', 'FF69B4', 'darkred', 'black'];
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/gameroom');
     socket.on('connect', function() {
@@ -24,7 +24,10 @@ $(document).ready(function(){
 
     //for any basic msgs
     socket.on('message', function(data) {
-        let colour = colours[Math.floor(Math.random() * colours.length)];
+        let colour = 'white';
+        if (data.colourId != undefined) {
+            colour = colours[data.colourId];
+        }
         $('#messages').append(`<p style="margin: 0px;color: ${colour};">${data.msg}</p>`);
         // $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);

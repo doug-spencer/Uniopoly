@@ -24,263 +24,277 @@
             </form>
         </div>
     </div>
-    <div id="board">
-        <div id="center">
-            <div name="dice-button" id="dice-button">
-                <button class="button" type="button" id="roll-dice">roll dice</button><br>
+    <div id="middle-div">
+        <div id="board">
+            <div id="center">
+                <div name="dice-button" id="dice-button">
+                    <button class="button" type="button" id="roll-dice">roll dice</button><br>
+                </div>
+                <div name="end-turn-button" id="end-turn-button">
+                    <button class="button" type="button" id="end-turn">end turn</button><br>
+                </div>
+                
+                <div name="buy-property-button" id="buy-property-button">
+                    <button class="button" type="button" id="buy-property">buy</button><br>
+                </div>
+                
+                <div name="dont-buy-property-button" id="dont-buy-property-button">
+                    <button class="button" type="button" id="dont-buy-property">dont buy</button><br>
+                </div>
+                
+                <div name="text-box" id="text-box">
+                    <h1 id="main-text"></h1>
+                    <button class="button" type="button" id="text-button">OK</button><br>
+                </div>
+                <div name="dice-display" id ="dice-display">
+                </div>
             </div>
-            <div name="end-turn-button" id="end-turn-button">
-                <button class="button" type="button" id="end-turn">end turn</button><br>
+                
+            <!--START-->
+            <!--Row 0-->
+            <div class="row" id="row-0">
+                <div class="tile">
+                    <div class="tile-name">Go</div>
+                    <div class="player" id="tile0"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col1"></div>
+                    <div class="tile-name">Kilburn</div>
+                    <div class="tile-price">60</div>
+                    <div class="player" id="tile1"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">SU</div>
+                    <div class="player" id="tile2"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col1"></div>
+                    <div class="tile-name">Unsworth</div>
+                    <div class="tile-price">60</div>
+                    <div class="player" id="tile3"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">Chesters</div>
+                    <div class="tile-price">200</div>
+                    <div class="player" id="tile4"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">142 Bus</div>
+                    <div class="bus-stop-image h-image"></div>
+                    <div class="tile-price">200</div>
+                    <div class="player" id="tile5"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col2"></div>
+                    <div class="tile-name">Stopford</div>
+                    <div class="tile-price">100</div>
+                    <div class="player" id="tile6"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">Email</div>
+                    <div class="player" id="tile7"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col2"></div>
+                    <div class="tile-name">Humanities Building</div>
+                    <div class="tile-price">100</div>
+                    <div class="player" id="tile8"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col2"></div>
+                    <div class="tile-name">Ashburn Hall</div>
+                    <div class="tile-price">120</div>
+                    <div class="player" id="tile9"></div>
+                </div>
             </div>
-            
-            <div name="buy-property-button" id="buy-property-button">
-                <button class="button" type="button" id="buy-property">buy</button><br>
-            </div>
-            
-            <div name="dont-buy-property-button" id="dont-buy-property-button">
-                <button class="button" type="button" id="dont-buy-property">dont buy</button><br>
-            </div>
-            
-            <div name="text-box" id="text-box">
-                <h1 id="main-text"></h1>
-                <button class="button" type="button" id="text-button">OK</button><br>
-            </div>
-            <div name="dice-display" id ="dice-display">
-            </div>
-        </div>
-            
-        <!--START-->
-        <!--Row 0-->
-        <div class="row" id="row-0">
-            <div class="tile">
-                <div class="tile-name">Go</div>
-                <div class="player" id="tile0"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col1"></div>
-                <div class="tile-name">Kilburn</div>
-                <div class="tile-price">60</div>
-                <div class="player" id="tile1"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">SU</div>
-                <div class="player" id="tile2"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col1"></div>
-                <div class="tile-name">Unsworth</div>
-                <div class="tile-price">60</div>
-                <div class="player" id="tile3"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">Chesters</div>
-                <div class="tile-price">200</div>
-                <div class="player" id="tile4"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">142 Bus</div>
-                <div class="bus-stop-image h-image"></div>
-                <div class="tile-price">200</div>
-                <div class="player" id="tile5"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col2"></div>
-                <div class="tile-name">Stopford</div>
-                <div class="tile-price">100</div>
-                <div class="player" id="tile6"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">Email</div>
-                <div class="player" id="tile7"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col2"></div>
-                <div class="tile-name">Humanities Building</div>
-                <div class="tile-price">100</div>
-                <div class="player" id="tile8"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col2"></div>
-                <div class="tile-name">Ashburn Hall</div>
-                <div class="tile-price">120</div>
-                <div class="player" id="tile9"></div>
-            </div>
-        </div>
 
-        <!--Row 1-->
-        <div class="row" id="row-1">
-            <div class="tile">
-                <div class="tile-name">Jail</div>
-                <div class="player" id="tile10"></div>
+            <!--Row 1-->
+            <div class="row" id="row-1">
+                <div class="tile">
+                    <div id="top-jail">
+                        <div id="jail">
+                            <div class="tile-name">Jail</div>
+                            <div class="player" id="tile10.1"></div>
+                        </div>
+                        <div id="just">
+                            <div class="tile-name">Just</div>
+                            <div class="player" id="tile10.2"></div>
+                        </div>
+                    </div>
+                    <div id="visiting">
+                        <div class="tile-name">Visiting</div>
+                        <div class="player" id="tile10.3"></div>
+                    </div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col3"></div>
+                    <div class="tile-name">Chemistry Building</div>
+                    <div class="tile-price">140</div>
+                    <div class="player" id="tile11"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">SU</div>
+                    <div class="player" id="tile12"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col3"></div>
+                    <div class="tile-name">Alans Chicken Shop</div>
+                    <div class="tile-price">140</div>
+                    <div class="player" id="tile13"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col3"></div>
+                    <div class="tile-name">Simon Building</div>
+                    <div class="tile-price">160</div>
+                    <div class="player" id="tile14"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">143 Bus</div>
+                    <div class="bus-stop-image v-image"></div>
+                    <div class="tile-price">200</div>
+                    <div class="player" id="tile15"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col4"></div>
+                    <div class="tile-name">Alan Turing Building</div>
+                    <div class="tile-price">180</div>
+                    <div class="player" id="tile16"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">Email</div>
+                    <div class="player" id="tile17"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col4"></div>
+                    <div class="tile-name">Uni Place</div>
+                    <div class="tile-price">180</div>
+                    <div class="player" id="tile18"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col4"></div>
+                    <div class="tile-name">Manchester Academy</div>
+                    <div class="tile-price">200</div>
+                    <div class="player" id="tile19"></div>
+                </div>
             </div>
-            <div class="tile">
-                <div class="tile-color col3"></div>
-                <div class="tile-name">Chemistry Building</div>
-                <div class="tile-price">140</div>
-                <div class="player" id="tile11"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">SU</div>
-                <div class="player" id="tile12"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col3"></div>
-                <div class="tile-name">Alans Chicken Shop</div>
-                <div class="tile-price">140</div>
-                <div class="player" id="tile13"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col3"></div>
-                <div class="tile-name">Simon Building</div>
-                <div class="tile-price">160</div>
-                <div class="player" id="tile14"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">143 Bus</div>
-                <div class="bus-stop-image v-image"></div>
-                <div class="tile-price">200</div>
-                <div class="player" id="tile15"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col4"></div>
-                <div class="tile-name">Alan Turing Building</div>
-                <div class="tile-price">180</div>
-                <div class="player" id="tile16"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">Email</div>
-                <div class="player" id="tile17"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col4"></div>
-                <div class="tile-name">Uni Place</div>
-                <div class="tile-price">180</div>
-                <div class="player" id="tile18"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col4"></div>
-                <div class="tile-name">Manchester Academy</div>
-                <div class="tile-price">200</div>
-                <div class="player" id="tile19"></div>
-            </div>
-        </div>
 
-        <!--Row 2-->
-        <div class="row" id="row-2">
-            <div class="tile">
-                <div class="tile-name">Free Parking</div>
-                <div class="player" id="tile20"></div>
+            <!--Row 2-->
+            <div class="row" id="row-2">
+                <div class="tile">
+                    <div class="tile-name">Free Parking</div>
+                    <div class="player" id="tile20"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col5"></div>
+                    <div class="tile-name">Roscoe Building</div>
+                    <div class="tile-price">220</div>
+                    <div class="player" id="tile21"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">SU</div>
+                    <div class="player" id="tile22"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col5"></div>
+                    <div class="tile-name">IT Building</div>
+                    <div class="tile-price">220</div>
+                    <div class="player" id="tile23"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col5"></div>
+                    <div class="tile-name">James Chadwick Building</div>
+                    <div class="tile-price">240</div>
+                    <div class="player" id="tile24"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">42 Bus</div>
+                    <div class="bus-stop-image h-image"></div>
+                    <div class="tile-price">200</div>
+                    <div class="player" id="tile25"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col6"></div>
+                    <div class="tile-name">Oddfellows Hall</div>
+                    <div class="tile-price">260</div>
+                    <div class="player" id="tile26"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col6"></div>
+                    <div class="tile-name">Whitworth Park</div>
+                    <div class="tile-price">260</div>
+                    <div class="player" id="tile27"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">Email</div>
+                    <div class="player" id="tile28"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col6"></div>
+                    <div class="tile-name">Sam Alex Building</div>
+                    <div class="tile-price">280</div>
+                    <div class="player" id="tile29"></div>
+                </div>
             </div>
-            <div class="tile">
-                <div class="tile-color col5"></div>
-                <div class="tile-name">Roscoe Building</div>
-                <div class="tile-price">220</div>
-                <div class="player" id="tile21"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">SU</div>
-                <div class="player" id="tile22"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col5"></div>
-                <div class="tile-name">IT Building</div>
-                <div class="tile-price">220</div>
-                <div class="player" id="tile23"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col5"></div>
-                <div class="tile-name">James Chadwick Building</div>
-                <div class="tile-price">240</div>
-                <div class="player" id="tile24"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">42 Bus</div>
-                <div class="bus-stop-image h-image"></div>
-                <div class="tile-price">200</div>
-                <div class="player" id="tile25"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col6"></div>
-                <div class="tile-name">Oddfellows Hall</div>
-                <div class="tile-price">260</div>
-                <div class="player" id="tile26"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col6"></div>
-                <div class="tile-name">Whitworth Park</div>
-                <div class="tile-price">260</div>
-                <div class="player" id="tile27"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">Email</div>
-                <div class="player" id="tile28"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col6"></div>
-                <div class="tile-name">Sam Alex Building</div>
-                <div class="tile-price">280</div>
-                <div class="player" id="tile29"></div>
-            </div>
-        </div>
 
-        <!--Row 3-->
-        <div class="row" id="row-3">
-            <div class="tile">
-                <div class="tile-name">Go to Jail</div>
-                <div class="player" id="tile30"></div>
+            <!--Row 3-->
+            <div class="row" id="row-3">
+                <div class="tile">
+                    <div class="tile-name">Go to Jail</div>
+                    <div class="player" id="tile30"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col7"></div>
+                    <div class="tile-name">Alliance Business School</div>
+                    <div class="tile-price">300</div>
+                    <div class="player" id="tile31"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col7"></div>
+                    <div class="tile-name">Uttley House</div>
+                    <div class="tile-price">300</div>
+                    <div class="player" id="tile32"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">SU</div>
+                    <div class="player" id="tile33"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col7"></div>
+                    <div class="tile-name">Sugden</div>
+                    <div class="tile-price">320</div>
+                    <div class="player" id="tile34"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">43 Bus</div>
+                    <div class="bus-stop-image v-image"></div>
+                    <div class="tile-price">200</div>
+                    <div class="player" id="tile35"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">Email</div>
+                    <div class="player" id="tile36"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col8"></div>
+                    <div class="tile-name">Engineering Building</div>
+                    <div class="tile-price">350</div>
+                    <div class="player" id="tile37"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-name">NZ Wine</div>
+                    <div class="wine-bottle-image v-image"></div>
+                    <div class="tile-price">200</div>
+                    <div class="player" id="tile38"></div>
+                </div>
+                <div class="tile">
+                    <div class="tile-color col8"></div>
+                    <div class="tile-name">Students Union</div>
+                    <div class="tile-price">400</div>
+                    <div class="player" id="tile39"></div>
+                </div>
             </div>
-            <div class="tile">
-                <div class="tile-color col7"></div>
-                <div class="tile-name">Alliance Business School</div>
-                <div class="tile-price">300</div>
-                <div class="player" id="tile31"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col7"></div>
-                <div class="tile-name">Uttley House</div>
-                <div class="tile-price">300</div>
-                <div class="player" id="tile32"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">SU</div>
-                <div class="player" id="tile33"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col7"></div>
-                <div class="tile-name">Sugden</div>
-                <div class="tile-price">320</div>
-                <div class="player" id="tile34"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">43 Bus</div>
-                <div class="bus-stop-image v-image"></div>
-                <div class="tile-price">200</div>
-                <div class="player" id="tile35"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">Email</div>
-                <div class="player" id="tile36"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col8"></div>
-                <div class="tile-name">Engineering Building</div>
-                <div class="tile-price">350</div>
-                <div class="player" id="tile37"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-name">NZ Wine</div>
-                <div class="wine-bottle-image v-image"></div>
-                <div class="tile-price">200</div>
-                <div class="player" id="tile38"></div>
-            </div>
-            <div class="tile">
-                <div class="tile-color col8"></div>
-                <div class="tile-name">Students Union</div>
-                <div class="tile-price">400</div>
-                <div class="player" id="tile39"></div>
-            </div>
+            <!--END-->
         </div>
-        <!--END-->
     </div>
     <div id="right-div" >
         <div class="game-info-box">

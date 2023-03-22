@@ -148,7 +148,9 @@ def get_houses():
 @socketio.on('text', namespace='/gameroom') #sending text
 def text(message):
     game_code = session.get('game_code')
-    emit('message', {'msg': session.get('username') + ' : ' + message['msg']}, room = game_code)
+    username = session.get('username')
+    colourId = Player.query.filter_by(username = username, game_code=game_code).first().index_in_game
+    emit('message', {'msg': session.get('username') + ' : ' + message['msg'], 'colourId': colourId}, room = game_code)
 
 #check if its players turn yet (if roll dice button should be shown)
 @socketio.on('update turn', namespace='/gameroom') 

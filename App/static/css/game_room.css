@@ -3,7 +3,6 @@
   }
   #board {
      display: grid;
-     flex: 1;
      margin: auto;
      /*first and last row and column are bigger than others*/
      grid-template-columns: 13vh repeat(8, 9vh) 13vh;
@@ -62,7 +61,7 @@
       background-blend-mode: color;
       background-position: center center;
       background-size: 339%;
-      border: 2px solid black;
+      border: 0.2vh solid black;
   }
   .row {
      display: flex;
@@ -70,7 +69,7 @@
   .tile {
      display: flex;
      flex-direction: column;
-     border: 1px solid;
+     border: 0.1vh solid;
      height: 100%;
      width: 100%;
   }
@@ -192,37 +191,63 @@
    /*give each colour a black border along one side*/
    #row-0 .tile .tile-color{
       height: 10%;
-      border-bottom: 2px solid black;
+      border-bottom: 0.1vh solid black;
    }
    #row-1 .tile .tile-color{
       width: 10%;
-      border-left: 2px solid black;
+      border-left: 0.1vh solid black;
    }
    #row-2 .tile .tile-color{
       height: 10%;
-      border-bottom: 2px solid black;
+      border-bottom: 0.1vh solid black;
    }
    #row-3 .tile .tile-color{
       width: 10%;
-      border-left: 2px solid black;
+      border-left: 0.1vh solid black;
    }
   
   /*Turn corners*/
-  .row > .tile:first-child{
-      text-align: center;
-  }
-  #row-0 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translateY(35%);
-  }
-  #row-1 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translateX(-35%);
-  }
-  #row-2 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translateY(35%);
-  }
-  #row-3 > .tile:first-child .tile-name{
-      transform: rotate(-45deg) translatex(-35%);
-  }
+   .row > .tile:first-child{
+         text-align: center;
+   }
+   #row-0 .tile:first-child .tile-name{
+         transform: rotate(-45deg) translateY(35%);
+   }
+   #row-1 .tile:first-child {
+      display: block;
+   }
+   #top-jail {
+      width: 100%;
+      height: 70%;
+      float: left;
+   }
+   #jail {
+      width: 70%;
+      height: 100%;
+      border-left: 0.2vh solid black;
+      border-bottom: 0.2vh solid black;
+   }
+   #jail .tile-name {
+      transform: rotateZ(-45deg) translate(10px, -20px);
+   }
+   #visiting {
+      width: 100%;
+      height: 30%;
+      writing-mode: horizontal-tb;
+      float: right;
+      display: table;
+   }
+   #visiting .tile-name {
+      display: table-cell;
+      vertical-align: middle;
+   }
+   #row-2 .tile:first-child .tile-name{
+         transform: rotate(-45deg) translateY(35%);
+   }
+   #row-3 .tile:first-child .tile-name{
+         transform: rotate(-45deg) translatex(-35%);
+   }
+
   .grid > .player{
    color: black;
    grid-row: 2 / 10;
@@ -320,7 +345,7 @@
 .table-rows td {
    padding: 10px;
    background-color: white;
-   border: 2px solid white;
+   border: 0.1vh solid white;
    color: black;
 }
 
@@ -398,15 +423,14 @@ footer {
    background-color: #ccc;
 
 }
-
 #screen {
    display: flex;
-   /* padding: 10px; */
 }
-#left-div, #right-div {
+#left-div, #middle-div, #right-div {
    flex: 1;
-   /* padding: 10px; */
-
+}
+#middle-div {
+   padding-top: 8px;
 }
 #chat {
    display: flex;
@@ -431,12 +455,28 @@ h2 {
    margin: 0px;
    padding: 10px;
 }
-.player {
+/* .player {
    position: absolute;
    display: flex;
    bottom: 10px;
    justify-content: space-between;
    align-items: center;
+} */
+#row-0 .player, #row-2 .player {
+   position: absolute;
+   display: flex;
+   bottom: 10px;
+   justify-content: space-between;
+   align-items: center;
+}
+#row-1 .player, #row-3 .player {
+   position: absolute;
+   display: flex;
+   bottom: auto;
+   justify-content: space-between;
+   align-items: center;
+   left: 10px;
+   transform: rotateZ(90deg);
 }
 .player img {
    width: 4.5vh;
