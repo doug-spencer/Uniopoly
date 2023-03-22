@@ -64,8 +64,8 @@ def player_landed_on_free_parking(player, game_code, session):
 
 def player_on_jail(player, game_code, session):
     if player.turns_in_jail == 0:
-        emit('message', {'msg': f'{player.username} landed on jail'}, room=game_code)
-        emit('display text', {'text': f'{player.username} landed on jail'}, session=session)
+        emit('message', {'msg': f'{player.username} is just visitin'}, room=game_code)
+        emit('display text', {'text': f'{player.username} is just visiting'}, session=session)
     elif player.turns_in_jail == 1:
         emit('message', {'msg': f'{player.username} has 1 turn left in jail they. Player must pay 50 to get out'}, room=game_code)
         emit('display text', {'text': f'{player.username} has 1 turn left in jail they. Player must pay 50 to get out'}, session=session)
