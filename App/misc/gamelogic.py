@@ -35,7 +35,7 @@ def show_player_options(player, game_code, session, roll_value):
     pos_start = 0
 
     if pos == pos_go_to_jail:
-        player_landed_on_go_to_jail(player, game_code, pos_jail)
+        player_landed_on_go_to_jail(player, game_code, pos_jail, session)
     elif pos == pos_jail:
         player_on_jail(player, game_code, session)
     elif pos == pos_start:
@@ -54,19 +54,25 @@ def show_player_options(player, game_code, session, roll_value):
     return False    
 
 def player_landed_on_start(player, game_code, session):
-    emit('message', {'msg': player.username + ' landed on go '}, room=game_code)
+    emit('message', {'msg': f'{player.username} landed on go'}, room=game_code)
+    emit('display text', {'text': f'{player.username} landed on go'}, session=session)
+    
 
 def player_landed_on_free_parking(player, game_code, session):
-    emit('message', {'msg': player.username + ' is on free parking '}, room=game_code)
+    emit('message', {'msg': f'{player.username} landed on free parking'}, room=game_code)
+    emit('display text', {'text': f'{player.username} landed on free parking'}, session=session)
 
 def player_on_jail(player, game_code, session):
     if player.turns_in_jail == 0:
-        emit('message', {'msg': f'{player.username} is just visiting'}, room=game_code)
+        emit('message', {'msg': f'{player.username} landed on jail'}, room=game_code)
+        emit('display text', {'text': f'{player.username} landed on jail'}, session=session)
     elif player.turns_in_jail == 1:
-        emit('message', {'msg': f'{player.username} has 1 turn left in jail they, pay 50 or use a get out of jail free card'}, room=game_code)
+        emit('message', {'msg': f'{player.username} has 1 turn left in jail they. Player must pay 50 to get out'}, room=game_code)
+        emit('display text', {'text': f'{player.username} has 1 turn left in jail they. Player must pay 50 to get out'}, session=session)
         functions.player1_owes_player2_money(player, 50)     
     else:
         emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in jail'}, room=game_code)
+        emit('display text', {'text': f'{player.username} has {player.turns_in_jail} turns left in jail'}, session=session)
     
     player.turns_in_jail = max(0, player.turns_in_jail-1)
     db.session.commit()
@@ -74,16 +80,18 @@ def player_on_jail(player, game_code, session):
     return False
 
 
-def player_landed_on_go_to_jail(player, game_code, pos_jail):
+def player_landed_on_go_to_jail(player, game_code, pos_jail, session):
     player.turns_in_jail += 3
     player.position = pos_jail
     db.session.commit()
-    emit('message', {'msg': player.username + ' is sent to jail'}, room=game_code)
+    emit('message', {'msg': f'{player.username} is sent to jail'}, room=game_code)
+    emit('display text', {'text': f'{player.username} is sent to jail'}, session=session)
 
 
 def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type, roll_value=None):
     #returns true to show buy button and false otherwise
-    emit('message', {'msg': player.username + ' landed on ' + card.name}, room=game_code)
+    emit('message', {'msg': f'{player.username} landed on {card.name}'}, room=game_code)
+    emit('display text', {'text': f'{player.username} landed on {card.name}'}, session=session)
 
     #selects the row in the table recording who owns what property with the id of the property that was landed on
     with engine.connect() as conn:
@@ -124,7 +132,7 @@ def player_landed_on_money_card(player, game_code, card_table, card_type, sessio
     money_card = random.choice(card_table)
     functions.player1_owes_player2_money(player, money_card.amount)
     emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
-    emit('display card', {'text': money_card.text}, session=session)
+    emit('display text', {'text': money_card.text}, session=session)
     
 def update_position(game, game_code):
     positions = [[i, None, None] for i in range(40)]
