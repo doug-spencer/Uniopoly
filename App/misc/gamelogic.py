@@ -85,6 +85,7 @@ def player_landed_on_go_to_jail(player, game_code, pos_jail, session):
     player.position = pos_jail
     db.session.commit()
     emit('message', {'msg': f'{player.username} is sent to jail'}, room=game_code)
+    emit('flash function', session=session)
     emit('display text', {'text': f'{player.username} is sent to jail'}, session=session)
 
 

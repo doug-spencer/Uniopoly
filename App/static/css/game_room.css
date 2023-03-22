@@ -446,6 +446,34 @@ h2 {
 #bankrupt {
    margin: 20px 0px;
 }
+
+.flashing-image {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: auto;
+   height: auto;
+   max-width: 100%;
+   max-height: 100%;
+   object-fit: cover;
+   animation: flashFade 3s linear forwards;
+}
+ 
+@keyframes flashFade {
+   0% {
+       opacity: 0;
+   }
+   25% {
+       opacity: 1;
+   }
+   75% {
+      opacity: 1;
+  }
+   100% {
+       opacity: 0;
+   }
+}
 #dice-display{
    position: absolute;
    bottom:0%;
