@@ -129,22 +129,21 @@ $(document).ready(function(){
     console.log(data.houses);
     if (data.houses !== undefined) {
         html = "";
-        console.log("in loop on houses");
+        html += `<table class="row-houses">`
         for (let i=0; i<data.houses.length; i++) {
-            html += `<div class="row-houses">`
             for (let j=0; j<data.houses[i].length; j++) {
                 var name = data.houses[i][j][0];
-                console.log(data.houses);
-                console.log(name+data.houses[i][j][2]);
-                html += `<div class="house">`
-                html += `<p>${name} <br> ${data.houses[i][j][2]}</p>`;
-                html += `<button onclick="buy_house('${name}')">+</button>`;
-                html += `<button onclick="sell_house('${name}')">-</button>`;
-                html += `</div>`;
+                html += `<tr class="house">`
+                html += `<td>${name}</td>`;
+                html += `<td><button class="button" onclick="sell_house('${name}')">-</button>`;
+                html += `${data.houses[i][j][2]}`;
+                html += `<button class="button" onclick="buy_house('${name}')">+</button></td>`;
+                html += `</tr>`;
+
+                
             }
-            html += `</div>`;
-        console.log(html)
         }
+        html += `</table>`;
     }
     else  {
         html = `<p>"You don't have any colour sets so you can't buy a house"</p>`

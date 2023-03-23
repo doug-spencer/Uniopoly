@@ -350,6 +350,17 @@
    color: white;
 }
 
+.row-houses td button {
+   padding-left: 2px;
+   text-align: center;
+   padding: 3px 17px;
+   margin: 5px 20px;
+ }
+
+.row-houses{
+   margin: auto;
+}
+
 .table-rows td {
    padding: 10px;
    background-color: white;
@@ -437,10 +448,6 @@
    flex-direction: row;
 }
 .house {
-   display: flex;
-   flex-direction: column;
-   flex-wrap: wrap;
-   float: left;
    padding: 20px;
  }
 .house button {
