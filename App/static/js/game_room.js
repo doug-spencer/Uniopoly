@@ -29,10 +29,19 @@ $(document).ready(function(){
         // $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
-
+    // Displays text in centre of board
     socket.on('display text', function(data) {
         $('#text-box').show();
-        document.getElementById("main-text").innerHTML = data.text;
+        var header = document.createElement("h1");
+        header.innerHTML = data.text;
+        document.getElementById("text-box").appendChild(header);
+    });
+    // Clears text in center of board
+    socket.on('clear text', function() {
+        var div = document.getElementById('text-box');
+        while(div.firstChild){
+            div.removeChild(div.firstChild);
+        }
     });
 
     //show or hide roll dice button
@@ -47,7 +56,6 @@ $(document).ready(function(){
     //show or hide end turn button
     socket.on('end turn button change', function(data) {
         if(data.operation == 'show'){
-            console.log('fucj yu ')
             $('#end-turn-button').show();
         } else {
             $('#end-turn-button').hide();
@@ -227,10 +235,6 @@ $(document).ready(function(){
         $('#buy-property-button').hide();
         $('#dont-buy-property-button').hide();
         socket.emit('dont-buy-property');
-    });
-    //when the card display button is pressed
-    $('#text-button').click(function(e) {
-        $('#text-box').hide();
     });
 });
 //if a player leaves the room (WIP)
