@@ -277,7 +277,21 @@ def get_house_price(colour):
     else:
         return 200
 
+def check_if_mortgaged(player_id, photo):
+    card = Property.query.filter_by(photo=photo).first()
+    table = link_player_property
+    if not card:
+        card = Bus_stop.query.filter_by(photo=photo).first()
+        table = link_player_bus_stop
+    if not card:
+        card = Utilities.query.filter_by(photo=photo).first()
+        table = link_player_utilities
+    
+    card_id = card.id
+    amount = card.morgage_value
 
+    result = link_table_updates.query_link_table_with_two_id(player_id, card_id, table, True)
+    return amount, table, result
 # def eliminate_players(game):
 #     for player in game.players_connected:
 #         if player.money  <= 0:

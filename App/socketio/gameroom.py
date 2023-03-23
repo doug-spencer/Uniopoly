@@ -219,8 +219,9 @@ def buy_property():
 
     emit('buy property button change', {'operation': 'hide'}, session=session)
     emit('end turn button change', {'operation': 'show'}, session=session)
-
-
+    #shows the roll dice button and updates the turn
+    #gamelogic.resume_player_turn(game_code)
+    #update_index_of_turn()
 
 @socketio.on('dont-buy-property', namespace='/gameroom') #When player presses buy button
 def dont_buy_property():
@@ -278,8 +279,62 @@ def buy_house(data):
         link_table_updates.update_link_table(player.id, property.id, link_player_property, False, houses + 1)
         player1_owes_player2_money(player, amount)
     else:
-        emit('message', {'msg':'You are too broke for that house'}, session=session)
-        emit('display text', {'text': f'You are too broke for that house'}, session=session)
+        emit('message', {'msg':"You don't have enough money to buy a house."}, session=session)
+
+@socketio.on('mortgage card', namespace='/gameroom')
+def mortgage(data):
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    
+    player = Player.query.filter_by(username = username, game_code=game_code).first()
+    id = data['card_id']
+    photo = data['photo']
+    
+    amount, table, result = gamelogic.check_if_mortgaged(player.id, photo)
+
+    if result[0][3] != 0:
+        emit('message', {'msg': player.username + ' must sell all houses first'}, room = game_code)
+        return
+
+    if result[0][2] == False:
+        link_table_updates.update_link_table(player.id, id, table, True)
+
+        player.money += amount
+        db.session.commit()
+        emit('message', {'msg': player.username + ' mortgaged'}, room = game_code)
+    else:
+        emit('message', {'msg': player.username + ' has already mortgaged'}, room = game_code)
+    get_cards()
+
+@socketio.on('unmortgage card', namespace='/gameroom')
+def unmortgage(data):
+    game_code = session.get('game_code')
+    username = session.get('username')
+    game, player = check_in_game(game_code, username)
+    if not game and not player:
+        return False
+    
+    player = Player.query.filter_by(username = username, game_code=game_code).first()
+    id = data['card_id']
+    photo = data['photo']
+    
+    amount, table, result = gamelogic.check_if_mortgaged(player.id, photo)
+
+    # amount = card.mortgage_value
+
+    if result[0][2] == True:
+        link_table_updates.update_link_table(player.id, id, table, False)
+
+        player.money -= amount
+        db.session.commit()
+        emit('message', {'msg': player.username + ' unmortgaged'}, room = game_code)
+    else:
+        emit('message', {'msg': player.username + ' has already unmortgaged'}, room = game_code)
+        
+    get_cards()
 
 @socketio.on('bankrupt', namespace='/gameroom')
 def bankrupt():

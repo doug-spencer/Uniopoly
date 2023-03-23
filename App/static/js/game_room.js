@@ -107,7 +107,7 @@ $(document).ready(function(){
             const img = new Image();
             img.src = '/images/'+name;
             img.addEventListener('click', function() {
-                socket.emit('mortgage card', {card_id: data.unmortgaged_cards_id[i]});
+                socket.emit('mortgage card', {card_id: data.unmortgaged_cards_id[i], photo: data.unmortgaged_cards[i]});
             });
            document.getElementById('image-grid-unmortgaged').appendChild(img);
         }
@@ -117,7 +117,7 @@ $(document).ready(function(){
             const img = new Image();
             img.src = '/images/'+name;
             img.addEventListener('click', function() {
-                socket.emit('unmortgage card', {card_id: data.mortgaged_cards_id[i]});
+                socket.emit('unmortgage card', {card_id: data.mortgaged_cards_id[i], photo: data.mortgaged_cards[i]});
             });
             document.getElementById('image-grid-mortgaged').appendChild(img);
         }
