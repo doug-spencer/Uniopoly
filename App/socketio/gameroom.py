@@ -79,7 +79,8 @@ def roll_dice():
     #escapes jail if a double is rolled
     if roll1 == roll2 and player.turns_in_jail > 0:
         player.turns_in_jail = 0
-        emit('message', {'msg': player.username + ' rolled a double ' + str(roll1) + ' and gets out of jail'})
+        emit('message', {'msg': f'{player.username} rolls a double {str(roll1)} and gets out of jail'})
+        emit('display text', {'text': f'You roll a double {str(roll1)} and get out of jail'}, session=session)
         
         db.session.commit()
         emit('end turn button change', {'operation':'show'}, session=session)
@@ -102,13 +103,6 @@ def roll_dice():
 
         if not buy_choice_active:
             emit('end turn button change', {'operation':'show'}, session=session)
-
-    # else:
-    #     #escapes jail if a double is rolled
-    #     if roll1 == roll2:
-    #         player.turns_in_jail = 0
-    #         emit('message', {'msg': f'{player.username} rolls a double {str(roll1)} and gets out of jail'})
-    #         emit('display text', {'text': f'You roll a double {str(roll1)} and get out of jail'}, session=session)
             
         gamelogic.update_position(game, game_code)
     
