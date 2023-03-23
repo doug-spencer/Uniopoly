@@ -29,13 +29,13 @@
    }
 
    /* orientations for the board and center */
-   .orientation0 { transform: rotateZ(0deg); }
-   .orientation1 { transform: rotateZ(-90deg); }
-   .orientation1 #center{ transform: rotateZ(90deg); }
-   .orientation2 { transform: rotateZ(180deg); }
-   .orientation2 #center{ transform: rotateZ(180deg); }
-   .orientation3 { transform: rotateZ(90deg); }
-   .orientation3 #center{ transform: rotateZ(-90deg); }
+   .orientation0 { transform: rotateZ(0deg); transition: transform 0.5s ease;}
+   .orientation1 { transform: rotateZ(-90deg); transition: transform 0.5s ease;}
+   .orientation1 #center{ transform: rotateZ(90deg); transition: transform 0.5s ease;}
+   .orientation2 { transform: rotateZ(180deg); transition: transform 0.5s ease;}
+   .orientation2 #center{ transform: rotateZ(180deg); transition: transform 0.5s ease;}
+   .orientation3 { transform: rotateZ(90deg); transition: transform 0.5s ease;}
+   .orientation3 #center{ transform: rotateZ(-90deg); transition: transform 0.5s ease;}
 
    #center {
       position:relative;
