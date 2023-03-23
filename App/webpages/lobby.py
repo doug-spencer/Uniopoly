@@ -38,7 +38,5 @@ def lobby():
             db.session.commit()
             return redirect(url_for('game_room'))
         else:
-            socketio.emit('flash function', {'msg': 'You cant start the game with only one person!'}, session=session)
-            time.sleep(5)
-            return redirect(request.url)
+            return False
     return render_template('lobby.html', game_code=game_code, session=session)
