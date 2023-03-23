@@ -1,0 +1,85 @@
+:root {
+    --size: 75px;
+  }
+
+#dice{
+    padding-top: 20vh;
+    width:400px;
+    margin:auto;
+}
+
+.scene {
+    width: calc(var(--size) * 2);
+    height: calc(var(--size) * 2);
+    perspective: calc(var(--size) * 4);
+  }
+  
+.cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotate 5s infinite linear;
+}
+
+#left {
+    float:left;
+}
+
+#right {
+    float:right;
+}
+
+.cube div {
+    position: absolute;
+    border: 1px solid black;
+    background-size: cover;
+}
+
+.front  { 
+    width: 100%; 
+    height: 100%;
+    background-image: url('/static/images/dice/dice_1.png');
+    background-color: black;
+    transform: translateZ(var(--size));
+}
+.back   { 
+    width: 100%; 
+    height: 100%;
+    background-image: url('/static/images/dice/dice_2.png');
+    background-color: black;
+    transform: translateZ(calc(var(--size) * -1)) rotateY(180deg);
+}
+.right  { 
+    width: 150px; 
+    height: 100%;
+    background-image: url('/static/images/dice/dice_3.png');
+    background-color: black;
+    transform: rotateY(90deg) translateZ(var(--size));
+}
+.left   { 
+    width: 150px; 
+    height: 100%;
+    background-image: url('/static/images/dice/dice_4.png');
+    background-color: black;
+    transform: rotateY(-90deg) translateZ(var(--size));
+}
+.top    { 
+    width: 100%; 
+    height: 150px;
+    background-image: url('/static/images/dice/dice_5.png');
+    background-color: black;
+    transform: rotateX(90deg) translateZ(var(--size));
+}
+.bottom { 
+    width: 100%; 
+    height: 150px;
+    background-image: url('/static/images/dice/dice_6.png');
+    background-color: black;
+    transform: rotateX(-90deg) translateZ(var(--size));
+}
+
+@keyframes rotate {
+    0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+}
