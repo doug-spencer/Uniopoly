@@ -79,7 +79,7 @@ def roll_dice():
     #escapes jail if a double is rolled
     if roll1 == roll2 and player.turns_in_jail > 0:
         player.turns_in_jail = 0
-        emit('message', {'msg': player.username + ' rolled a double ' + str(roll1) + ' and gets out of jail'})
+        emit('message', {'msg': f'{player.username} rolls a double {str(roll1)} and gets out of jail'})
         emit('display text', {'text': f'You roll a double {str(roll1)} and get out of jail'}, session=session)
         
         db.session.commit()
@@ -91,15 +91,14 @@ def roll_dice():
             if new_value > 39:
                 new_value -= 40
                 player.money += 200
-                emit('message', {'msg': f'{player.username} passed go and collected §200'}, room=game_code)
+                emit('message', {'msg': player.username + ' passed go and collected §200'}, room=game_code)
                 emit('display text', {'text': f'You passed go and collected §200'}, session=session)
 
-        player.position = new_value
-        emit('message', {'msg': f'{player.username}  rolled a {str(roll_value)} they are now at positon {str(new_value)}'}, room = game_code)
-        emit('display text', {'text': f'You move {str(roll_value)} places'}, session=session)
-        db.session.commit()
-        
-        #performs action associated with board position
+            player.position = new_value
+            emit('message', {'msg': f'{player.username}  rolled a {str(roll_value)} they are now at positon {str(new_value)}'}, room = game_code)
+            emit('display text', {'text': f'You move {str(roll_value)} places'}, session=session)
+            db.session.commit()
+            #performs action associated with board position
         buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
 
         if not buy_choice_active:
