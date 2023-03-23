@@ -133,11 +133,12 @@ $(document).ready(function(){
         for (let i=0; i<data.houses.length; i++) {
             for (let j=0; j<data.houses[i].length; j++) {
                 var name = data.houses[i][j][0];
-                html += `<tr class="house">`
+                html += `<tr class="house">`;
+                html += `<td><div style="width: 50px; height: 50px;" class="${data.houses[i][j][1]}"></div></td>`;
                 html += `<td>${name}</td>`;
-                html += `<td><button class="button" onclick="sell_house('${name}')">-</button>`;
+                html += `<td><button class="button" id="minus" onclick="sell_house('${name}')">-</button>`;
                 html += `${data.houses[i][j][2]}`;
-                html += `<button class="button" onclick="buy_house('${name}')">+</button></td>`;
+                html += `<button class="button" id="plus" onclick="buy_house('${name}')">+</button></td>`;
                 html += `</tr>`;
 
                 
