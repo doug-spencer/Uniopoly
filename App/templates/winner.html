@@ -2,8 +2,11 @@
 
 {% block head %}
 <title>Menu</title>
-<meta name="description"
-    content="Some description of the winner page.">
+<meta name="description" content="Some description of the winner page.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/css/winner.css">
+<script type="text/javascript" src="/static/js/winner.js"></script>
 <!-- <script type="text/javascript" src="/static/js/lobby.js"></script> -->
 <!-- <link rel="stylesheet" href="/static/css/lobby.css"> -->
 {% endblock %}
@@ -11,8 +14,8 @@
 {% block body %}
 
 <div id="head">
-  <h2 id="message"></h2>
-  <h1 id="game-code">the winner is:</h1>
+<h2 id="message"></h2>
+<h1 id="game-code">the winner is:</h1>
 </div>
 
 <div id="mid-section">
@@ -22,4 +25,30 @@
     </form>
   </div>
 </div>
+
+<div id="dice">
+  <div id="left" class="scene">
+    <div class="cube">
+      <div class="front"></div>
+      <div class="back"></div>
+      <div class="right"></div>
+      <div class="left"></div>
+      <div class="top"></div>
+      <div class="bottom"></div>
+    </div>
+  </div>
+  <div id="right" class="scene">
+    <div class="cube">
+      <div class="front"></div>
+      <div class="back"></div>
+      <div class="right"></div>
+      <div class="left"></div>
+      <div class="top"></div>
+      <div class="bottom"></div>
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock %}
