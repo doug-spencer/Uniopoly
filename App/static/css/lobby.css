@@ -3,7 +3,7 @@
     text-align: center;
 }
 #game-code {
-    font-family: 'Fredoka One', cursive;
+    font-family: inherit;
     margin: 0.1em;
     font-size: 6em;
 }
@@ -19,7 +19,7 @@
 }
 #players-table {
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
+    font-family: inherit;
 }
 .table-header th {
     padding: 10px;
@@ -52,7 +52,7 @@ table {
   }
 
 .flashing-text {
-    font-family: 'Arial', sans-serif;
+    font-family: inherit;
     font-size: 42px;
     text-align: center;
     font-weight: bold;

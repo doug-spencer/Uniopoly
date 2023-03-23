@@ -12,11 +12,10 @@
 #join-form {
     display: inline-block;
     padding: 10px;
-    border: 0.1px solid white;
-    border-radius: 2px;
+    border: 1px solid white;
+    border-radius: 5px;
     background-image: radial-gradient(circle, #c9c9e6, #e6e6fa);
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    align-items: center;
+    box-shadow: 0px 4px 3px 1px rgba(0 0 0 / 67%);
 }
 
 #create-form {
@@ -29,24 +28,9 @@
     display: inline-block;
     width: 6rem;
     font-size: 27px;
-    font-family: Arial;
+    font-family: inherit;
     font-weight: bold;
     text-align: right;
     margin-right: 1rem;
     color: black;
 }
-
-@keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-}
-  
-
-.button {
-    animation: fadeIn 1s ease-in-out forwards;
-  }
-  

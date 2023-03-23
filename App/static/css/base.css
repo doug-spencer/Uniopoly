@@ -182,29 +182,25 @@ body {
     background-image: url('/static/images/background.webp'); /*https://www.vecteezy.com/vector-art/640206-purple-triangulated-background-texture-vector*/
     background-size: cover;
     text-align: center;
-    font-family: Arial;
+    font-family: Montserrat, "Noto Sans Arabic", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 20px;
     overflow: auto;
 }
 
 .button {
     padding: 10px 15px;
-    background-image: radial-gradient(ellipse, #7B1FA2, #660099);
-    background-size: cover;
-    font-family: Arial;
+    background-color: #7b1fa2;
+    font-family: inherit;
     font-size: 30px;
     font-weight: bold;
     color: white;
     margin: 2px;
     border: none;
     border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
 }
 
 .button:hover {
-    background-color: darkviolet;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 3px #000000ff;
     transform: scale(1.1);
 }
 
@@ -227,7 +223,7 @@ body {
     border-radius: 5px;
     margin: 2px;
     padding: 5px;
-    font-family: Arial;
+    font-family: inherit;
     font-weight: bold;
     background-color: white;
     color: black;
@@ -265,7 +261,7 @@ footer {
 
 @media only screen {
     body {
-        background-image: url('/static/images/background-mobile.webp');
+        background-image: url('/static/images/background_test.jpg');
         background-attachment: fixed;
         background-size: cover;
         /*overflow: hidden;*/
