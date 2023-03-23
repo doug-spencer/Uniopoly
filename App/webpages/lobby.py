@@ -1,7 +1,9 @@
 from flask import redirect, render_template, request, session, url_for, flash
-from App.main import app, db
+from flask_socketio import emit
+from App.main import app, db, socketio
 from App.database.tables import Game, Player
 from App.misc.functions import get_correct_location
+import time
 
 @app.route('/lobby', methods=['GET', 'POST'])
 def lobby():
@@ -31,7 +33,12 @@ def lobby():
         if game.players_connected[0].username != username:
             #player isnt host
             return False
-        game.game_started = True
-        db.session.commit()
-        return redirect(url_for('game_room'))
+        if len(game.players_connected) > 1:
+            game.game_started = True
+            db.session.commit()
+            return redirect(url_for('game_room'))
+        else:
+            socketio.emit('flash function', {'msg': 'You cant start the game with only one person!'}, session=session)
+            time.sleep(5)
+            return redirect(request.url)
     return render_template('lobby.html', game_code=game_code, session=session)

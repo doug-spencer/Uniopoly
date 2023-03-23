@@ -8,6 +8,7 @@ $(document).ready(function() {
     });
 
     socket.on('flash function', function(data) {
+      console.log('bosh')
       const animatedText = document.getElementById('flashing-text');
       animatedText.innerHTML = data.msg + " entered the room";
       animatedText.classList.add('flashing-text');
