@@ -20,8 +20,9 @@ def menu():
     formType = request.form.get('button')
     if formType == "Join":
         code = request.form.get('code')
-        game = Game.query.filter_by(code=game_code).first()
         if search("^\d{6}$", code):
+            print(code)
+            game = Game.query.filter_by(game_code=code).first()
             if len(game.players_connected) <= 6:
                 return join_game(code)
             else:

@@ -20,6 +20,20 @@ $(document).ready(function() {
       }, 3000); // Match the duration of the animation (3s)
     })
 
+    socket.on('start game avalible', function() {
+      console.log('boshhhh')
+      var input = document.getElementById('start')
+      input.disabled = false
+      input.className = 'button'
+    })
+
+    socket.on('start game not avalible', function() {
+      console.log('not boshhhh')
+      var input = document.getElementById('start')
+      input.disabled = true
+      input.className = 'button disabled'
+    })
+
     socket.on('game started', function(data) {
         window.location.href = "http://" + document.domain + ":" + location.port + "/gameroom"
     });
