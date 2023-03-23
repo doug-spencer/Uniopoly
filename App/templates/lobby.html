@@ -8,7 +8,10 @@
 <link rel="stylesheet" href="/static/css/lobby.css">
 {% endblock %}
 
+
+
 {% block body %}
+<<<<<<< HEAD
 
 <div id="head">
   <h2 id="message">Welcome to the lobby!</h2>
@@ -37,3 +40,42 @@
 
 <div id="flashing-text"></div>
 {% endblock %}
+=======
+<section>
+  <div id="head">
+    <h2 id="message">Welcome to the lobby!</h2>
+    <h1 id="game-code">{{ game_code }}</h1>
+  </div>
+
+  <div id="mid-section">
+    <div class="upper-row">
+      <div id="table-div">
+        <table id="players-table">
+          <thead>
+            <tr class="table-header">
+              <th>Number</th>
+              <th>Name</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <div id="image-div">
+        <img src="../static/images/playerIcons/sarah_standard.webp" alt="sarah"><img src="../static/images/playerIcons/stewart.webp" alt="terence"><img src="../static/images/playerIcons/duncan.webp" alt="stewart">
+      </div>
+
+      <div id="button-container">
+        <div id="button-div">
+          <form action="/lobby" method="POST">
+            <input class="button" id="leave" type="submit" name="leaveButton" value="Leave Room"></input>
+            <input class="button" id="start" type="submit" name="startButton" value="Start Game"></input>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+>>>>>>> ShivFinalLobby

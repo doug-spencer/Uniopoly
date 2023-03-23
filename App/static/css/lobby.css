@@ -9,17 +9,33 @@
 }
 
 #mid-section {
-    display: flex;
-    position: relative;
-    transform: translateX(25%);
+    display: relative;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
 }
 #table-div {
+    /* padding: 10px;
+    font-size: 30px; */
+    width: 40%;
+    display: block;
+    box-sizing: border-box;
     padding: 10px;
     font-size: 30px;
+    align-items: center;
+    margin-top: -30vh;
+    
+    
+    
+
 }
 #players-table {
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
+    width: 100%;
+
+    
 }
 .table-header th {
     padding: 10px;
@@ -40,7 +56,16 @@
 .table-rows:not(:last-child):nth-child(even) td {
     background-color: #f2f2f2;
 }
+
+#button-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+
+}
 #button-div {
+<<<<<<< HEAD
     padding: 10px;
 }
 
@@ -71,3 +96,57 @@ table {
     }
 }
   
+=======
+   
+    background-color: black;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: white;
+    padding:40px 20px; ;
+    border-radius: 20px;
+    width: 100%;
+   
+    
+    
+}
+
+section {
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+
+
+}
+
+#image-div img {
+    width: 100px;
+    height: 100px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+
+
+}
+
+#image-div {
+   
+   display:inline-block;
+
+    
+    
+}
+
+.upper-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+>>>>>>> ShivFinalLobby
