@@ -21,11 +21,11 @@
          "b o o o o o o o o d"
          "b a a a a a a a a a";
       background-color: black;
-      border: 6px solid #9800ad;
+      border: 0.7vh solid #000;
       font-size: 1.9vh;
       font-family: inherit;
       color: black;
-      box-shadow: 1px 4px 9px 0px black;
+      box-shadow: 0px 0px 20px 4px white;
    }
 
    /* orientations for the board and center */
@@ -46,7 +46,13 @@
       background-blend-mode: color;
       background-position: center center;
       background-size: 339%;
-      border: 0.2vh solid black;
+      border: 0.7vh solid black;
+   }
+   #center .button {
+      border: none;
+   }
+   #center .button:hover {
+      box-shadow: 0px 2px 3px #000000ff;
    }
 
    /* rows */
@@ -459,8 +465,8 @@
    border-radius: 3px;
 }
 .game-info-box {
-   background-image: radial-gradient(ellipse, #0000002f, #00000050);
-   box-shadow: 0 0 11px 0 white;
+   background-image: radial-gradient(ellipse, #ffffff2f, #00000050);
+   box-shadow: 0 0 20px 4px white;
    border-radius: 5px;
    margin: 8px 8px 0px 8px;
    color: white;

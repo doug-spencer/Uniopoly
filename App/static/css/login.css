@@ -1,7 +1,7 @@
 .login-div {
     position: absolute;
     padding: 10px;
-    border: none;
+    border: 2px solid white;
     border-radius: 10px;
     top: 50%;
     left: 50%;
