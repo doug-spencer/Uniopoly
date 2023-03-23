@@ -272,7 +272,7 @@
       width: 80%;
       border: 3px solid #ccc;
       z-index: 9;
-      background-color: #855abe;
+      background-color: #32145c;
    }
 
  /* Style the tab */
@@ -357,8 +357,20 @@
    margin: 5px 20px;
  }
 
+.row-houses td #plus{
+   background-color: green;
+}
+
+.row-houses td #minus{
+   background-color: red;
+}
+
+
+ 
+
 .row-houses{
    margin: auto;
+   
 }
 
 .table-rows td {
