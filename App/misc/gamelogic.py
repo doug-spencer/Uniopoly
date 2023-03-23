@@ -136,16 +136,18 @@ def player_landed_on_money_card(player, game_code, card_table, card_type, sessio
     emit('display text', {'text': money_card.text}, session=session)
     
 def update_position(game, game_code):
-    positions = [[i, None, None] for i in range(40)]
+    players = [[i, None, None, 0] for i in range(40)]
     for i in game.players_connected:
-        if positions[i.position][1] == None:
-            positions[i.position][1] = i.username
-            positions[i.position][2] = str(i.symbol)
+        if players[i.position][1] == None:
+            players[i.position][1] = i.username
+            players[i.position][2] = str(i.symbol)
+            players[i.position][3] = str(i.turns_in_jail)
         else:
-            positions[i.position][1] = positions[i.position][1] + ',' + i.username
-            positions[i.position][2] = positions[i.position][2] + ',' + str(i.symbol)
-    positions = [i for i in positions if i[1]!= None]
-    emit('update player positions', {'positions': positions}, room=game_code) 
+            players[i.position][1] = players[i.position][1] + ',' + i.username
+            players[i.position][2] = players[i.position][2] + ',' + str(i.symbol)
+            players[i.position][3] = players[i.position][3] + ',' + str(i.turns_in_jail)
+    players = [i for i in players if i[1]!= None]
+    emit('update player positions', {'players': players}, room=game_code) 
 
 def get_property_rent_amount(card, link_table, player_ids_in_game):
     with engine.connect() as conn:

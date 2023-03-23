@@ -5,7 +5,7 @@ const sprite_imgs = [
     'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
     'terence_standard.webp', 'uli_standard.webp'
 ];
-var colours = ['#FF69B4', 'black', 'darkred', 'blue', 'darkgreen', 'gold'];
+var colours = ['gold', 'blue', 'darkgreen', 'FF69B4', 'darkred', 'black'];
 $(document).ready(function(){
     socket = io.connect('http://' + document.domain + ':' + location.port + '/gameroom');
     socket.on('connect', function() {
@@ -24,7 +24,10 @@ $(document).ready(function(){
 
     //for any basic msgs
     socket.on('message', function(data) {
-        let colour = colours[Math.floor(Math.random() * colours.length)];
+        let colour = 'white';
+        if (data.colourId != undefined) {
+            colour = colours[data.colourId];
+        }
         $('#messages').append(`<p style="margin: 0px;color: ${colour};">${data.msg}</p>`);
         // $('#messages').val($('#messages').val() + data.msg + '\n');
         $('#messages').scrollTop($('#messages')[0].scrollHeight);
@@ -175,15 +178,28 @@ $(document).ready(function(){
         for (let i=0; i<40; i++) {
             $('#tile' + i).html("");
         }
-        for (let i=0; i<data.positions.length; i++) {
-            if (data.positions[i][1] == username) {
-                let row = $('#tile' + data.positions[i][0]).parent().parent().attr('id').slice(-1);
-                document.getElementById('board').setAttribute('class', 'orientation' + row);
-            }
-            let players = data.positions[i][1].split(',');
-            let symbols = data.positions[i][2].split(',');
-            for (let j=0; j<players.length; j++) {
-                $('#tile' + data.positions[i][0]).append('<img src="/static/images/playerIcons/' + sprite_imgs[symbols[j]] + '" alt="' + players[j] + '"/>');
+        $('#tile10-j').html("");
+        for (let i=0; i<data.players.length; i++) {
+            let players_arr = data.players[i][1].split(',');
+            let symbols = data.players[i][2].split(',');
+            let inJail = data.players[i][3].split(',');
+            for (let j=0; j<players_arr.length; j++) {
+                let id = data.players[i][0];
+                if (id == 10 && inJail[j] > 0) {
+                    id += '-j';
+                }
+                if (players_arr[j] == username) {
+                    let row;
+                    if (id == '10-j') {
+                        row = 0;
+                    } else if (id == '10') {
+                        row = 1;
+                    } else {
+                        row = Math.floor(id / 10);
+                    }
+                    document.getElementById('board').setAttribute('class', 'orientation' + row);
+                }
+                $('#tile' + id).append('<img src="/static/images/playerIcons/' + sprite_imgs[symbols[j]] + '" alt="' + players_arr[j] + '"/>');
             }
         }
     });
