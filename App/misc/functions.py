@@ -154,7 +154,7 @@ def players_won(game):
     db.session.delete(player)
     db.session.delete(game)
     db.session.commit()
-    emit("redirect to winner page") ##needs to work for everyone
+    # emit("redirect to winner page") ##needs to work for everyone
     #emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
     #emit('game_over', room=game.game_code)
  

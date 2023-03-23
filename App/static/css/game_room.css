@@ -26,6 +26,7 @@
       font-family: inherit;
       color: black;
       box-shadow: 0px 0px 20px 4px white;
+      overflow: hidden;
    }
 
    /* orientations for the board and center */

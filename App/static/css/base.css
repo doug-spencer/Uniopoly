@@ -244,21 +244,12 @@ footer {
     left: 0;
     width: 100%;
 }
-
-.footer-links a {
-    text-decoration: none;
-    margin-right: 14px;
-}
   
-.footer-legal a, .footer-legal p {
+.footer-legal p {
     margin: 5px 5px;
     font-size: 12px;
     color: #fff;
     text-decoration: none;
-}
-    
-.footer-links a:hover, .footer-legal a:hover {
-    text-decoration: underline;
 }
 
 @media only screen {
