@@ -2,10 +2,8 @@
 FINAL TASKS
 ----------------
 Style the open options pop up - Been
-End game procedure - Jacob
-Check for more than 1 player and <= 8 - Jacob
+End game procedure - Douglas
 front end of remove button in lobby - Douglas
-Changing DB for chance cards - Jacob
 Moving the players name to jail with the player - Been
 Remove the footer - Cally
 ----------------
