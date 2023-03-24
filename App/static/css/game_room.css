@@ -273,45 +273,38 @@
    .options-popup {
       display: none;
       position: absolute;
-      top: 20%;
-      height: 60%;
-      width: 100%;
-      border: 3px solid #ccc;
+      left:5%;
+      top: 5%;
+      height: 90%;
+      width: 90%;
+      border: 3px solid black;
+      border-radius:10px;
       z-index: 9;
-      background-color: #32145c;
+      background-color: #32145cc9;
    }
 
  /* Style the tab */
 .tab {
-   float: left;
-   background-color: #ccc;
-   width: auto;
-   height: auto;
+   /* float: left; */
+   background-color: #5e3597de;
+   height: 10%;
+   top:0%;
+   border:None;
+   border-radius:10px;
+   text-align:center;
  }
  
- .tablinks {
-   display: block;
-   background-color: inherit;
-   background-color: #660099;
-   color: white;
-   padding: 22px 16px;
-   width: 100%;
-   border: none;
-   outline: none;
-   text-align: left;
-   cursor: pointer;
- }
-
  /* Style the buttons that are used to open the tab content */
  .tab button {
-   display: block;
+   display: inline-block;
    background-color: inherit;
-   color: black;
-   padding: 22px 16px;
-   width: 100%;
+   color: white;
+   width: 32%;
+   height:100%;
    border: none;
+   border-radius:10px;
    outline: none;
-   text-align: left;
+   text-align: center;
    cursor: pointer;
  }
  
@@ -325,22 +318,52 @@
    background-color: #855abe;
  }
 
+ #closes-tab {
+   background-color: #a5001b;
+ }
+ #closes-tab:hover {
+   background-color: red;
+ }
+
 
  /* Style the tab content */
  .tabcontent {
-   float: right;
    padding: 0px 12px;
    width: 80%;
+   margin:auto;
    border-left: none;
    border-right: none;
-   height: 100%;
+   max-height:90%;
    display: none;
-   overflow: auto;
+   overflow-y: auto;
  }
  .tabcontent button {
    top:5px;
    right:5px;
  }
+ .tabcontent h4 {
+   background-color:#00000084;
+   width:100%;
+   border-radius:5px;
+ }
+
+.tabcontent::-webkit-scrollbar {
+   width: 1ch;
+}
+.tabcontent::-webkit-scrollbar-track {
+   background-color: #36363670;
+   border-radius: 8px;
+   box-shadow: inset -4px 0 4px #1111116d;
+}
+.tabcontent::-webkit-scrollbar-thumb {
+   background-color: #cdcccc;
+   border-radius: 8px;
+   border: 1px solid #1e1e1e;
+   box-shadow: inset -4px 0 4px #ffffff59;
+}
+.tabcontent::-webkit-scrollbar-thumb:hover {
+   background-color: #e7e7e7;
+}
 
 #money-table {
    border-collapse: collapse;
@@ -439,16 +462,42 @@
    padding: 10px;
    width: 80%;
    margin: auto;
-   border: none;
+   position: absolute;
+   bottom: 21%;
+   max-height:50%;
+   height:50%;
+
+   border: white solid 2px;
    border-radius: 10px;
    left: 10%;
    background-color: #000000a8;
    color:white;
+   overflow-y: auto;
+}
+#text-box::-webkit-scrollbar {
+   width: 1ch;
+}
+#text-box::-webkit-scrollbar-track {
+   background-color: #36363670;
+   border-radius: 8px;
+   box-shadow: inset -4px 0 4px #1111116d;
+}
+#text-box::-webkit-scrollbar-thumb {
+   background-color: #cdcccc;
+   border-radius: 8px;
+   border: 1px solid #1e1e1e;
+   box-shadow: inset -4px 0 4px #ffffff59;
+}
+#text-box::-webkit-scrollbar-thumb:hover {
+   background-color: #e7e7e7;
 }
 
 #button-div {
    margin: auto;
-   padding: 3%;
+   position: absolute;
+   top: 3%;
+   left:0;
+   right:0;
 }
 
 
@@ -545,11 +594,11 @@ h2 {
    }
 }
 #dice-display{
-   position: relative;
-   bottom: -15%;
+   position: absolute;
+   bottom: 3%;
 }
 #dice-display img{
-   max-width:30%;
+   max-width:15%;
 }
 
 /* footer */

@@ -71,14 +71,10 @@ def join_game(code):
     
     # If there are fewer than 8 players, the index of a random unused sprite is chosen
     players_symbols = [i.symbol for i in game.players_connected]
-    if len(players_symbols) < 8:
-        symbol = randint(0,7)
+    if len(players_symbols) < 7:
+        symbol = randint(0,6)
         while symbol in players_symbols:
-            symbol = randint(0,7)
-
-    # Else the index lies outside the array of sprites
-    else:
-        symbol = 8
+            symbol = randint(0,6)
 
     player = Player(position=0, index_in_game=len(game.players_connected), symbol=symbol, money=1000, turns_in_jail=0)
     account.game_instances.append(player)

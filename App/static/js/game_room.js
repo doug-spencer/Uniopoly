@@ -125,9 +125,10 @@ $(document).ready(function(){
         }
     });
     socket.on('houses', function(data) {
-        html = `<p>"You don't have any colour sets so you can't buy a house"</p>`
+        html = `<h4>"You don't have any colour sets so you can't buy a house"</h4>`
         if (data.houses !== undefined) {
-            html = `<table class="row-houses">`;
+            html = `<h4>Houses you can buy and sell:</h4>`
+            html += `<table class="row-houses">`;
             for (let i=0; i<data.houses.length; i++) {
                 for (let j=0; j<data.houses[i].length; j++) {
                     var name = data.houses[i][j][0];

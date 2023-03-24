@@ -28,21 +28,23 @@
         <div id="board">
             <div id="center-bg">
                 <div id="center">
-                    <div name="dice-button" id="dice-button">
-                        <button class="button" type="button" id="roll-dice">Roll Dice</button><br>
+                    <div name ="button-div" id="button-div">
+                        <div name="dice-button" id="dice-button">
+                            <button class="button" type="button" id="roll-dice">Roll Dice</button><br>
+                        </div>
+                        <div name="end-turn-button" id="end-turn-button">
+                            <button class="button" type="button" id="end-turn">End Turn</button><br>
+                        </div>
+                        
+                        <div name="buy-property-button" id="buy-property-button">
+                            <button class="button" type="button" id="buy-property">Buy</button><br>
+                        </div>
+                        
+                        <div name="dont-buy-property-button" id="dont-buy-property-button">
+                            <button class="button" type="button" id="dont-buy-property">Don't Buy</button><br>
+                        </div>
                     </div>
-                    <div name="end-turn-button" id="end-turn-button">
-                        <button class="button" type="button" id="end-turn">End Turn</button><br>
-                    </div>
-                    
-                    <div name="buy-property-button" id="buy-property-button">
-                        <button class="button" type="button" id="buy-property">Buy</button><br>
-                    </div>
-                    
-                    <div name="dont-buy-property-button" id="dont-buy-property-button">
-                        <button class="button" type="button" id="dont-buy-property">Don't Buy</button><br>
-                    </div>
-                    
+
                     <div name="text-box" id="text-box">
                         <h1 id="main-text"></h1>
                         <button class="button" type="button" id="text-button">OK</button><br>
@@ -301,6 +303,7 @@
             <div class="tab">
                 <button class="tablinks" id="cards-tab" onclick="change_tab(event, 'cards')">View Cards</button>
                 <button class="tablinks" id="houses-tab" onclick="change_tab(event, 'houses')">Buy/Sell Houses</button>
+                <button class="tablinks" id="closes-tab" onclick="close_options()">Close</button>
             </div>
             <div class="tabcontent" id="cards" style="display:block;">
                 <h4>Your cards:</h4>
