@@ -131,6 +131,17 @@ def bankrupt_player(player):
     username = session.get('username')
     game= Game.query.filter_by(game_code=game_code).first()
     if len(game.players_connected) > 2:
+        print(game.index_of_turn)
+        if game.index_of_turn == player.index_in_game:
+            pass
+        elif game.index_of_turn== -1*player.index_in_game - 1:
+            game.index_of_turn = (game.index_of_turn + 1) * -1
+        elif game.index_of_turn > player.index_in_game:
+            game.index_of_turn = game.index_of_turn - 1
+        elif game.index_of_turn < -1*player.index_in_game - 1:
+            game.index_of_turn = game.index_of_turn + 1
+
+        print(game.index_of_turn)
         print('game not over')
         leave_room(game_code)
         player = Player.query.filter_by(username = username, game_code=game_code).first()
@@ -140,10 +151,11 @@ def bankrupt_player(player):
             if index > index_of_player:
                 game.players_connected[index].index_in_game = index - 1
             index += 1
-
+        emit('message', {'msg': player.username + ' declared bankrupcy!'}, room=game_code)
         db.session.delete(player)
         db.session.commit()
         session.pop('game_code', None)
+        emit('game_over', session=session)
     else:
         player.money = -1000000
         db.session.commit()

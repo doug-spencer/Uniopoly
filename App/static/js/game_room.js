@@ -214,9 +214,6 @@ $(document).ready(function(){
         }
     });
     socket.on('game_over', function(data){
-        console.log('game_over')
-        var now = new Date().getTime();
-        while(new Date().getTime() < now + 15000){ /* Do nothing */ }
         window.location.href = "/menu";
     });
 
