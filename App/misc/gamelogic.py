@@ -122,7 +122,20 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
     
 def player_landed_on_money_card(player, game_code, card_table, card_type, session):
     money_card = random.choice(card_table)
-    player.money += money_card.amount
+    if money_card.amount != 0:
+        player.money += money_card.amount
+    elif money_card.amount == 0:
+        player.position = money_card.go_to
+        if money_card.go_to == 10:
+            player.turns_in_jail = 3
+
+        game_code = session.get('game_code')
+        username = session.get('username')
+        game, player123 = functions.check_in_game(game_code, username)
+        
+        update_position(game, game_code)
+
+    db.session.commit()
     emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
     emit('display card', {'text': money_card.text}, session=session)
     

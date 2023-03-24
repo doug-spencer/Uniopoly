@@ -67,8 +67,8 @@ def roll_dice():
     
     gamelogic.halt_player_turn(game_code)
     
-    roll1 = randint(1, 6)
-    roll2 = randint(1,6)
+    roll1 = randint(7, 7)
+    roll2 = randint(0,0)
     roll_value = roll1 + roll2
     current_value = player.position
     new_value = roll_value + current_value
