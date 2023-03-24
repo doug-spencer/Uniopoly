@@ -298,7 +298,6 @@ def mortgage(data):
     photo = data['photo']
     
     amount, table, result = gamelogic.check_if_mortgaged(player.id, photo)
-    print(amount, table, result)
     try:
         if result[0][3] != 0:
             emit('message', {'msg': player.username + ' must sell all houses first.'}, room = game_code)

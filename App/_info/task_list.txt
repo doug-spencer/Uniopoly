@@ -20,7 +20,7 @@ Before submitting
 ----------------
 Dont load test data
 Set player cap at number of valid sprites 
-
+delete all print statments
 
 
 indicate which players turn it is
@@ -33,3 +33,4 @@ correct 3 turns jail
 style buy/not buy
 declare bankruptcy button
 let user know how much a prop costs when they land on it
+test player cap
