@@ -77,7 +77,8 @@ $(document).ready(function(){
         
     });
 
-    socket.on('redirect to winner page', function() {
+    socket.on('redirect to winner page', function(data) {
+        console.log('redirect to winner page')
         window.location.href = "/winner";
     });
 
@@ -252,22 +253,15 @@ $(document).ready(function(){
         socket.emit('dont-buy-property');
     });
 });
-//if a player leaves the room (WIP)
-function leave_room() {
-    socket.emit('left', {}, function() {
-        socket.disconnect();
-        window.location.href = "/menu";
-    });
-}
 function buy_property() {
     const property = document.getElementById('property').value;
     socket.emit('buy property', {property: property});
 }
 function bankrupt() {
     socket.emit('bankrupt');
-    var now = new Date().getTime();
-    while(new Date().getTime() < now + 1000){ /* Do nothing */ }
-    window.location.href = "/menu";
+    //var now = new Date().getTime();
+    //while(new Date().getTime() < now + 1000){ /* Do nothing */ }
+    //window.location.href = "/menu";
 }
 function close_options() {
     document.getElementById("options").style.display = 'none';
@@ -325,4 +319,4 @@ function change_tab(evt, tab_name) {
 //calls function every 2.5seconds
 setInterval(function() {
     socket.emit('update turn');
-}, 2500); 
+}, 2000); 
