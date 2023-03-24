@@ -53,8 +53,8 @@ def end_turn():
         update_index_of_turn()
         emit('end turn button change', {'operation':'hide'}, session=session)
     else:
-        emit('message', {'msg': 'You need to clear your debt. Sell some houses or mortgage your cards'}, session = session)
-        emit('display text', {'text': f'You need to clear your debt. Sell some houses or mortgage your cards'}, session=session)
+        emit('message', {'msg': 'You need to clear your debt. Sell some houses or mortgage your cards.'}, session = session)
+        emit('display text', {'text': f'You need to clear your debt. Sell some houses or mortgage your cards.'}, session=session)
     
 
 @socketio.on('roll dice', namespace='/gameroom') #when a player rolls the dice
@@ -79,8 +79,8 @@ def roll_dice():
     #escapes jail if a double is rolled
     if roll1 == roll2 and player.turns_in_jail > 0:
         player.turns_in_jail = 0
-        emit('message', {'msg': f'{player.username} rolls a double {str(roll1)} and gets out of jail'})
-        emit('display text', {'text': f'You roll a double {str(roll1)} and get out of jail'}, session=session)
+        emit('message', {'msg': f'{player.username} rolls a double {str(roll1)} and gets out of jail.'})
+        emit('display text', {'text': f'You roll a double {str(roll1)} and get out of jail.'}, session=session)
         
         db.session.commit()
         emit('end turn button change', {'operation':'show'}, session=session)
@@ -91,12 +91,12 @@ def roll_dice():
             if new_value > 39:
                 new_value -= 40
                 player.money += 200
-                emit('message', {'msg': player.username + ' passed go and collected §200'}, room=game_code)
-                emit('display text', {'text': f'You passed go and collected §200'}, session=session)
+                emit('message', {'msg': player.username + ' passed go and collected §200.'}, room=game_code)
+                emit('display text', {'text': f'You passed go and collected §200.'}, session=session)
 
             player.position = new_value
-            emit('message', {'msg': f'{player.username}  rolled a {str(roll_value)} they are now at positon {str(new_value)}'}, room = game_code)
-            emit('display text', {'text': f'You move {str(roll_value)} places'}, session=session)
+            emit('message', {'msg': f'{player.username} rolled a {str(roll_value)}. They are now at position {str(new_value)}'}, room = game_code)
+            emit('display text', {'text': f'You move {str(roll_value)} places.'}, session=session)
             db.session.commit()
             #performs action associated with board position
         buy_choice_active = gamelogic.show_player_options(player, game_code, session, roll_value)
@@ -153,7 +153,7 @@ def text(message):
     game_code = session.get('game_code')
     username = session.get('username')
     colourId = Player.query.filter_by(username = username, game_code=game_code).first().index_in_game
-    emit('message', {'msg': session.get('username') + ' : ' + message['msg'], 'colourId': colourId}, room = game_code)
+    emit('message', {'msg': session.get('username') + ': ' + message['msg'], 'colourId': colourId}, room = game_code)
 
 #check if its players turn yet (if roll dice button should be shown)
 @socketio.on('update turn', namespace='/gameroom') 
@@ -166,7 +166,7 @@ def update_turn():
     
     if game.index_of_turn == player.index_in_game:
         emit('roll dice button change', {'operation': 'show'}, session = session)
-        emit('message', {'msg': 'It is ' + player.username + ' turn to roll the dice'}, room = game.game_code)
+        emit('message', {'msg': 'It is ' + player.username + '\'s turn to roll the dice'}, room = game.game_code)
     else:
         emit('roll dice button change', {'operation': 'hide'}, session = session)
 
@@ -204,8 +204,8 @@ def buy_property():
 
     #checks the player has enough money to buy the card
     if card_price > player.money:
-        emit('message', {'msg':f"{player.username} is too broke to buy this"})
-        emit('display text', {'text': f'You are too broke to buy this!'}, session=session)
+        emit('message', {'msg':f"{player.username} is too broke to buy this."})
+        emit('display text', {'text': f'You are too broke to buy this.'}, session=session)
         emit('buy property button change', {'operation':'show'}, session=session)
         return
 
@@ -215,8 +215,8 @@ def buy_property():
     db.session.execute(insert_stmnt)
     db.session.commit()
 
-    emit('message', {'msg': f'{player.username} has bought {card.name} for §{str(card_price)}'}, room=game_code)
-    emit('display text', {'text': f'You have bought {card.name} for §{str(card_price)}'}, session=session)
+    emit('message', {'msg': f'{player.username} has bought {card.name} for §{str(card_price)}.'}, room=game_code)
+    emit('display text', {'text': f'You have bought {card.name} for §{str(card_price)}.'}, session=session)
 
 
     emit('buy property button change', {'operation': 'hide'}, session=session)
@@ -230,8 +230,8 @@ def dont_buy_property():
     #shows the roll dice button and updates the turn    
     game_code = session.get('game_code')
 
-    emit('message', {'msg': f'Card not bought'}, room=game_code)
-    emit('display text', {'text': f'Card not bought'}, session=session)
+    emit('message', {'msg': f'Card not bought.'}, room=game_code)
+    emit('display text', {'text': f'Card not bought.'}, session=session)
 
     emit('buy property button change', {'operation': 'hide'}, session=session)
     emit('end turn button change', {'operation': 'show'}, session=session)
@@ -248,8 +248,8 @@ def sell_house(data):
     property = Property.query.filter_by(name=data['house']).first()
     houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][3]
     if houses == 0:
-        emit('message', {'msg':f'You have no houses on that property'}, session=session)
-        emit('display text', {'text': f'You have no houses on that property'}, session=session)
+        emit('message', {'msg':f'You have no houses on that property.'}, session=session)
+        emit('display text', {'text': f'You have no houses on that property.'}, session=session)
         return False
     amount = gamelogic.get_house_price(property.colour)
     if amount:
@@ -258,8 +258,8 @@ def sell_house(data):
         player.money += amount
         db.session.commit()
     else:
-        emit('message', {'msg':"You have no houses on that property"}, session=session)
-        emit('display text', {'text': f'You have no houses on that property'}, session=session)
+        emit('message', {'msg':"You have no houses on that property."}, session=session)
+        emit('display text', {'text': f'You have no houses on that property.'}, session=session)
 
 @socketio.on('buy house', namespace='/gameroom') 
 def buy_house(data):
@@ -273,8 +273,8 @@ def buy_house(data):
     property = Property.query.filter_by(name=data['house']).first()
     houses = link_table_updates.query_link_table_with_two_id(player.id, property.id, link_player_property, True)[0][3]
     if houses == 5:
-        emit('message', {'msg':'You already have a hotel on that property'}, session=session)
-        emit('display text', {'text': f'You already have a hotel on that property'}, session=session)
+        emit('message', {'msg':'You already have a hotel on that property.'}, session=session)
+        emit('display text', {'text': f'You already have a hotel on that property.'}, session=session)
         return False
     amount = gamelogic.get_house_price(property.colour)
     if player.money >= amount:
@@ -298,7 +298,7 @@ def mortgage(data):
     amount, table, result = gamelogic.check_if_mortgaged(player.id, photo)
 
     if result[0][3] != 0:
-        emit('message', {'msg': player.username + ' must sell all houses first'}, room = game_code)
+        emit('message', {'msg': player.username + ' must sell all houses first.'}, room = game_code)
         return
 
     if result[0][2] == False:
@@ -306,9 +306,9 @@ def mortgage(data):
 
         player.money += amount
         db.session.commit()
-        emit('message', {'msg': player.username + ' mortgaged'}, room = game_code)
+        emit('message', {'msg': player.username + ' mortgaged.'}, room = game_code)
     else:
-        emit('message', {'msg': player.username + ' has already mortgaged'}, room = game_code)
+        emit('message', {'msg': player.username + ' has already mortgaged.'}, room = game_code)
     get_cards()
 
 @socketio.on('unmortgage card', namespace='/gameroom')
@@ -332,9 +332,9 @@ def unmortgage(data):
 
         player.money -= amount
         db.session.commit()
-        emit('message', {'msg': player.username + ' unmortgaged'}, room = game_code)
+        emit('message', {'msg': player.username + ' unmortgaged.'}, room = game_code)
     else:
-        emit('message', {'msg': player.username + ' has already unmortgaged'}, room = game_code)
+        emit('message', {'msg': player.username + ' has already unmortgaged.'}, room = game_code)
         
     get_cards()
 

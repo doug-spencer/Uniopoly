@@ -54,25 +54,25 @@ def show_player_options(player, game_code, session, roll_value):
     return False    
 
 def player_landed_on_start(player, game_code, session):
-    emit('message', {'msg': f'{player.username} landed on go'}, room=game_code)
-    emit('display text', {'text': f'You landed on go'}, session=session)
+    emit('message', {'msg': f'{player.username} landed on go.'}, room=game_code)
+    emit('display text', {'text': f'You landed on go.'}, session=session)
     
 
 def player_landed_on_free_parking(player, game_code, session):
-    emit('message', {'msg': f'{player.username} landed on free parking'}, room=game_code)
-    emit('display text', {'text': f'You landed on free parking'}, session=session)
+    emit('message', {'msg': f'{player.username} landed on free parking.'}, room=game_code)
+    emit('display text', {'text': f'You landed on free parking.'}, session=session)
 
 def player_on_jail(player, game_code, session):
     if player.turns_in_jail == 0:
-        emit('message', {'msg': f'{player.username} is just visitin Oak House'}, room=game_code)
-        emit('display text', {'text': f'You are just visiting Oak House'}, session=session)
+        emit('message', {'msg': f'{player.username} is just visiting Oak House.'}, room=game_code)
+        emit('display text', {'text': f'You are just visiting Oak House.'}, session=session)
     elif player.turns_in_jail == 1:
-        emit('message', {'msg': f'{player.username} has 1 turn left in Oak House they. {player.username} must pay §50 to get out'}, room=game_code)
-        emit('display text', {'text': f'You have 1 turn left in Oak House they. You must pay §50 to get out'}, session=session)
+        emit('message', {'msg': f'{player.username} has 1 turn left in Oak House. They {player.username} must pay §50 to get out.'}, room=game_code)
+        emit('display text', {'text': f'You have 1 turn left in Oak House. You must pay §50 to get out.'}, session=session)
         functions.player1_owes_player2_money(player, 50)     
     else:
-        emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in Oak House'}, room=game_code)
-        emit('display text', {'text': f'You have {player.turns_in_jail} turns left in Oak House'}, session=session)
+        emit('message', {'msg': f'{player.username} has {player.turns_in_jail} turns left in Oak House.'}, room=game_code)
+        emit('display text', {'text': f'You have {player.turns_in_jail} turns left in Oak House.'}, session=session)
     
     player.turns_in_jail = max(0, player.turns_in_jail-1)
     db.session.commit()
@@ -84,15 +84,15 @@ def player_landed_on_go_to_jail(player, game_code, pos_jail, session):
     player.turns_in_jail += 3
     player.position = pos_jail
     db.session.commit()
-    emit('message', {'msg': f'{player.username} is sent to Oak House'}, room=game_code)
+    emit('message', {'msg': f'{player.username} is sent to Oak House.'}, room=game_code)
     emit('flash function', session=session)
-    emit('display text', {'text': f'You are sent to Oak House'}, session=session)
+    emit('display text', {'text': f'You are sent to Oak House.'}, session=session)
 
 
 def player_landed_on_purchasable_card(player, game_code, session, card, link_table, type, roll_value=None):
     #returns true to show buy button and false otherwise
-    emit('message', {'msg': f'{player.username} landed on {card.name}'}, room=game_code)
-    emit('display text', {'text': f'You landed on {card.name}'}, session=session)
+    emit('message', {'msg': f'{player.username} landed on {card.name}.'}, room=game_code)
+    emit('display text', {'text': f'You landed on {card.name}.'}, session=session)
 
     #selects the row in the table recording who owns what property with the id of the property that was landed on
     with engine.connect() as conn:
@@ -132,7 +132,7 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 def player_landed_on_money_card(player, game_code, card_table, card_type, session):
     money_card = random.choice(card_table)
     functions.player1_owes_player2_money(player, money_card.amount)
-    emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
+    emit('message', {'msg': f'{player.username} landed on {card_type.lower()}.'}, room=game_code)
     emit('display text', {'text': money_card.text}, session=session)
     
 def update_position(game, game_code):

@@ -2,6 +2,7 @@ from flask import render_template, request, session, redirect, url_for, flash
 from App.main import db, app
 from App.database.tables import Account, Game
 from App.misc.functions import check_account, check_username, get_correct_location
+from re import search
 import hashlib
 
 @app.route('/', methods=['GET', 'POST'])
@@ -57,6 +58,9 @@ def login():
 def signup():
     username = request.form.get("loginname")
     password = hashlib.sha256(request.form.get("loginpassword").encode()).hexdigest()
+    if search(r'\d', username):
+        flash('Username cannot contain numbers')
+        return render_template('login.html')
     if check_username(username):
         flash("Username taken")
         return render_template('login.html')
