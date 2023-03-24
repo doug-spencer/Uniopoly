@@ -4,7 +4,7 @@
 }
 #game-code {
     font-family: inherit;
-    margin: 0.1em;
+    margin: 5vh;
     font-size: 6em;
 }
 
@@ -20,6 +20,12 @@
 #players-table {
     border-collapse: collapse;
     font-family: inherit;
+}
+#table-body {
+    display: flex;
+}
+hr {
+    width: 70%;
 }
 .table-header th {
     padding: 10px;
@@ -41,7 +47,9 @@
     background-color: #f2f2f2;
 }
 #button-div {
-    padding: 10px;
+    padding: 1vh;
+    margin-top: 1vh;
+    margin-bottom: 10vh;
 }
 .disabled {
     color: grey;
@@ -51,7 +59,19 @@ table {
     margin-left: auto;
     margin-right: auto;
     border-collapse: collapse;
-  }
+}
+
+.host p {
+    color: yellow;
+}
+.hidden-button button, .host button {
+    visibility: hidden;
+}
+
+.remove {
+    background-color: red;
+    border: none;
+}
 
 .flashing-text {
     font-family: inherit;

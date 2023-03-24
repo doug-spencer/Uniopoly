@@ -46,12 +46,12 @@ $(document).ready(function() {
     //adds the players to a table with a remove button 
     socket.on('player list', function(data) {
       var isNotHost = data.username != data.players[0];
-      var body = '';
-      for(var i=0; i<data.players.length; i++){
-        if (isNotHost || i == 0) {
-          body += `<tr class="table-rows"><td>${data.players[i]}</td><td></td></tr>`
+      var body = `<tr class="table-rows host"><td class="col"><p>${data.players[0]}</p><button class="button" type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`;
+      for(var i=1; i<data.players.length; i++){
+        if (isNotHost) {
+          body += `<tr class="table-rows hidden-button"><td class="col"><p>${data.players[i]}</p><button class="button" type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`;
         } else {
-          body += `<tr class="table-rows"><td>${data.players[i]}</td><td><button class="button" type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`
+          body += `<tr class="table-rows"><td class="col"><p>${data.players[i]}</p><button class="button remove" type="button" onclick="remove_player('${data.players[i]}')">Remove</button></td></tr>`;
         }
       }
       document.getElementById("table-body").innerHTML = body;
