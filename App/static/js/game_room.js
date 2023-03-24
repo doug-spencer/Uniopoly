@@ -1,9 +1,8 @@
 var socket;
 var username;
 const sprite_imgs = [
-    'aphro_standard.webp', 'lucas_standard.webp', 
-    'NOT CONFIRMEDmarkel_standard.webp', 'sarah_standard.webp', 'stewart_standard.webp', 
-    'terence_standard.webp', 'uli_standard.webp'
+    'aphro_standard.webp', 'lucas_standard.webp', 'NOT CONFIRMEDmarkel_standard.webp',
+     'sarah_standard.webp', 'stewart_standard.webp', 'terence_standard.webp', 'uli_standard.webp'
 ];
 var colours = ['gold', 'blue', 'darkgreen', 'FF69B4', 'darkred', 'black'];
 $(document).ready(function(){

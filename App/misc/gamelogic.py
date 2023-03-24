@@ -155,7 +155,8 @@ def player_landed_on_money_card(player, game_code, card_table, card_type, sessio
 
     db.session.commit()
     emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
-    emit('display text', {'text': money_card.text}, session=session)
+    text = money_card.text.replace('Â', '')
+    emit('display text', {'text': text}, session=session)
     
 def update_position(game, game_code):
     players = [[i, None, None, 0] for i in range(40)]
