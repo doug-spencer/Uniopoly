@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
+        <script type="text/javascript" src="/static/game_room.js"></script>
         <link rel="stylesheet" href="/static/css/base.css">
         {% block head %}{% endblock %}
         <!-- Background Image Credit: https://www.vecteezy.com/vector-art/6868934-abstract-purple-fluid-wave-background -->
@@ -26,7 +27,6 @@
             {% if messages %}
                 {% for message in messages %}
                    <p class="flash message" style="font-size:25px" onload="flash()">{{ message }}</p>
-                   <p>{{ message }}</p>
                 {% endfor %}
             {% endif %}
         {% endwith %}
