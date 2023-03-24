@@ -53,3 +53,4 @@ Your timetable has no 9ams. Collect 25;25;0
 You fail first year and have to repeat next year. Pay 200;-200;0
 You used chat GPT for an essay and got away with it. Collect 100;100;0
 You get a lift from a friend to go!;0;0
+You forgot to check-in to your lecture. Go to jail!;0;10
