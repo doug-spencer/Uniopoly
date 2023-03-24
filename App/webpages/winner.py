@@ -12,9 +12,9 @@ def winner():
     #         flash('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     #         return redirect(url_for(page))
     #     return redirect(url_for(page, game_code=game_code))
-    game_code = session['game_code']
     
     if request.method == 'GET':
+        game_code = session['game_code']
         game = Game.query.filter_by(game_code=game_code).first()
         if game != None:
             winner = False
@@ -25,10 +25,10 @@ def winner():
         return render_template('winner.html', game_code=game_code, session=session)
     
     ##only runs if POST
-    if request.form.get('returnToMenuButton') == 'Leave Room':
-        #delete player
-        #pop player from session ('game_room)...
+    else:
+        username = session['username']
+        player = Player.query.filter_by(username=username).first()
+        db.session.delete(player)
+        session.pop('game_code', None)
+        print(session['username'])
         return redirect(url_for('menu'))
-
-
-    return render_template('winner.html', game_code=game_code, session=session)
