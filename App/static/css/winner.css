@@ -3,7 +3,7 @@
   }
 
 #dice{
-    padding-top: 20vh;
+    padding-top: 5vh;
     width:400px;
     margin:auto;
 }
@@ -82,4 +82,17 @@
 @keyframes rotate {
     0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
     100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+}
+
+#leave{
+    margin:12vh;
+}
+
+h1{
+    font-size: 6em;
+    margin: 0.1em 0;
+}
+
+h2{
+    font-size: 2em;   
 }
