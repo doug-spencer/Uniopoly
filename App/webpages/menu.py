@@ -66,7 +66,7 @@ def join_game(code):
         return render_template('menu.html')
     
     if game.game_started:
-        flash("Game has already started, please pick on the list!!")
+        flash("Game has already started")
         return render_template('menu.html')
     
     account = Account.query.filter_by(username=session['username']).first()
