@@ -26,8 +26,8 @@ def menu():
             if len(game.players_connected) <= 6:
                 return join_game(code)
             else:
-                #flash('game_full')
-                pass
+                flash('Game is full')
+                return render_template('menu.html')
         else:
             flash("Code was not valid")
             return render_template('menu.html')
