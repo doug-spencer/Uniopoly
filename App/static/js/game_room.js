@@ -137,9 +137,21 @@ $(document).ready(function(){
                     html += `<tr class="house">`;
                     html += `<td><div class="${data.houses[i][j][1]} colour-square"></div></td>`;
                     html += `<td>${name}</td>`;
-                    html += `<td><button class="minus" onclick="sell_house('${name}')">-</button>`;
+                    if (data.houses[i][j][2] == 0) {
+                        html += `<td><button class="disabled" onclick="sell_house('${name}')" disabled>-</button>`;
+                    }
+                    else {
+                        html += `<td><button class="minus" onclick="sell_house('${name}')">-</button>`;
+                    }
+
                     html += `${data.houses[i][j][2]}`;
-                    html += `<button class="plus" onclick="buy_house('${name}')">+</button></td>`;
+
+                    if (data.houses[i][j][2] == 5) {
+                        html += `<button class="disabled" onclick="buy_house('${name}')" disabled>+</button></td>`;
+                    }
+                    else {
+                        html += `<button class="plus" onclick="buy_house('${name}')">+</button></td>`;
+                    }
                     html += `</tr>`;
                 }
             }

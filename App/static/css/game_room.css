@@ -641,3 +641,6 @@ footer {
 .highlight {
    box-shadow: inset 0px 0px 20px 3px green;
 }
+.disabled {
+   background-color: grey;
+}
