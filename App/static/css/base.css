@@ -260,3 +260,10 @@ footer {
         /*overflow: hidden;*/
     }
 }
+.flashing-text {
+    font-family: inherit;
+    font-size: 42px;
+    text-align: center;
+    font-weight: bold;
+    animation: flashFade 3s linear forwards;
+}

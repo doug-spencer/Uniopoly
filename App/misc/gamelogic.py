@@ -114,6 +114,7 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 
         ##if that card hasnt been purchased yet
         if row_ingame_with_card == None:
+            emit('display text', {'text': f' You can buy it for §{card.buy_price}'})
             emit('buy property button change', {'operation':'show'}, session=session)
             return True
 
