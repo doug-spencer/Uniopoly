@@ -127,15 +127,15 @@ $(document).ready(function(){
         }
     });
     socket.on('houses', function(data) {
-        html = `<h4>"You don't have any colour sets so you can't buy a house"</h4>`
+        html = `<h4>You don't have any colour sets so you can't buy a house</h4>`
         if (data.houses !== undefined) {
-            html = `<h4>Houses you can buy and sell:</h4>`
+            html = `<h4>Owned Houses:</h4>`
             html += `<table class="row-houses">`;
             for (let i=0; i<data.houses.length; i++) {
                 for (let j=0; j<data.houses[i].length; j++) {
                     var name = data.houses[i][j][0];
                     html += `<tr class="house">`;
-                    html += `<td><div style="width: 50px; height: 50px;" class="${data.houses[i][j][1]}"></div></td>`;
+                    html += `<td><div class="${data.houses[i][j][1]} colour-square"></div></td>`;
                     html += `<td>${name}</td>`;
                     html += `<td><button class="minus" onclick="sell_house('${name}')">-</button>`;
                     html += `${data.houses[i][j][2]}`;
@@ -264,12 +264,15 @@ function bankrupt() {
 function close_options() {
     document.getElementById("options").style.display = 'none';
     document.getElementById("open-close").onclick = open_options;
+    document.getElementById("open-close").className = 'button';
+    document.getElementById("open-close").disabled = false;
     document.getElementById("open-close").innerHTML = 'View Your Cards';
 }
 function open_options() {
     document.getElementById("options").style.display = 'block';
-    document.getElementById("open-close").onclick = close_options;
-    document.getElementById("open-close").innerHTML = 'Close';
+    document.getElementById("open-close").onclick = 'return';
+    document.getElementById("open-close").className = 'button button-disabled';
+    document.getElementById("open-close").disabled = true;
     document.getElementById("cards-tab").className = 'tablinks active';
     socket.emit('get cards');
 }
