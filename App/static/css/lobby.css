@@ -43,7 +43,9 @@
 #button-div {
     padding: 10px;
 }
-
+.disabled {
+    color: grey;
+}
 
 table {
     margin-left: auto;

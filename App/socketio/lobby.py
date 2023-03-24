@@ -23,6 +23,13 @@ def check_pregame_status():
         print('usrs: ', usernames)
         # emit('get username', {'username': username}, session=session)
         emit('player list', {'players': usernames, 'username': username}, session=session)
+    if len(game.players_connected) == 6:
+        emit('flash function', {'msg': 'Lobby is full, waiting for host to start game!'})
+    if username == game.players_connected[0].username:
+        if len(game.players_connected) > 1:
+            emit('start game avalible', session=session)
+        else:
+            emit('start game not avalible', session=session)
 
 @socketio.on('remove', namespace='/lobby')
 def remove(data):

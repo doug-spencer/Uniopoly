@@ -8,6 +8,7 @@ $(document).ready(function() {
     });
 
     socket.on('flash function', function(data) {
+      console.log('bosh')
       const animatedText = document.getElementById('flashing-text');
       animatedText.innerHTML = data.msg + " entered the room";
       animatedText.classList.add('flashing-text');
@@ -17,6 +18,20 @@ $(document).ready(function() {
         animatedText.innerHTML = " ";
         animatedText.classList.remove('flashing-text');
       }, 3000); // Match the duration of the animation (3s)
+    })
+
+    socket.on('start game avalible', function() {
+      console.log('boshhhh')
+      var input = document.getElementById('start')
+      input.disabled = false
+      input.className = 'button'
+    })
+
+    socket.on('start game not avalible', function() {
+      console.log('not boshhhh')
+      var input = document.getElementById('start')
+      input.disabled = true
+      input.className = 'button disabled'
     })
 
     socket.on('game started', function(data) {
