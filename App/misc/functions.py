@@ -72,7 +72,8 @@ def player1_owes_player2_money(player1, amount, player2=False):
     if player1.money >= 0:
         if player2:
             player2.money += amount
-            emit('message', {'msg': f'{player1.username} payed {player2.username} {str(amount)}.'}, room=game_code)
+            emit('message', {'msg': f'{player1.username} payed {player2.username} §{str(amount)}.'}, room=game_code)
+            emit('display text', {'text': f'You payed {player2.username} §{str(amount)}.'}, session=session)
             db.session.commit()
         return "debt paid"
 
@@ -97,7 +98,8 @@ def player1_owes_player2_money(player1, amount, player2=False):
                     total_money += card.morgage_value
         if total_money >= 0:
             need_to_free_up = -1*player1.money
-            emit('message', {'msg': player1.username + "the bayliffs are here, gather " + str(need_to_free_up) + " before you end your turn."}, session=session)
+            emit('message', {'msg': f'{player1.username}, the bayliffs are here, gather §{str(need_to_free_up)} before you end your turn.'}, session=session)
+            emit('display text', {'text': f'{player1.username}, the bayliffs are here, gather §{str(need_to_free_up)} before you end your turn.'}, session=session)
             return "debt not paid"
         else:
             bankrupt_player(player1)

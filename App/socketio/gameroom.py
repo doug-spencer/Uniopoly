@@ -286,6 +286,7 @@ def buy_house(data):
         player1_owes_player2_money(player, amount)
     else:
         emit('message', {'msg':"You don't have enough money to buy a house."}, session=session)
+        emit('display text', {'text': f"You don't have enough money to buy that house."}, session=session)
 
 @socketio.on('mortgage card', namespace='/gameroom')
 def mortgage(data):
@@ -303,6 +304,7 @@ def mortgage(data):
     try:
         if result[0][3] != 0:
             emit('message', {'msg': player.username + ' must sell all houses first.'}, room = game_code)
+            emit('display text', {'text': f'You have to sell all houses before mortgaging.'}, session=session)
             return
     except:
         pass
@@ -312,9 +314,11 @@ def mortgage(data):
 
         player.money += amount
         db.session.commit()
-        emit('message', {'msg': player.username + ' mortgaged.'}, room = game_code)
+        emit('message', {'msg': f'{player.username} successfully mortgaged.'}, room = game_code)
+        emit('display text', {'text': f'You have successfully mortgaged.'}, session=session)
     else:
-        emit('message', {'msg': player.username + ' has already mortgaged.'}, room = game_code)
+        emit('message', {'msg': f'{player.username} has already mortgaged.'}, room = game_code)
+        emit('display text', {'text': f'You have already mortgaged.'}, session=session)
     get_cards()
 
 @socketio.on('unmortgage card', namespace='/gameroom')
@@ -338,9 +342,11 @@ def unmortgage(data):
 
         player.money -= amount
         db.session.commit()
-        emit('message', {'msg': player.username + ' unmortgaged.'}, room = game_code)
+        emit('message', {'msg': f'{player.username} successfully unmortgaged.'}, room = game_code)
+        emit('display text', {'text': f'You have successfully unmortgaged.'}, session=session)
     else:
-        emit('message', {'msg': player.username + ' has already unmortgaged.'}, room = game_code)
+        emit('message', {'msg': f'{player.username} has already unmortgaged.'}, room = game_code)
+        emit('display text', {'text': f'You have already unmortgaged.'}, session=session)
         
     get_cards()
 

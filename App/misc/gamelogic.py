@@ -132,8 +132,8 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
             rent_amount, player_owed = get_bus_or_utility_rent_amount(card, link_table, player_ids_in_game, type)
         
         #pays the rent to the player owed
-        emit('message', {'msg':player.username + ' landed on ' + player_owed.username +'s property!'}, room=game_code)
-        emit('display text', {'text': 'You owe ' + str(rent_amount) + ' to ' + player_owed.username}, session=session)
+        emit('message', {'msg':f'{player.username} owes §{str(rent_amount)} to {player_owed.username}'}, room=game_code)
+        emit('display text', {'text': f'You owe §{str(rent_amount)} to {player_owed.username}'}, session=session)
         functions.player1_owes_player2_money(player, rent_amount, player_owed)
         return False
     
@@ -154,7 +154,7 @@ def player_landed_on_money_card(player, game_code, card_table, card_type, sessio
 
     db.session.commit()
     emit('message', {'msg': f'{player.username} landed on {card_type.lower()}'}, room=game_code)
-    emit('display card', {'text': money_card.text}, session=session)
+    emit('display text', {'text': money_card.text}, session=session)
     
 def update_position(game, game_code):
     players = [[i, None, None, 0] for i in range(40)]
