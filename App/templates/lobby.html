@@ -10,31 +10,39 @@
 
 {% block body %}
 
+<div id="screen">
+  <div id="head">
 <div id="head">
+    <button class="button" id="help-button" onclick="window.location.href='help';">Help Page</button>
+    <!-- <h2 id="message">Welcome to the lobby!</h2> -->
   <h2 id="message">Welcome to the lobby!</h2>
-  <h1 id="game-code">{{ game_code }}</h1>
+    <h1 id="game-code">{{ game_code }}</h1>
+  </div>
 </div>
-
-
-<div id="button-div">
-  <form action="/lobby" method="POST">  
-    <input class="button" id="leave" type="submit" name="leaveButton" value="Leave Room"></input>
-    <input class="button-disabled" id="start" type="submit" name="startButton" value="Start Game" disabled></input>
-  </form>
-</div>
-
-<div id="table-div">
-  <table id="players-table">
-    <thead>
-      <tr class="table-header">
-        <th>Name</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="table-body"></tbody>
-  </table>
-</div>
-
+  
+  <div id="flashing-text"></div>
+  <hr>
+  
+  <div id="main">
+    <div id="button-div">
+      <form action="/lobby" method="POST">  
+        <input class="button" id="leave" type="submit" name="leaveButton" value="Leave Room"></input>
+        <input class="button-disabled" id="start" type="submit" name="startButton" value="Start Game" disabled></input>
+      </form>
+    </div>
+    
+    <div id="table-div">
+      <table id="players-table">
+        <!-- <thead>
+          <tr class="table-header">
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead> -->
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
 <footer>
   <div class="footer-legal">
       <p>Created by M10</p>

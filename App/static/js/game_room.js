@@ -196,13 +196,18 @@ $(document).ready(function(){
                     id += '-j';
                 }
                 if (players_arr[j] == username) {
-                    let row;
+
+                    $('.tile.highlight').removeClass('highlight');
+                    let row, element;
                     if (id == '10-j') {
                         row = 0;
+                        element = document.getElementById(`tile${id}`).parentElement;
                     } else if (id == '10') {
                         row = 1;
+                        element = document.getElementById(`tile${id}`).parentElement;
                     } else {
                         row = Math.floor(id / 10);
+                        element = document.getElementById(`tile${id}`).parentElement;
                     }
                     document.getElementById('board').setAttribute('class', 'orientation' + row);
                     $('.tile.highlight').removeClass('highlight');
