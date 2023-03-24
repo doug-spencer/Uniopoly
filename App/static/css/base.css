@@ -200,7 +200,7 @@ body {
     border-radius: 10px;
 }
 
-.button:hover {
+.button:not(.button-disabled):hover {
     border: 1px solid white;
     box-shadow: 0px 2px 3px #ffffffff;
     transform: scale(1.1);

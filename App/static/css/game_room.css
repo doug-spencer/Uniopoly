@@ -280,12 +280,13 @@
       border: 3px solid black;
       border-radius:10px;
       z-index: 9;
-      background-color: #32145cc9;
+      background-color: #32145cf0;
+      font-size: 23px;
    }
 
  /* Style the tab */
 .tab {
-   /* float: left; */
+   display: flex;
    background-color: #5e3597de;
    height: 10%;
    top:0%;
@@ -299,13 +300,15 @@
    display: inline-block;
    background-color: inherit;
    color: white;
-   width: 32%;
+   flex: 1;
+   margin: 2px;
    height:100%;
    border: none;
    border-radius:10px;
    outline: none;
    text-align: center;
    cursor: pointer;
+   font-weight: bold;
  }
  
  /* Change background color of buttons on hover */
@@ -328,12 +331,13 @@
 
  /* Style the tab content */
  .tabcontent {
-   padding: 0px 12px;
-   width: 80%;
-   margin:auto;
+   position: relative;
+   padding: 0px 6vh;
+   width: 100%;
+   margin: auto;
    border-left: none;
    border-right: none;
-   max-height:90%;
+   height:90%;
    display: none;
    overflow-y: auto;
  }
@@ -343,8 +347,11 @@
  }
  .tabcontent h4 {
    background-color:#00000084;
-   width:100%;
+   /* width:100%; */
+   margin: 10px;
+   font-size: 1.5em;
    border-radius:5px;
+   padding: 10px 0px;
  }
 
 .tabcontent::-webkit-scrollbar {
@@ -379,16 +386,43 @@
    color: white;
 }
 
-.row-houses td button {
-   padding-left: 2px;
+.row-houses {
+   margin: auto;
+   width: 100%;
+   height: 85%;
+}
+
+.row-houses td {
    text-align: center;
-   padding: 3px 17px;
+}
+
+.row-houses td div {
+   display: inline-block;
+}
+
+.row-houses td button {
+   /* padding-left: 2px; */
+   text-align: center;
+   width: 50px;
+   height: 50px;
+   /* padding: 3px 17px; */
    margin: 5px 20px;
    font-family: inherit;
    color: white;
    border: 2px solid white;
    border-radius: 10px;
  }
+/*  
+#houses h4 {
+   margin: 2ch 0;
+} */
+
+.colour-square {
+   width: 50px; 
+   height: 50px;
+   border: 2px solid white;
+}
+
 
 .row-houses td .plus{
    background-color: green;
@@ -396,14 +430,6 @@
 
 .row-houses td .minus{
    background-color: red;
-}
-
-
- 
-
-.row-houses{
-   margin: auto;
-   
 }
 
 .table-rows td {

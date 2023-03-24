@@ -58,8 +58,8 @@ def login():
 def signup():
     username = request.form.get("loginname")
     password = hashlib.sha256(request.form.get("loginpassword").encode()).hexdigest()
-    if search(r'\d', username):
-        flash('Username cannot contain numbers')
+    if search(r'^\d', username):
+        flash('Username cannot start with number')
         return render_template('login.html')
     if check_username(username):
         flash("Username taken")
