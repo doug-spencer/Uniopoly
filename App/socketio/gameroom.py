@@ -298,10 +298,13 @@ def mortgage(data):
     photo = data['photo']
     
     amount, table, result = gamelogic.check_if_mortgaged(player.id, photo)
-
-    if result[0][3] != 0:
-        emit('message', {'msg': player.username + ' must sell all houses first.'}, room = game_code)
-        return
+    print(amount, table, result)
+    try:
+        if result[0][3] != 0:
+            emit('message', {'msg': player.username + ' must sell all houses first.'}, room = game_code)
+            return
+    except:
+        pass
 
     if result[0][2] == False:
         link_table_updates.update_link_table(player.id, id, table, True)
