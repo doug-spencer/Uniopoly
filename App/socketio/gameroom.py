@@ -163,7 +163,9 @@ def update_turn():
     game, player = check_in_game(game_code, username)
     if not game and not player:
         return False
-    
+    if game.index_of_turn == -100:
+        emit("redirect to winner page", session=session)
+   
     if game.index_of_turn == player.index_in_game:
         emit('roll dice button change', {'operation': 'show'}, session = session)
         emit('message', {'msg': 'It is ' + player.username + '\'s turn to roll the dice'}, room = game.game_code)
@@ -340,6 +342,7 @@ def unmortgage(data):
 
 @socketio.on('bankrupt', namespace='/gameroom')
 def bankrupt():
+    print('Bankrupt')
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)

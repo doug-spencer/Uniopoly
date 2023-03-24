@@ -1,6 +1,6 @@
 from App.database.tables import Account, Game, Player, Property, Utilities, Bus_stop, link_player_bus_stop, link_player_property, link_player_utilities
 from flask import render_template, request, session, redirect, url_for, flash
-from App.main import db
+from App.main import db, socketio
 from App.database.link_table_updates import update_link_table, query_link_table_with_one_id, query_link_table_with_two_id
 from flask_socketio import emit, leave_room
 from App.misc import gamelogic
@@ -127,33 +127,38 @@ def load_test_data(player):
 def bankrupt_player(player):
     game_code = session.get('game_code')
     username = session.get('username')
-    leave_room(game_code)
-    player = Player.query.filter_by(username = username, game_code=game_code).first()
     game= Game.query.filter_by(game_code=game_code).first()
-    index_of_player = [i.id for i in game.players_connected].index(player.id)
-    index = 0
-    for i in game.players_connected:
-        if index > index_of_player:
-            game.players_connected[index].index_in_game = index - 1
-        index += 1
+    if len(game.players_connected) > 2:
+        print('game not over')
+        leave_room(game_code)
+        player = Player.query.filter_by(username = username, game_code=game_code).first()
+        index_of_player = [i.id for i in game.players_connected].index(player.id)
+        index = 0
+        for i in game.players_connected:
+            if index > index_of_player:
+                game.players_connected[index].index_in_game = index - 1
+            index += 1
 
-    db.session.delete(player)
-    db.session.commit()
-    session.pop('game_code', None)
-
-    
-    print("index" + str(index))
-    if index == 2: #there is only one player in the game after deletion of player
+        db.session.delete(player)
+        db.session.commit()
+        session.pop('game_code', None)
+    else:
+        player.money = -1000000
+        db.session.commit()
+        print('game over')
         players_won(game)
 
 def players_won(game):
     #game = Game.query.filter_by(game_code=game_code).first()
-    player = game.players_connected[0]
-    username = player.username
-    db.session.delete(player)
-    db.session.delete(game)
+    #player = game.players_connected[0]
+    #username = player.username
+    #db.session.delete(player)
+    #db.session.delete(game)
+    #db.session.commit()
+    print(game.game_code)
+    game.index_of_turn = -100
     db.session.commit()
-    # emit("redirect to winner page") ##needs to work for everyone
+    emit("redirect to winner page", session=session)
     #emit('message', {'msg':'Congratulations ' + username + ' you have won!!!'}, room=game.game_code)
     #emit('game_over', room=game.game_code)
  
