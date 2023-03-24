@@ -23,11 +23,11 @@ def menu():
         if search("^\d{6}$", code):
             print(code)
             game = Game.query.filter_by(game_code=code).first()
-            if len(game.players_connected) <= 6:
+            if len(game.players_connected) <= 2:
                 return join_game(code)
             else:
-                #flash('game_full')
-                pass
+                flash('Game is full')
+                return render_template('menu.html')
         else:
             flash("Code was not valid")
             return render_template('menu.html')

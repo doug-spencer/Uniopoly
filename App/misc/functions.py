@@ -130,8 +130,9 @@ def bankrupt_player(player):
     game= Game.query.filter_by(game_code=game_code).first()
     if len(game.players_connected) > 2:
         print('game not over')
-        leave_room(game_code)
+        #leave_room(game_code)
         player = Player.query.filter_by(username = username, game_code=game_code).first()
+        player.money = -1000000
         index_of_player = [i.id for i in game.players_connected].index(player.id)
         index = 0
         for i in game.players_connected:
@@ -139,9 +140,10 @@ def bankrupt_player(player):
                 game.players_connected[index].index_in_game = index - 1
             index += 1
 
-        db.session.delete(player)
+        #db.session.delete(player)
         db.session.commit()
-        session.pop('game_code', None)
+        emit('bankrupt', session=session)
+        #session.pop('game_code', None)
     else:
         player.money = -1000000
         db.session.commit()

@@ -200,11 +200,13 @@ $(document).ready(function(){
             }
         }
     });
-    socket.on('game_over', function(data){
-        console.log('game_over')
-        var now = new Date().getTime();
-        while(new Date().getTime() < now + 15000){ /* Do nothing */ }
-        window.location.href = "/menu";
+    socket.on('bankrupt', function(){
+        console.log('bankrupt')
+        //var now = new Date().getTime();
+        //while(new Date().getTime() < now + 15000){ /* Do nothing */ }
+        //window.locationh.href = "/menu";
+        html = `<button class="button" id="bankrupt" onclick="leave_game()">Leave Game</button>`
+        $('#bankrupt').html(html)
     });
 
     socket.on('flash function', function(data) {
@@ -255,10 +257,14 @@ function buy_property() {
     socket.emit('buy property', {property: property});
 }
 function bankrupt() {
+    socket.emit('dont-buy-property');
+    socket.emit('end turn')
     socket.emit('bankrupt');
     //var now = new Date().getTime();
     //while(new Date().getTime() < now + 1000){ /* Do nothing */ }
     //window.location.href = "/menu";
+    html = `<button class="button" id="bankrupt" onclick="leave_game()">Leave Game</button>`
+    $('#bankrupt').html(html)
 }
 function close_options() {
     document.getElementById("options").style.display = 'none';
@@ -314,7 +320,11 @@ function change_tab(evt, tab_name) {
         console.log("didn click on card")
         socket.emit('get houses');
     }
-  }
+}
+function leave_game(){
+    emit('leave game')
+    window.location.href = "/menu"
+}
 //calls function every 2.5seconds
 setInterval(function() {
     socket.emit('update turn');
