@@ -15,15 +15,11 @@
 
 <div id="head">
 <h2 id="message"></h2>
-<h1 id="game-code">the winner is: {{winner}}</h1>
 </div>
 
 <div id="mid-section">
-  <div id="button-div">
-    <form action="/winner" method="POST">  
-      <input class="button" id="leave" type="submit" name="returnToMenuButton" value="Menu"></input>
-    </form>
-  </div>
+  <h2 id="game-code">the winner is</h2>
+  <h1>{{winner}}</h1>
 </div>
 
 <div id="dice">
@@ -47,6 +43,12 @@
       <div class="bottom"></div>
     </div>
   </div>
+</div>
+
+<div id="button-div">
+  <form action="/winner" method="POST">   
+    <input class="button" id="leave" type="submit" name="returnToMenuButton" value="Return to menu"></input>
+  </form>
 </div>
 
 

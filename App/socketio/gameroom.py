@@ -105,7 +105,6 @@ def roll_dice():
 
         if not buy_choice_active:
             emit('end turn button change', {'operation':'show'}, session=session)
-            
     gamelogic.update_position(game, game_code)
     
 
