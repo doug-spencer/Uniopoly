@@ -25,18 +25,11 @@ Set player cap at number of valid sprites
 
 indicate which players turn it is
 roll dice on game room
-highlight where the user is
-it's, fullstop, load/loan, potatoes, buy/sell
-capitalise roll dice, end turn ...
-make center spin properly
-auto go on view cards
-change open options to view your cards
 grey out minus/plus buttons when you can't
 check for time.sleeps
 add close options, players money, properties
-make background blur or black
 clean up open options div
-jail z-index
 correct 3 turns jail
 style buy/not buy
 declare bankruptcy button
+let user know how much a prop costs when they land on it

@@ -4,7 +4,6 @@ from App.main import db
 from App.database.link_table_updates import update_link_table, query_link_table_with_one_id, query_link_table_with_two_id
 from flask_socketio import emit, leave_room
 from App.misc import gamelogic
-import time
 
 
 def check_account(username, password):

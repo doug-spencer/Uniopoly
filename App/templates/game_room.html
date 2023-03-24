@@ -12,7 +12,7 @@
 <div id="screen">
     <div id="left-div">
         <div class="game-info-box" id="top-left">
-            <button class="button" id="bankrupt" onclick=bankrupt()>Declare Bankrupcy</button>
+            <button class="button" id="bankrupt" onclick=bankrupt()>Declare Bankruptcy</button>
             <h2>Game Code : {{ session['game_code'] }}</h2>
         </div>
         <div class="game-info-box" id="middle-left">
@@ -26,27 +26,29 @@
     </div>
     <div id="middle-div">
         <div id="board">
-            <div id="center">
-                <div name="dice-button" id="dice-button">
-                    <button class="button" type="button" id="roll-dice">Roll Dice</button><br>
-                </div>
-                <div name="end-turn-button" id="end-turn-button">
-                    <button class="button" type="button" id="end-turn">End Turn</button><br>
-                </div>
-                
-                <div name="buy-property-button" id="buy-property-button">
-                    <button class="button" type="button" id="buy-property">Buy</button><br>
-                </div>
-                
-                <div name="dont-buy-property-button" id="dont-buy-property-button">
-                    <button class="button" type="button" id="dont-buy-property">Don't Buy</button><br>
-                </div>
-                
-                <div name="text-box" id="text-box">
-                    <h1 id="main-text"></h1>
-                    <button class="button" type="button" id="text-button">OK</button><br>
-                </div>
-                <div name="dice-display" id ="dice-display">
+            <div id="center-bg">
+                <div id="center">
+                    <div name="dice-button" id="dice-button">
+                        <button class="button" type="button" id="roll-dice">Roll Dice</button><br>
+                    </div>
+                    <div name="end-turn-button" id="end-turn-button">
+                        <button class="button" type="button" id="end-turn">End Turn</button><br>
+                    </div>
+                    
+                    <div name="buy-property-button" id="buy-property-button">
+                        <button class="button" type="button" id="buy-property">Buy</button><br>
+                    </div>
+                    
+                    <div name="dont-buy-property-button" id="dont-buy-property-button">
+                        <button class="button" type="button" id="dont-buy-property">Don't Buy</button><br>
+                    </div>
+                    
+                    <div name="text-box" id="text-box">
+                        <h1 id="main-text"></h1>
+                        <button class="button" type="button" id="text-button">OK</button><br>
+                    </div>
+                    <div name="dice-display" id ="dice-display">
+                    </div>
                 </div>
             </div>
                 
@@ -295,6 +297,29 @@
             </div>
             <!--END-->
         </div>
+        <div class="options-popup" id="options">
+            <div class="tab">
+                <button class="tablinks" id="cards-tab" onclick="change_tab(event, 'cards')">View Cards</button>
+                <button class="tablinks" id="houses-tab" onclick="change_tab(event, 'houses')">Buy/Sell Houses</button>
+            </div>
+            <div class="tabcontent" id="cards" style="display:block;">
+                <h4>Your cards:</h4>
+                <div class="image-grid-container">
+                    <div class="image-grid" id="image-grid-unmortgaged">
+                    </div>
+                </div>
+                <h4>Your Mortgaged Cards:</h4>
+                <div class="image-grid-container">
+                    <div class="image-grid" id="image-grid-mortgaged">
+                    </div>    
+                </div>
+            </div>
+            <div class="tabcontent" id="houses">
+                <h4>Houses:</h4>
+                <div class="row-houses" id="row-houses">
+                </div>
+            </div>
+        </div>
     </div>
     <div id="right-div" >
         <div class="game-info-box">
@@ -309,34 +334,9 @@
                 </thead>
                 <tbody id="table-body"></tbody>
             </table>
-            <div class="options-popup" id="options">
-                <div class="tab">
-                    <button class="tablinks" onclick="change_tab(event, 'cards')">View Cards</button>
-                    <button class="tablinks" onclick="change_tab(event, 'houses')">Buy/Sell Houses</button>
-                </div>
-                <div class="tabcontent" id="cards" style="display:block;">
-                    <h4>Your cards:</h4>
-                    <div class="image-grid-container">
-                        <div class="image-grid" id="image-grid-unmortgaged">
-                        </div>
-                    </div>
-                    <h4>Your Mortgaged Cards:</h4>
-                    <div class="image-grid-container">
-                        <div class="image-grid" id="image-grid-mortgaged">
-                        </div>    
-                    </div>
-                </div>
-                <div class="tabcontent" id="houses">
-                    <h4>Houses:</h4>
-                    <div class="row-houses" id="row-houses">
-                    </div>
-                </div>
-            </div>
-            <button class="button" onclick=open_options() id="open-close">Open Options</button>
+            <button class="button" onclick=open_options() id="open-close">View Your Cards</button>
         </div>
     </div>
-</div>
-<div id="test_sprites">
 </div>
 <div id="flashing-image"></div>
 

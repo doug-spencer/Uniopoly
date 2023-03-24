@@ -30,15 +30,15 @@
    }
 
    /* orientations for the board and center */
-   .orientation0 { transform: rotateZ(0deg); transition: transform 0.5s ease;}
-   .orientation1 { transform: rotateZ(-90deg); transition: transform 0.5s ease;}
-   .orientation1 #center{ transform: rotateZ(90deg); transition: transform 0.5s ease;}
-   .orientation2 { transform: rotateZ(180deg); transition: transform 0.5s ease;}
-   .orientation2 #center{ transform: rotateZ(180deg); transition: transform 0.5s ease;}
-   .orientation3 { transform: rotateZ(90deg); transition: transform 0.5s ease;}
-   .orientation3 #center{ transform: rotateZ(-90deg); transition: transform 0.5s ease;}
+   .orientation0 { transform: rotateZ(0deg); transition: transform 2s ease; }
+   .orientation1 { transform: rotateZ(-90deg); transition: transform 2s ease; }
+   .orientation1 #center{ transform: rotateZ(90deg); transition: transform 2s ease; }
+   .orientation2 { transform: rotateZ(-180deg); transition: transform 2s ease; }
+   .orientation2 #center{ transform: rotateZ(180deg); transition: transform 2s ease; }
+   .orientation3 { transform: rotateZ(-270deg); transition: transform 2s ease; }
+   .orientation3 #center{ transform: rotateZ(270deg); transition: transform 2s ease; }
 
-   #center {
+   #center-bg {
       position:relative;
       grid-area: o;
       background-image: linear-gradient(41deg, blueviolet, violet), 
@@ -48,6 +48,12 @@
       background-position: center center;
       background-size: 339%;
       border: 0.7vh solid black;
+   }
+   #center {
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      padding: 5vh;
    }
    #center .button {
       border: none;
@@ -266,11 +272,10 @@
    /*options pop up box*/
    .options-popup {
       display: none;
-      position: fixed;
+      position: absolute;
       top: 20%;
       height: 60%;
-      left: 10%;
-      width: 80%;
+      width: 100%;
       border: 3px solid #ccc;
       z-index: 9;
       background-color: #32145c;
@@ -323,9 +328,9 @@
 
  /* Style the tab content */
  .tabcontent {
-   float: left;
+   float: right;
    padding: 0px 12px;
-   width: 70%;
+   width: 80%;
    border-left: none;
    border-right: none;
    height: 100%;
@@ -356,13 +361,17 @@
    text-align: center;
    padding: 3px 17px;
    margin: 5px 20px;
+   font-family: inherit;
+   color: white;
+   border: 2px solid white;
+   border-radius: 10px;
  }
 
-.row-houses td #plus{
+.row-houses td .plus{
    background-color: green;
 }
 
-.row-houses td #minus{
+.row-houses td .minus{
    background-color: red;
 }
 
@@ -477,11 +486,12 @@
 }
 #middle-div {
    padding-top: 2px;
+   position: relative;
 }
 #chat {
    display: flex;
    position: relative;
-   z-index: 1;
+   /* z-index: 1; */
    align-items: center;
    font-size: 1.2em;
 }
@@ -535,8 +545,8 @@ h2 {
    }
 }
 #dice-display{
-   position: absolute;
-   bottom:3%;
+   position: relative;
+   bottom: -15%;
 }
 #dice-display img{
    max-width:30%;
@@ -547,7 +557,6 @@ footer {
    position: static;
 }
 
-/* footer */
-footer {
-   position: static;
+.highlight {
+   box-shadow: inset 0px 0px 20px 3px green;
 }

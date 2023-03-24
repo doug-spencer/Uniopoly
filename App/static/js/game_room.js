@@ -93,7 +93,6 @@ $(document).ready(function(){
             }
         }
         let body = "";
-        console.log(sprite_imgs[data.players[0][0]]);
         for (let i=0; i<data.players.length; i++) {
             body += `<tr class="table-rows">
                         <td><img src="/static/images/playerIcons/${sprite_imgs[data.players[i][0]]}" alt="image ${i}"/></td>
@@ -126,30 +125,24 @@ $(document).ready(function(){
         }
     });
     socket.on('houses', function(data) {
-    console.log(data.houses);
-    if (data.houses !== undefined) {
-        html = "";
-        html += `<table class="row-houses">`
-        for (let i=0; i<data.houses.length; i++) {
-            for (let j=0; j<data.houses[i].length; j++) {
-                var name = data.houses[i][j][0];
-                html += `<tr class="house">`;
-                html += `<td><div style="width: 50px; height: 50px;" class="${data.houses[i][j][1]}"></div></td>`;
-                html += `<td>${name}</td>`;
-                html += `<td><button class="button" id="minus" onclick="sell_house('${name}')">-</button>`;
-                html += `${data.houses[i][j][2]}`;
-                html += `<button class="button" id="plus" onclick="buy_house('${name}')">+</button></td>`;
-                html += `</tr>`;
-
-                
-            }
-        }
-        html += `</table>`;
-    }
-    else  {
         html = `<p>"You don't have any colour sets so you can't buy a house"</p>`
-    }
-    $('#houses').html(html);
+        if (data.houses !== undefined) {
+            html = `<table class="row-houses">`;
+            for (let i=0; i<data.houses.length; i++) {
+                for (let j=0; j<data.houses[i].length; j++) {
+                    var name = data.houses[i][j][0];
+                    html += `<tr class="house">`;
+                    html += `<td><div style="width: 50px; height: 50px;" class="${data.houses[i][j][1]}"></div></td>`;
+                    html += `<td>${name}</td>`;
+                    html += `<td><button class="minus" onclick="sell_house('${name}')">-</button>`;
+                    html += `${data.houses[i][j][2]}`;
+                    html += `<button class="plus" onclick="buy_house('${name}')">+</button></td>`;
+                    html += `</tr>`;
+                }
+            }
+            html += `</table>`;
+        }
+        $('#houses').html(html);
     });
     socket.on('display dice', function(data) {
         // Clears previous dice
@@ -165,11 +158,11 @@ $(document).ready(function(){
         // Displays both dice inline
         const img1 = new Image();
         img1.src = '/static/images/dice/' + dice[data.roll1 - 1];
-        img1.alt = "FUCK ALL Y'ALL";
+        img1.alt = `Die ${data.roll1}`;
         document.getElementById('dice-display').appendChild(img1);
         const img2 = new Image();
         img2.src = '/static/images/dice/' + dice[data.roll2 - 1];
-        img2.alt = "FUCK ALL Y'ALL";
+        img2.alt = `Die ${data.roll2}`;
         document.getElementById('dice-display').appendChild(img2);
     });
 
@@ -198,6 +191,8 @@ $(document).ready(function(){
                         row = Math.floor(id / 10);
                     }
                     document.getElementById('board').setAttribute('class', 'orientation' + row);
+                    $('.tile.highlight').removeClass('highlight');
+                    document.getElementById(`tile${id}`).parentElement.setAttribute('class', 'tile highlight');
                 }
                 $('#tile' + id).append('<img src="/static/images/playerIcons/' + sprite_imgs[symbols[j]] + '" alt="' + players_arr[j] + '"/>');
             }
@@ -213,7 +208,7 @@ $(document).ready(function(){
     socket.on('flash function', function(data) {
         const animatedText = document.getElementById('flashing-image');
         //animatedText.innerHTML = "image here";
-        body = `<img src="/static/images/oakHouseKitchen.jpg" alt="oak house kitchen"/>`
+        body = `<img src="/static/images/oakHouseKitchen.jpg" alt="Oak House Kitchen"/>`
         document.getElementById("flashing-image").innerHTML = body;
         animatedText.classList.add('flashing-image');
       
@@ -273,12 +268,14 @@ function bankrupt() {
 function close_options() {
     document.getElementById("options").style.display = 'none';
     document.getElementById("open-close").onclick = open_options;
-    document.getElementById("open-close").innerHTML = 'Open Options';
+    document.getElementById("open-close").innerHTML = 'View Your Cards';
 }
 function open_options() {
     document.getElementById("options").style.display = 'block';
     document.getElementById("open-close").onclick = close_options;
-    document.getElementById("open-close").innerHTML = 'Close Options';
+    document.getElementById("open-close").innerHTML = 'Close';
+    document.getElementById("cards-tab").className = 'tablinks active';
+    socket.emit('get cards');
 }
 function sell_house(name){
     console.log("selling house");

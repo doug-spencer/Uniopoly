@@ -33,13 +33,13 @@ Its your birthday. Collect §50;+50;False
 Its your birthday. Collect §10;+10;False
 Its your birthday. Collect §20;+20;False
 Its your birthday. Collect §30;+30;False
-You joined the rent strike and the Uni won. For each house. Pay §25;-25;False
-Theres no queue for jacket potatos. Collect §50;50;False
+You joined the rent strike and the Uni won. For each house, pay §25;-25;False
+There's no queue for jacket potatoes. Collect §50;50;False
 You get lost inside of Kilburn and miss a lecture. Pay §100;-100;False
-You didnt tag your git lab submission correctly. Pay §50;-50;False
+You didn't tag your git lab submission correctly. Pay §50;-50;False
 Your timetable has no 9ams. Collect §25;25;False
 You fail first year and have to repeat next year. Pay §200;-200;False
-You used chat GPT for an essay and got away with it. Collect §100;100;False
+You used ChatGPT for an essay and got away with it. Collect §100;100;False
 
 You miss a deadline and have to bribe your teacher. Pay §100;-100;False
 You miss a deadline and have to bribe your teacher. Pay §200;-200;False
@@ -47,9 +47,9 @@ You miss a deadline and have to bribe your teacher. Pay §300;-300;False
 You get a first on an exam. Collect §100;100;False
 You slept through your alarm. Pay §15;-15;False
 You find second year housemates. Collect §150;150;False
-You finisg a semester. Collect §200;200;False
-Its time for your student load installment. Collect §200;200;False
+You finish a semester. Collect §200;200;False
+It's time for your student loan installment. Collect §200;200;False
 Your laptop dies in a lecture. Pay §50;-50;False
-You find a free study room in engineering. Collect §100;100;False
+You find a free study room in Engineering. Collect §100;100;False
 You actually remember to check into a lecture. Collect §20;20;False
 Your lecturer doesn't just read the notes. Collect §100;100;False
