@@ -15,12 +15,13 @@ def join(message):
         return False
     join_room(game_code)
     game = Game.query.filter_by(game_code=game_code).first()
-    players_arr = [[player.symbol, player.username, player.money] for player in game.players_connected]
-    emit('update leaderboard', {'players': players_arr}, room=game_code)
-    emit('message', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
-    emit('buy property button change', {'operation':'hide'}, session=session)
-    emit('get username', {'username': session.get('username')}, session=session)
-    gamelogic.update_position(game, game_code)
+    if game is not None:
+        players_arr = [[player.symbol, player.username, player.money] for player in game.players_connected]
+        emit('update leaderboard', {'players': players_arr}, room=game_code)
+        emit('message', {'msg':  session.get('username') + ' has entered the room.'}, room = game_code)
+        emit('buy property button change', {'operation':'hide'}, session=session)
+        emit('get username', {'username': session.get('username')}, session=session)
+        gamelogic.update_position(game, game_code)
 
 
 @socketio.on('left', namespace='/gameroom') #leaving room
@@ -52,6 +53,7 @@ def end_turn():
         gamelogic.resume_player_turn(game_code)
         update_index_of_turn()
         emit('end turn button change', {'operation':'hide'}, session=session)
+        emit('clear text', session=session)
     else:
         emit('message', {'msg': 'You need to clear your debt. Sell some houses or mortgage your cards.'}, session = session)
         emit('display text', {'text': f'You need to clear your debt. Sell some houses or mortgage your cards.'}, session=session)

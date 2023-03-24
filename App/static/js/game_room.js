@@ -45,6 +45,7 @@ $(document).ready(function(){
         while(div.firstChild){
             div.removeChild(div.firstChild);
         }
+        $('#text-box').hide();
     });
 
     //show or hide roll dice button

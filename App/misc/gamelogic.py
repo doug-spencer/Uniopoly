@@ -54,6 +54,8 @@ def show_player_options(player, game_code, session, roll_value):
     return False    
 
 def player_landed_on_start(player, game_code, session):
+    player.money = player.money + 200
+    db.session.commit()
     emit('message', {'msg': f'{player.username} landed on go.'}, room=game_code)
     emit('display text', {'text': f'You landed on go.'}, session=session)
     
@@ -75,6 +77,8 @@ def player_on_jail(player, game_code, session):
         emit('display text', {'text': f'You have {player.turns_in_jail} turns left in Oak House.'}, session=session)
     
     player.turns_in_jail = max(0, player.turns_in_jail-1)
+    if player.turns_in_jail == 0:
+        functions.player1_owes_player2_money(player, 50)
     db.session.commit()
 
     return False
@@ -115,6 +119,8 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 
         #you own the card
         elif row_ingame_with_card.player_id == player.id:
+            print('player owns!!!!!!')
+            emit('display text', {'text': 'You already own this square'}, session=session)
             return False
     
         #someone owns it and it isn't you so get the rent you need to pay and who needs paying
@@ -126,12 +132,21 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
             rent_amount, player_owed = get_bus_or_utility_rent_amount(card, link_table, player_ids_in_game, type)
         
         #pays the rent to the player owed
+        emit('message', {'msg':player.username + ' landed on ' + player_owed.username +'s property!'}, room=game_code)
+        emit('display text', {'text': 'You owe ' + str(rent_amount) + ' to ' + player_owed.username}, session=session)
         functions.player1_owes_player2_money(player, rent_amount, player_owed)
         return False
     
 def player_landed_on_money_card(player, game_code, card_table, card_type, session):
     money_card = random.choice(card_table)
-    functions.player1_owes_player2_money(player, money_card.amount)
+    print(money_card.amount)
+    if money_card.amount < 0:
+        print('owes')
+        functions.player1_owes_player2_money(player, -money_card.amount)
+    else:
+        print('given')
+        player.money = player.money + money_card.amount
+        db.session.commit()
     emit('message', {'msg': f'{player.username} landed on {card_type.lower()}.'}, room=game_code)
     emit('display text', {'text': money_card.text}, session=session)
     
