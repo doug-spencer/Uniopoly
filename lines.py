@@ -16,5 +16,3 @@ def openFolder(folder):
                 lines += numLines
                 print(newDir, lines)
     return lines
-
-print('total lines:', openFolder('App/'))

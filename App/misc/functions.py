@@ -23,7 +23,6 @@ def get_account_usernames():
     account_usernames = []
     for i in accounts:
         account_usernames.append(i.username)
-    print(account_usernames)
     return account_usernames
 
 def check_in_game(game_name, username): #verification fucntion
@@ -46,10 +45,8 @@ def get_correct_location():
         username = session['username']
         player = Player.query.filter_by(username=username).first()
     except: #user isnt logged in
-        print(1)
         return "login", None
     if player == None:
-        print(2)
         return "menu", None
     try:
         game_code = session['game_code']
@@ -57,12 +54,9 @@ def get_correct_location():
         return "menu", None
     game = Game.query.filter_by(game_code=game_code).first()
     if game == None:
-        print(3)
         return "menu", None
     if game.game_started:
-        print(4)
         return "game_room", None
-    print(5)
     return "lobby", game.game_code
 
 def player1_owes_player2_money(player1, amount, player2=False):
@@ -108,20 +102,17 @@ def player1_owes_player2_money(player1, amount, player2=False):
 def load_test_data(player):
     for i in range(8): #add all light blue
         property = Property.query.filter_by(id=i+3).first()
-        print(property.name)
         player.properties.append(property)
         db.session.commit()
         update_link_table(player.id,  property.id, link_player_property, False)
         update_link_table(player.id,  property.id, link_player_property, None, 0)
     for i in range(2): #add all utilites
         utility = Utilities.query.filter_by(id=i+1).first()
-        print(utility.name)
         player.utilities.append(utility)
         db.session.commit()
         update_link_table(player.id,  utility.id, link_player_utilities, False)
     for i in range(2): #add the first 2 bus stops
         bus_stop = Bus_stop.query.filter_by(id=i+1).first()
-        print(bus_stop.name) 
         player.bus_stop.append(bus_stop)
         db.session.commit()
         update_link_table(player.id,  bus_stop.id, link_player_bus_stop, False)
@@ -131,7 +122,6 @@ def bankrupt_player(player):
     username = session.get('username')
     game= Game.query.filter_by(game_code=game_code).first()
     if len(game.players_connected) > 2:
-        print(game.index_of_turn)
         if game.index_of_turn == player.index_in_game:
             pass
         elif game.index_of_turn== -1*player.index_in_game - 1:
@@ -141,8 +131,6 @@ def bankrupt_player(player):
         elif game.index_of_turn < -1*player.index_in_game - 1:
             game.index_of_turn = game.index_of_turn + 1
 
-        print(game.index_of_turn)
-        print('game not over')
         leave_room(game_code)
         player = Player.query.filter_by(username = username, game_code=game_code).first()
         index_of_player = [i.id for i in game.players_connected].index(player.id)
@@ -159,7 +147,6 @@ def bankrupt_player(player):
     else:
         player.money = -1000000
         db.session.commit()
-        print('game over')
         players_won(game)
 
 def players_won(game):
@@ -169,7 +156,6 @@ def players_won(game):
     #db.session.delete(player)
     #db.session.delete(game)
     #db.session.commit()
-    print(game.game_code)
     game.index_of_turn = -100
     db.session.commit()
     emit("redirect to winner page", session=session)

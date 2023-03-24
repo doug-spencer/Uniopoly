@@ -8,7 +8,6 @@ def check_pregame_status():
     try:
         username = session['username']
     except:
-        print('INTRUDER')
         return False
     game_code = session['game_code']
     game = Game.query.filter_by(game_code=game_code).first()
@@ -20,7 +19,6 @@ def check_pregame_status():
             usernames += [str(i.username)]
         if usernames == '':
             usernames = []
-        print('usrs: ', usernames)
         # emit('get username', {'username': username}, session=session)
         emit('player list', {'players': usernames, 'username': username}, session=session)
     if len(game.players_connected) == 6:
@@ -36,12 +34,10 @@ def remove(data):
     try:
         username = session['username']
     except:
-        print('INTRUDER')
         return False
     
     Player.query.filter_by(username = data['username']).delete()
     db.session.commit()
-    print(data['username'])
     game_code = session['game_code']
     leave_room(game_code)
 

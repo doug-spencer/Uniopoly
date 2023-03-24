@@ -10,7 +10,6 @@ def load_static_files():
         #Properties
         while current_line != '\n':
             details = current_line.split(';')
-            print(details)
             db.session.add(Property(
                 name=details[0],
                 colour=details[1],
@@ -22,14 +21,12 @@ def load_static_files():
                 ))
             index += 1
             current_line = lines[index]
-            print(index,current_line)
         index += 1
         current_line = lines[index]
 
         #Utilites
         while current_line != '\n':
             details = current_line.split(';')
-            print(details)
             db.session.add(Utilities(
                 name=details[0],
                 text=details[1],
@@ -40,14 +37,12 @@ def load_static_files():
                 ))
             index += 1
             current_line = lines[index]
-            print(index,current_line)
         index += 1
         current_line = lines[index]   
         
         #Bus stop     
         while current_line != '\n':
             details = current_line.split(';')
-            print(details)
             db.session.add(Bus_stop(
                 name=details[0],
                 photo=details[1],
@@ -57,14 +52,12 @@ def load_static_files():
                 ))
             index += 1
             current_line = lines[index]
-            print(index,current_line)
         index += 1
         current_line = lines[index]
         
         #Student union
         while current_line != '\n':
             details = current_line.split(';')
-            print(details)
             db.session.add(Student_union(
                 text=details[0],
                 amount=int(details[1]),
@@ -72,14 +65,12 @@ def load_static_files():
                 ))
             index += 1
             current_line = lines[index]
-            print(index,current_line)
         index += 1
         current_line = lines[index] 
 
         #Email       
         while current_line != '\n':
             details = current_line.split(';')
-            print(details)
             db.session.add(Email(
                 text=details[0],
                 amount=int(details[1]),
@@ -90,7 +81,6 @@ def load_static_files():
                 current_line = lines[index]
             except:
                 current_line = '\n'
-            print(index,current_line)
     db.session.commit()
 
 def load_game_board():

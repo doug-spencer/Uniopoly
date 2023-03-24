@@ -116,8 +116,6 @@ def query_link_table_with_two_id(player_id, card_id, table, houses=None):
                 table.c.card_id == card_id
             ))
         results = conn.execute(stmt).fetchall()
-    for i in results:
-        print(i)
     return results
 
 def query_link_table_with_one_id(player_id, card_id, table, houses=None):
@@ -130,6 +128,4 @@ def query_link_table_with_one_id(player_id, card_id, table, houses=None):
     table.columns.player_id == player_id if player_id else table.columns.card_id == card_id
         ))
     results = db.session.execute(stmt).fetchall()
-    for i in results:
-        print(i)
     return results

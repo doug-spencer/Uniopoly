@@ -130,7 +130,6 @@ def get_cards():
     if not game and not player:
         return False
     unmortgaged_cards, mortgaged_cards,  unmortgaged_cards_id, mortgaged_cards_id= gamelogic.get_cards(player)
-    print('cards:', unmortgaged_cards, mortgaged_cards)
     emit('cards', {
         'unmortgaged_cards': unmortgaged_cards, 
         'mortgaged_cards':mortgaged_cards, 
@@ -241,7 +240,6 @@ def dont_buy_property():
 
 @socketio.on('sell house', namespace='/gameroom') 
 def sell_house(data):
-    print('sell house')
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
@@ -266,7 +264,6 @@ def sell_house(data):
 
 @socketio.on('buy house', namespace='/gameroom') 
 def buy_house(data):
-    print('buy house')
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)
@@ -351,7 +348,6 @@ def unmortgage(data):
 
 @socketio.on('bankrupt', namespace='/gameroom')
 def bankrupt():
-    print('Bankrupt')
     game_code = session.get('game_code')
     username = session.get('username')
     game, player = check_in_game(game_code, username)

@@ -30,5 +30,4 @@ def winner():
         player = Player.query.filter_by(username=username).first()
         db.session.delete(player)
         session.pop('game_code', None)
-        print(session['username'])
         return redirect(url_for('menu'))

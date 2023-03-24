@@ -120,7 +120,6 @@ def player_landed_on_purchasable_card(player, game_code, session, card, link_tab
 
         #you own the card
         elif row_ingame_with_card.player_id == player.id:
-            print('player owns!!!!!!')
             emit('display text', {'text': 'You already own this square'}, session=session)
             return False
     
@@ -257,7 +256,6 @@ def get_cards(player):
         for i in tables:
             query = i[0].select().where(i[0].c.player_id == player.id, i[0].c.mortgaged == False)
             card_row = conn.execute(query).fetchall()
-            print(card_row)
             for card in card_row:
                 card = i[1].query.filter_by(id=card[1]).first()
                 unmortgaged_cards.append(card.photo)
