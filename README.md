@@ -1,44 +1,24 @@
-# group_project
+# Uniopoly
 
-Do `pip install -r requirements.txt` to  install
-the requirements.
+## Description
 
+A twist on Monopoly that is:
 
-BACKEND TO FRONTEND
-in flask
-emit('name', {'msg':  any string}, room=game_code) sends to room
-or
-emit('name', {'msg':  any string}, session=session) sends to person
+- University of Manchester themed
+- online
+- played over multiple devices
 
-in js script
-socket.on('name', function(data) {
-    any js script
-    to get values from dictionary use data.keyname
-    in this case data.msg
-});
+Created as a first year team project throught UoM 
 
+## Installation
 
-FRONTEND TO BACKEND
-in html (within /gameroom)
-<div id=send> 
-    shtuff
-</div>
+Intall [python](https://www.python.org/downloads/)
 
-in js script
-if the div is pressed
-$('#send').click(function(e) {
-    var text = 'pop'
-    socket.emit('text', {msg: text});
-});
+Do `pip install -r requirements.txt` to  install the required python modules.
 
-in flask
-@socketio.on('text', namespace='/gameroom')
-def text_is_being_sent(data):
-    game_code = session.get('game_code')
-    username = session.get('username')
-    
-    game, player = check_in_game(game_code, username)
-    if not game and not player:
-        return False
+## Usage
 
-    print(data['msg'])
+To run the project enter `python3 run.py` or `python run.py` and you should receive a similar output containing 2 IP addresses. Ctrl click one of them or enter into the search bar to play the game.
+
+Share this address used with other players on your local network who wish to play.
+
