@@ -18,7 +18,21 @@ Do `pip install -r requirements.txt` to  install the required python modules.
 
 ## Usage
 
-To run the project enter `python3 run.py` or `python run.py` and you should receive a similar output containing 2 IP addresses. Ctrl click the non 127.0.0.1 address or enter it into your browser to play.
+To run the project navigate to the directory containing `run.py` enter `python3 run.py` or `python run.py` and you should receive a similar output containing 2 IP addresses. Ctrl click the **second address** or enter it into your browser to play.
 
 Share this address with other players on your local network who wish to play.
+
+## Features
+
+Account system with sign up/ log in page
+
+![Picture of the login page](./App/_info/loginPage.png)
+![Picture of the join game page](./App/_info/joinGamePage.png)
+![Picture of the code page](./App/_info/codePage.png)
+![Picture of the login page](./App/_info/gamePage.png)
+![Picture of the login page](./App/_info/winnerPage.png)
+
+
+
+
 
