@@ -37,7 +37,7 @@ Game page that includes a live chat box allowing you to talk to other players in
 ![Picture of the login page](./App/_info/gamePage.png)
 
 A window to allow you to manage your cards, to add and remove houses and to mortgage and unmortgage cards.
-![Picture of the view cards options page](./App/_info/viewCards.png.png)
+![Picture of the view cards options page](./App/_info/viewCards.png)
 
 A winner page decorated with 3d spinning dice.
 ![Picture of the winner page](./App/_info/winnerPage.png)
