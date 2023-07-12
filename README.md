@@ -25,9 +25,12 @@ Share this address with other players on your local network who wish to play.
 ## Features
 
 Account system with sign up/ log in page
-
 ![Picture of the login page](./App/_info/loginPage.png)
+
+Menu page with the option to join a game with your friends code
 ![Picture of the join game page](./App/_info/joinGamePage.png)
+
+Lobby page with
 ![Picture of the code page](./App/_info/codePage.png)
 ![Picture of the login page](./App/_info/gamePage.png)
 ![Picture of the login page](./App/_info/winnerPage.png)
